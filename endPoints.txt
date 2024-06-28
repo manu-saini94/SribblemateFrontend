@@ -1,0 +1,210 @@
+User Endpoints:
+
+Get all users:
+Endpoint: /users
+Method: GET
+Get a specific user by ID:
+Endpoint: /users/:userId
+Method: GET
+Create a new user:
+Endpoint: /users
+Method: POST
+Update a user:
+Endpoint: /users/:userId
+Method: PUT
+Delete a user:
+Endpoint: /users/:userId
+Method: DELETE
+Note Endpoints:
+
+Get all notes for a user:
+Endpoint: /users/:userId/notes
+Method: GET
+Get a specific note for a user by ID:
+Endpoint: /users/:userId/notes/:noteId
+Method: GET
+Create a new note for a user:
+Endpoint: /users/:userId/notes
+Method: POST
+Update a note for a user:
+Endpoint: /users/:userId/notes/:noteId
+Method: PUT
+Delete a note for a user:
+Endpoint: /users/:userId/notes/:noteId
+Method: DELETE
+Label Endpoints:
+
+Get all labels for a user:
+Endpoint: /users/:userId/labels
+Method: GET
+Get a specific label for a user by ID:
+Endpoint: /users/:userId/labels/:labelId
+Method: GET
+Create a new label for a user:
+Endpoint: /users/:userId/labels
+Method: POST
+Update a label for a user:
+Endpoint: /users/:userId/labels/:labelId
+Method: PUT
+Delete a label for a user:
+Endpoint: /users/:userId/labels/:labelId
+Method: DELETE
+
+
+D:\manu\frontend\React-projects\React Learning\GPT-Learning\notesy\src
+
+json-server --watch D:\manu\frontend\React-projects\React Learning\GPT-Learning\notesy\src/db.json --port 3001
+
+ support@keychron.in
+
+curl -X DELETE -H "Content-Type: application/json"  "https://localhost:3001/users/2"
+{}
+
+
+{
+  "/users/list": "/users",
+  "/users/get/:id": "/users/:id",
+  "/users/create": "/users",
+  "/users/update/:id": "/users/:id",
+  "/users/delete/:id": "/users/:id"
+}
+
+
+
+
+
+
+
+
+
+
+
+json => 
+
+{
+  "users": [
+    {
+      "id": 1,
+      "userName": "john_doe",
+      "email": "john@example.com",
+      "gender": "male",
+      "profilePicUrl": "https://example.com/profile.jpg",
+      "notes": [
+        {
+          "id": 1,
+          "trash": false,
+          "pin": false,
+          "archive": false,
+          "color": "#ffffff",
+          "title": "First note",
+          "description": "This is the description of the first note",
+          "images": [],
+          "labels": [
+            { "id": 1, "labelName": "Work" },
+            { "id": 2, "labelName": "Personal" }
+          ]
+        },
+        {
+          "id": 2,
+          "trash": false,
+          "pin": true,
+          "archive": false,
+          "color": "#ff0000",
+          "title": "Second note",
+          "description": "This is the description of the second note",
+          "images": [],
+          "labels": [
+            { "id": 3, "labelName": "Ideas" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "userName": "jane_doe",
+      "email": "jane@example.com",
+      "gender": "female",
+      "profilePicUrl": "https://example.com/profile.jpg",
+      "notes": [
+        {
+          "id": 3,
+          "trash": false,
+          "pin": false,
+          "archive": false,
+          "color": "#00ff00",
+          "title": "Third note",
+          "description": "This is the description of the third note",
+          "images": [],
+          "labels": [
+            { "id": 1, "labelName": "Work" }
+          ]
+        }, {
+          "id": 4,
+          "trash": false,
+          "pin": false,
+          "archive": true,
+          "color": "#00ff00",
+          "title": "Third note",
+          "description": "This is the description of the fourth note",
+          "images": [],
+          "labels": [
+            { "id": 1, "labelName": "Work" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "userName": "smith_doe",
+      "email": "smith@example.com",
+      "gender": "male",
+      "profilePicUrl": "https://example.com/profile.jpg",
+      "notes": [
+        {
+          "id": 5,
+          "trash": false,
+          "pin": true,
+          "archive": false,
+          "color": "#0000ff",
+          "title": "Fourth note",
+          "description": "This is the description of the fifth note",
+          "images": [],
+          "labels": [
+            { "id": 2, "labelName": "Personal" }
+          ]
+        },{
+          "id": 6,
+          "trash": false,
+          "pin": true,
+          "archive": false,
+          "color": "#0000ff",
+          "title": "Fourth note",
+          "description": "This is the description of the sixth note",
+          "images": [],
+          "labels": [
+            { "id": 2, "labelName": "Personal" }
+          ]
+        },
+        {
+          "id": 7,
+          "trash": false,
+          "pin": false,
+          "archive": false,
+          "color": "#0000ff",
+          "title": "Fourth note",
+          "description": "This is the description of the seventh note",
+          "images": [],
+          "labels": [
+          ]
+        }
+      ]
+    }
+  ],
+  "labels": [
+    { "id": 1, "labelName": "Work" },
+    { "id": 2, "labelName": "Personal" },
+    { "id": 3, "labelName": "Ideas" }
+  ]
+  
+}
+
