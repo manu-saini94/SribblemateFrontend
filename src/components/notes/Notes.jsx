@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchNotes } from "../../redux/notes/noteSlice";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import TakeNote from "./TakeNote";
 import TakeNoteDetails from "./TakeNoteDetails";
 
 const Notes = () => {
   const [isTakeNoteActive, setIsTakeNoteActive] = useState(true);
   const notes = useSelector((state) => state.allNotes.notes);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchNotes());
-  });
 
   const onTakeNoteClick = () => {
     setIsTakeNoteActive(false);
   };
+
   return (
     <div className="d-flex flex-column">
       <div
@@ -31,9 +26,62 @@ const Notes = () => {
         )}
       </div>
       <div className="d-flex flex-row flex-wrap">
-        {notes.map((note) => {
-          return <div className="p-2">{note.userName}</div>;
-        })}
+        {/* {notes?.map((note) => {
+          return (
+            <div
+              key={note.id}
+              className="p-2 border m-2"
+              style={{ backgroundColor: note.color }}
+            >
+              <h3>{note.title}</h3>
+              <p>{note.content}</p>
+              <div>
+                <strong>Images:</strong>
+                <ul>
+                  {note.images.map((image, index) => (
+                    <li key={index}>{image}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <strong>Labels:</strong>
+                <ul>
+                  {note.labelSet.map((label) => (
+                    <li key={label.id}>{label.labelName}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <strong>Collaborators:</strong>
+                <ul>
+                  {note.collaboratorList.map((collaborator) => (
+                    <li key={collaborator.id}>{collaborator.email}</li>
+                  ))}
+                </ul>
+              </div>
+              <p>
+                <strong>Pinned:</strong> {note.pinned ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Trashed:</strong> {note.trashed ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Archived:</strong> {note.archived ? "Yes" : "No"}
+              </p>
+              <p>
+                <strong>Reminder:</strong> {note.reminder}
+              </p>
+              <p>
+                <strong>Created At:</strong>{" "}
+                {new Date(note.createdAt).toLocaleString()}
+              </p>
+              <p>
+                <strong>Updated At:</strong>{" "}
+                {new Date(note.updatedAt).toLocaleString()}
+              </p>
+            </div>
+          );
+        })} */}
       </div>
       <div className="d-flex flex-row flex-wrap d-none">Flex item 4</div>
     </div>

@@ -7,7 +7,7 @@ const TakeNote = () => {
     <div className="card" style={{ height: "50px" }}>
       <div className="card-body">
         <div className="d-flex flex-row ">
-          <div className="d-flex input-group input-group-sm align-middle">
+          <div className="d-flex input-group align-middle">
             <input
               type="text"
               className="form-control border-0 p-0 m-0"

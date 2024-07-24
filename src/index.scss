@@ -1,50 +1,84 @@
 .form-control {
-    outline: none !important; /* Remove the blue outline */
-    box-shadow: none !important; /* Remove the box shadow */  
+  outline: none !important; /* Remove the blue outline */
+  box-shadow: none !important; /* Remove the box shadow */
 }
 
-
 .custom-active-bg {
-    background-color:#feefc3 !important; /* Set the background color to yellow */
-    color:#202124 !important;
-    cursor: pointer!important
-  }
+  background-color: #feefc3 !important; /* Set the background color to yellow */
+  color: #202124 !important;
+  cursor: pointer !important;
+}
 
-  .custom-hover-bg:hover {
-    background-color: #F0F0F0 !important; /* Set the hover background color to light yellow */
-    cursor: pointer!important
-  }
+.custom-hover-bg:hover {
+  background-color: #f0f0f0 !important; /* Set the hover background color to light yellow */
+  cursor: pointer !important;
+}
 
-  .pointer {
-    cursor: pointer!important
-  }
+.pointer {
+  cursor: pointer !important;
+}
 
-  .button {
-    border: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 50%;
-    border: 1px solid grey;
-  }
+.button {
+  border: none;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 50%;
+}
 
-  .button-click{
-    border: 3px solid magenta;
-  }
-  
-  .button:hover {
-    border: 2px solid black; /* Apply black border on hover */
-  }
-  
-  .para{
-    outline: none !important; /* Remove the blue outline */
-    box-shadow: none !important; /* Remove the box shadow */
-    word-break: break-word;
-  }
+.button-click {
+  border: 3px solid magenta;
+}
 
-  .take-note-card {
-    max-width: 100%;
-    overflow: hidden;
-  }
+.button:hover {
+  border: 2px solid black;
+}
+
+.para {
+  outline: none !important;
+  box-shadow: none !important;
+  word-break: break-word;
+}
+
+.take-note-card {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.custom-input {
+  border: 3px solid #ffc107;
+}
+
+.custom-input:focus {
+  outline: none; /* Remove the default outline */
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25); /* Custom yellow shadow */
+  border: 3px solid #ffc107;
+}
+
+.custom-label {
+  margin-left: 13px;
+  color: grey;
+}
+
+.warning-text {
+  margin-left: 3px;
+  width: 100%; /* Ensure warning text takes full width */
+  font-size: 13px; /* Set font size */
+  color: #6c757d; /* Text color */
+}
+
+/* Ensuring background remains white when autocomplete is active */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  background-color: white !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+  color: black !important;
+  -webkit-text-fill-color: black !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}

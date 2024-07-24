@@ -1,10 +1,32 @@
 import axios from "axios";
-import { BASE_URL } from "../utility";
+import {
+  BASE_URL,
+  LABEL_FETCH_URL,
+  NOTE_FETCH_BY_REMINDER_URL,
+  NOTE_FETCH_URL,
+} from "../serviceUtils";
 
-export const getAllNotesByUserId = (id) => {
-  return axios.get(BASE_URL + "/users/" + id);
+const token = localStorage.getItem("token");
+
+const config = {
+  headers: { Authorization: `Bearer ${token}` },
+};
+
+export const getAllNotesByUser = () => {
+  return axios.get(BASE_URL + NOTE_FETCH_URL, config);
+};
+
+export const getAllReminderNotesByUser = () => {
+  return axios.get(BASE_URL + NOTE_FETCH_BY_REMINDER_URL, config);
+};
+
+export const getAllLabelsByUser = () => {
+  return axios.get(BASE_URL + LABEL_FETCH_URL, config);
 };
 
 export const registerUser = (registrationDetails) => {
   return axios.post(BASE_URL + "/auth/signup", registrationDetails);
+};
+export const loginUser = (loginDetails) => {
+  return axios.post(BASE_URL + "/auth/login", loginDetails);
 };

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllNotesByUserId } from "../../api/services";
+import { getAllNotesByUser } from "../../api/services";
 
 const initialState = {
   loading: false,
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", () => {
-  return getAllNotesByUserId(1).then((response) => response.data);
+  return getAllNotesByUser().then((response) => response.data.object);
 });
 
 const noteSlice = createSlice({

@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../api/services";
+import {
+  EMAIL_REGEX,
+  EMAIL_RQD,
+  EMAIL_WARN,
+  FULLNAME_RQD,
+  PWD_NOT_MATCH,
+  PWD_REGEX,
+  PWD_RQD,
+  PWD_WARN,
+} from "../miscsUtils";
 
 const Register = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formValues, setFormValues] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
 
@@ -15,87 +28,95 @@ const Register = () => {
     navigate("/login");
   };
 
+  const validateFullName = (fullName) => {
+    if (!fullName) {
+      return FULLNAME_RQD;
+    }
+    return "";
+  };
+
+  const validateEmail = (email) => {
+    if (!email) {
+      return EMAIL_RQD;
+    } else if (!EMAIL_REGEX.test(email)) {
+      return EMAIL_WARN;
+    }
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password) {
+      return PWD_RQD;
+    } else if (!PWD_REGEX.test(password)) {
+      return PWD_WARN;
+    }
+    return "";
+  };
+
+  const validateConfirmPassword = (password, confirmPassword) => {
+    if (!password) {
+      return "Confirm " + PWD_RQD;
+    } else if (password !== confirmPassword) {
+      return PWD_NOT_MATCH;
+    }
+    return "";
+  };
+
   const validateForm = () => {
-    try {
-      const newErrors = {};
-      if (!email) {
-        newErrors.email = "Email is required";
-      } else if (/^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+(.[a-zA-Z]+)+$/.test(email)) {
-        newErrors.email = "Email address is invalid";
-      }
-      if (!password) {
-        newErrors.password = "Password is required";
-      } else if (password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters";
-      } else if (
-        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*W)(?!.* ).{8}$/.test(password)
-      ) {
-        newErrors.password =
-          "Password must contain one digit from 1 to 9, one lowercase letter, one uppercase letter, one special character, no space, and it must be 8 characters long";
-      }
-      return newErrors;
-    } catch (error) {
-      console.log("error", error);
+    const { fullName, email, password, confirmPassword } = formValues;
+
+    const newErrors = {
+      fullName: validateFullName(fullName),
+      email: validateEmail(email),
+      password: validatePassword(password),
+      confirmPassword: validateConfirmPassword(password, confirmPassword),
+    };
+
+    // Filter out empty error messages
+    return Object.keys(newErrors).reduce((acc, key) => {
+      if (newErrors[key]) acc[key] = newErrors[key];
+      return acc;
+    }, {});
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: null,
+    }));
+  };
+
+  const handleSignupSubmit = (event) => {
+    event.preventDefault();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      const { fullName, email, password } = formValues;
+      const registrationDetails = { fullName, email, password };
+      registerUser(registrationDetails)
+        .then((response) => {
+          if (response.status === 200) {
+            navigate("/login");
+          } else {
+            setApiError(
+              response.message || "An error occurred. Please try again."
+            );
+          }
+        })
+        .catch((error) => {
+          setApiError("An error occurred. Please try again.");
+        });
     }
   };
 
-  const handleSignupSubmit = async (event) => {
-    // console.log("inside ");
-    // const newErrors = validateForm();
-    // if (Object.keys(newErrors).length > 0) {
-    //   setErrors(newErrors);
-    // } else {
-    const registrationDetails = { fullName, email, password };
-    await registerUser(registrationDetails)
-      .then((response) => {
-        if (response.success) {
-          navigate("/note");
-        } else {
-          setApiError(response.message);
-        }
-      })
-      .catch((error) => {
-        setApiError("An error occurred. Please try again.", error);
-      });
-    // }
-  };
-
-  const handleFullnameChange = (event) => {
-    setFullName(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    // if (!event.target.value) {
-    //   errors.email = "Email is required";
-    // } else if (
-    //   /^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+(.[a-zA-Z]+)+$/.test(event.target.value)
-    // ) {
-    //   errors.email = "Email address is invalid";
-    // } else {
-    setEmail(event.target.value);
-    // }
-  };
-
-  const handlePasswordChange = (event) => {
-    // if (!event.target.value) {
-    //   errors.password = "Password is required";
-    // } else if (
-    //   /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*W)(?!.* ).{8}$/.test(
-    //     event.target.value
-    //   )
-    // ) {
-    //   errors.password =
-    //     "Password must contain one digit from 1 to 9, one lowercase letter, one uppercase letter, one special character, no space, and it must be 8 characters long";
-    // } else {
-    setPassword(event.target.value);
-    // }
-  };
-
   return (
-    <div
-      className="d-flex align-items-center justify-content-center"
-      style={{ height: "100vh" }}
-    >
+    <>
       {apiError && (
         <div
           className="alert alert-warning alert-dismissible fade show"
@@ -110,94 +131,122 @@ const Register = () => {
           ></button>
         </div>
       )}
-      <div className="card" style={{ width: "45rem" }}>
-        <div className="card-body">
-          <h1 className="d-flex justify-content-center mt-5 mb-5">
-            SCRIBBLE MATE
-          </h1>
-          <form onSubmit={() => handleSignupSubmit()}>
-            <div className="d-flex row justify-content-center">
-              <div className="mb-4 row">
-                <label
-                  htmlFor="fullName"
-                  className="col-sm-2 d-flex justify-content-end col-form-label fw-medium"
-                >
-                  Full Name :
-                </label>
-                <div className="col-sm-9">
+
+      <div
+        className="d-flex align-items-center justify-content-center"
+        style={{ height: "100vh" }}
+      >
+        <div className="card" style={{ width: "45rem" }}>
+          <div className="card-body">
+            <h1 className="d-flex justify-content-center mt-5 mb-5">
+              SCRIBBLE
+            </h1>
+            <form onSubmit={handleSignupSubmit}>
+              <div className="d-flex row justify-content-center">
+                <div className="col-sm-9 form-floating mb-3">
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control custom-input"
                     id="fullName"
-                    onChange={(e) => handleFullnameChange(e)}
+                    name="fullName"
+                    placeholder="Abc Xyz"
+                    value={formValues.fullName}
+                    onChange={handleChange}
                   />
-                </div>
-              </div>
-              <div className="mb-4 row">
-                <label
-                  htmlFor="staticEmail"
-                  className="col-sm-2 d-flex justify-content-end col-form-label fw-medium"
-                >
-                  Email :
-                </label>
-                <div className="col-sm-9">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="staticEmail"
-                    onChange={(e) => handleEmailChange(e)}
-                  />
-                  {errors.email && (
-                    <div className="text-danger">{errors.email}</div>
+
+                  <label htmlFor="fullName" className="custom-label">
+                    Full Name
+                  </label>
+                  {errors.fullName && (
+                    <div className="warning-text text-danger">
+                      {errors.fullName}
+                    </div>
                   )}
                 </div>
-              </div>
-              <div className="mb-4 row">
-                <label
-                  htmlFor="inputPassword"
-                  className="col-sm-2 d-flex justify-content-end col-form-label fw-medium"
-                >
-                  Password :
-                </label>
-                <div className="col-sm-9">
+
+                <div className="col-sm-9 form-floating mb-3">
+                  <input
+                    type="text"
+                    className="form-control custom-input"
+                    id="email"
+                    name="email"
+                    placeholder="name@example.com"
+                    value={formValues.email}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="email" className="custom-label">
+                    Email
+                  </label>
+                  {errors.email && (
+                    <div className="warning-text text-danger">
+                      {errors.email}
+                    </div>
+                  )}
+                </div>
+                <div className="col-sm-9 form-floating mb-3">
                   <input
                     type="password"
-                    className="form-control"
-                    id="inputPassword"
-                    onChange={(e) => handlePasswordChange(e)}
+                    className="form-control custom-input"
+                    id="password"
+                    name="password"
+                    placeholder="Abc@12345"
+                    value={formValues.password}
+                    onChange={handleChange}
                   />
-                  {errors.password && (
-                    <div className="text-danger">{errors.password}</div>
+                  <label htmlFor="password" className="custom-label">
+                    Password
+                  </label>
+                  {errors.password ? (
+                    <div className="warning-text text-danger">
+                      {errors.password}
+                    </div>
+                  ) : (
+                    <span className="warning-text">({PWD_WARN})</span>
                   )}
-                  <span style={{ fontSize: "14px" }} className="fw-light">
-                    (Password must contain one digit from 1 to 9, one lowercase
-                    letter, one uppercase letter, one special character, no
-                    space, and it must be 8 characters long)
-                  </span>
+                </div>
+
+                <div className="col-sm-9 form-floating mb-3">
+                  <input
+                    type="password"
+                    className="form-control custom-input"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Abc@12345"
+                    value={formValues.confirmPassword}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="confirmPassword" className="custom-label">
+                    Confirm Password
+                  </label>
+                  {errors.confirmPassword && (
+                    <div className="warning-text text-danger">
+                      {errors.confirmPassword}
+                    </div>
+                  )}
+                </div>
+
+                <div className="d-flex justify-content-center mb-3">
+                  <button type="submit" className="btn btn-warning">
+                    SIGN UP
+                  </button>
+                </div>
+                <span className="d-flex justify-content-center fs-6 fw-light">
+                  Already have an account?
+                </span>
+                <div
+                  className="d-flex justify-content-center"
+                  onClick={navigateToLogin}
+                >
+                  <button type="button" className="btn btn-link">
+                    LOG IN
+                  </button>
                 </div>
               </div>
-
-              <div className="d-flex justify-content-center mb-3">
-                <button type="submit" className="btn btn-warning">
-                  SIGN UP
-                </button>
-              </div>
-              <span className="d-flex justify-content-center fs-6 fw-light">
-                Already have an account?
-              </span>
-              <div
-                className="d-flex justify-content-center"
-                onClick={() => navigateToLogin()}
-              >
-                <button type="button" className="btn btn-link">
-                  LOG IN
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
