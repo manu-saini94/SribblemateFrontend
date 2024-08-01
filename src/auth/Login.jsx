@@ -83,7 +83,7 @@ const Login = ({ setToken }) => {
               setToken(response.data.token); // Update the token state
               navigate("/note");
             } else {
-              setApiError(response.data.message || "Invalid credentials");
+              setApiError(response.data.message || "Invalid credentials");        
             }
           } else {
             setApiError(
