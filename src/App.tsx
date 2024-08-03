@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   Navigate,
@@ -44,8 +44,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" exact element={<Login setToken={setToken} />} />
-        <Route path="/login" exact element={<Login setToken={setToken} />} />
+        <Route path="/" element={<Login setToken={setToken} />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/signup" element={<Register />} />
         {token ? (
           <Route path="/*" element={<MainLayout />} />

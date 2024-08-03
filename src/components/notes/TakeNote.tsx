@@ -1,6 +1,6 @@
+import IconImage from "components/IconImage";
 import React from "react";
 import ImageIcon from "../../assets/imageicon.svg";
-import IconImage from "../IconImage";
 
 const TakeNote = () => {
   return (

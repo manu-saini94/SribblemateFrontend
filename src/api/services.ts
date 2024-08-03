@@ -1,3 +1,4 @@
+import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
 import axios from "axios";
 import {
   BASE_URL,
@@ -24,9 +25,9 @@ export const getAllLabelsByUser = () => {
   return axios.get(BASE_URL + LABEL_FETCH_URL, config);
 };
 
-export const registerUser = (registrationDetails) => {
+export const registerUser = (registrationDetails: RegistrationDetailsType) => {
   return axios.post(BASE_URL + "/auth/signup", registrationDetails);
 };
-export const loginUser = (loginDetails) => {
+export const loginUser = (loginDetails: LoginCredentialsType) => {
   return axios.post(BASE_URL + "/auth/login", loginDetails);
 };

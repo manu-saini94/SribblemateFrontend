@@ -1,65 +1,28 @@
+import { ConfirmPasswordType, RegistrationDetailsType } from "authtypes";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/services";
 import {
-  EMAIL_REGEX,
-  EMAIL_RQD,
-  EMAIL_WARN,
-  FULLNAME_RQD,
-  PWD_NOT_MATCH,
-  PWD_REGEX,
-  PWD_RQD,
-  PWD_WARN,
-} from "../miscsUtils";
+  validateConfirmPassword,
+  validateEmail,
+  validateFullName,
+  validatePassword,
+} from "utility/validationutils/authValidationUtils";
+import { registerUser } from "../api/services";
+import { PWD_WARN } from "../utility/miscsUtils";
 
 const Register = () => {
-  const [formValues, setFormValues] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [errors, setErrors] = useState({});
+  const [formValues, setFormValues] = useState<
+    RegistrationDetailsType & ConfirmPasswordType
+  >({} as RegistrationDetailsType & ConfirmPasswordType);
+  const [errors, setErrors] = useState<
+    Partial<RegistrationDetailsType & ConfirmPasswordType>
+  >({} as Partial<RegistrationDetailsType & ConfirmPasswordType>);
   const [apiError, setApiError] = useState("");
 
   const navigate = useNavigate();
 
   const navigateToLogin = () => {
     navigate("/login");
-  };
-
-  const validateFullName = (fullName) => {
-    if (!fullName) {
-      return FULLNAME_RQD;
-    }
-    return "";
-  };
-
-  const validateEmail = (email) => {
-    if (!email) {
-      return EMAIL_RQD;
-    } else if (!EMAIL_REGEX.test(email)) {
-      return EMAIL_WARN;
-    }
-    return "";
-  };
-
-  const validatePassword = (password) => {
-    if (!password) {
-      return PWD_RQD;
-    } else if (!PWD_REGEX.test(password)) {
-      return PWD_WARN;
-    }
-    return "";
-  };
-
-  const validateConfirmPassword = (password, confirmPassword) => {
-    if (!password) {
-      return "Confirm " + PWD_RQD;
-    } else if (password !== confirmPassword) {
-      return PWD_NOT_MATCH;
-    }
-    return "";
   };
 
   const validateForm = () => {
@@ -73,13 +36,12 @@ const Register = () => {
     };
 
     // Filter out empty error messages
-    return Object.keys(newErrors).reduce((acc, key) => {
-      if (newErrors[key]) acc[key] = newErrors[key];
-      return acc;
-    }, {});
+    return Object.fromEntries(
+      Object.entries(newErrors).filter(([_, value]) => value)
+    ) as Partial<RegistrationDetailsType & ConfirmPasswordType>;
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -91,7 +53,7 @@ const Register = () => {
     }));
   };
 
-  const handleSignupSubmit = (event) => {
+  const handleSignupSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
@@ -105,7 +67,7 @@ const Register = () => {
             navigate("/login");
           } else {
             setApiError(
-              response.message || "An error occurred. Please try again."
+              response.data.error || "An error occurred. Please try again."
             );
           }
         })
@@ -157,11 +119,9 @@ const Register = () => {
                   <label htmlFor="fullName" className="custom-label">
                     Full Name
                   </label>
-                  {errors.fullName && (
-                    <div className="warning-text text-danger">
-                      {errors.fullName}
-                    </div>
-                  )}
+                  <div className="warning-text text-danger">
+                    {errors.fullName}
+                  </div>
                 </div>
 
                 <div className="col-sm-9 form-floating mb-3">
@@ -177,11 +137,7 @@ const Register = () => {
                   <label htmlFor="email" className="custom-label">
                     Email
                   </label>
-                  {errors.email && (
-                    <div className="warning-text text-danger">
-                      {errors.email}
-                    </div>
-                  )}
+                  <div className="warning-text text-danger">{errors.email}</div>
                 </div>
                 <div className="col-sm-9 form-floating mb-3">
                   <input
@@ -218,11 +174,10 @@ const Register = () => {
                   <label htmlFor="confirmPassword" className="custom-label">
                     Confirm Password
                   </label>
-                  {errors.confirmPassword && (
-                    <div className="warning-text text-danger">
-                      {errors.confirmPassword}
-                    </div>
-                  )}
+
+                  <div className="warning-text text-danger">
+                    {errors.confirmPassword}
+                  </div>
                 </div>
 
                 <div className="d-flex justify-content-center mb-3">

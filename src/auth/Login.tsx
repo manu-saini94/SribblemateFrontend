@@ -1,61 +1,42 @@
+import { LoginCredentialsType, LoginPropsType } from "authtypes";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api/services";
 import {
-  EMAIL_REGEX,
-  EMAIL_RQD,
-  EMAIL_WARN,
-  PWD_REGEX,
-  PWD_RQD,
-  PWD_WARN,
-} from "../miscsUtils";
+  validateEmail,
+  validatePassword,
+} from "utility/validationutils/authValidationUtils";
+import { loginUser } from "../api/services";
 
-const Login = ({ setToken }) => {
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
+const Login = ({ setToken }: LoginPropsType) => {
+  const [formValues, setFormValues] = useState<LoginCredentialsType>(
+    {} as LoginCredentialsType
+  );
+
+  const [errors, setErrors] = useState<Partial<LoginCredentialsType>>(
+    {} as Partial<LoginCredentialsType>
+  );
+
   const [apiError, setApiError] = useState("");
+
   const navigate = useNavigate();
 
   const navigateToSignup = () => {
     navigate("/signup");
   };
 
-  const validateEmail = (email) => {
-    if (!email) {
-      return EMAIL_RQD;
-    } else if (!EMAIL_REGEX.test(email)) {
-      return EMAIL_WARN;
-    }
-    return "";
-  };
-
-  const validatePassword = (password) => {
-    if (!password) {
-      return PWD_RQD;
-    } else if (!PWD_REGEX.test(password)) {
-      return PWD_WARN;
-    }
-    return "";
-  };
-
-  const validateForm = () => {
+  const validateForm = (): Partial<LoginCredentialsType> => {
     const { email, password } = formValues;
-
-    const newErrors = {
+    const newErrors: Partial<LoginCredentialsType> = {
       email: validateEmail(email),
       password: validatePassword(password),
     };
 
-    return Object.keys(newErrors).reduce((acc, key) => {
-      if (newErrors[key]) acc[key] = newErrors[key];
-      return acc;
-    }, {});
+    return Object.fromEntries(
+      Object.entries(newErrors).filter(([_, value]) => value)
+    ) as Partial<LoginCredentialsType>;
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -67,7 +48,7 @@ const Login = ({ setToken }) => {
     }));
   };
 
-  const handleLoginSubmit = (event) => {
+  const handleLoginSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
@@ -83,11 +64,11 @@ const Login = ({ setToken }) => {
               setToken(response.data.token); // Update the token state
               navigate("/note");
             } else {
-              setApiError(response.data.message || "Invalid credentials");        
+              setApiError(response.data.message || "Invalid credentials");
             }
           } else {
             setApiError(
-              response.message || "An error occurred. Please try again."
+              response.data.error || "An error occurred. Please try again."
             );
           }
         })
@@ -138,11 +119,8 @@ const Login = ({ setToken }) => {
                   <label htmlFor="email" className="custom-label">
                     Email
                   </label>
-                  {errors.email && (
-                    <div className="warning-text text-danger">
-                      {errors.email}
-                    </div>
-                  )}
+
+                  <div className="warning-text text-danger">{errors.email}</div>
                 </div>
                 <div className="col-sm-9 form-floating mb-3">
                   <input
@@ -157,11 +135,10 @@ const Login = ({ setToken }) => {
                   <label htmlFor="password" className="custom-label">
                     Password
                   </label>
-                  {errors.password && (
-                    <div className="warning-text text-danger">
-                      {errors.password}
-                    </div>
-                  )}
+
+                  <div className="warning-text text-danger">
+                    {errors.password}
+                  </div>
                 </div>
 
                 <div className="d-flex justify-content-center mb-3">
