@@ -20,3 +20,11 @@ export type RegistrationDetailsType = {
 export type ConfirmPasswordType = {
   confirmPassword: string;
 };
+
+export type AuthProps = {
+  children: ReactNode;
+};
+
+export type WithAuthProps = {
+  setToken?: (token: string) => void;
+};

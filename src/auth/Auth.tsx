@@ -1,6 +1,7 @@
-import React from "react";
+import { AuthProps } from "authtypes";
+import React, { ReactNode } from "react";
 
-function Auth(props) {
+const Auth = ({ children }: AuthProps): ReactNode => {
   return (
     <div
       className="d-flex align-items-center justify-content-center"
@@ -11,10 +12,11 @@ function Auth(props) {
           <h1 className="d-flex justify-content-center mt-5 mb-5">
             SCRIBBLE MATE
           </h1>
+          {children}
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Auth;

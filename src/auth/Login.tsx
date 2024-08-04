@@ -6,6 +6,7 @@ import {
   validatePassword,
 } from "utility/validationutils/authValidationUtils";
 import { loginUser } from "../api/services";
+import withAuth from "./withAuth";
 
 const Login = ({ setToken }: LoginPropsType) => {
   const [formValues, setFormValues] = useState<LoginCredentialsType>(
@@ -95,75 +96,61 @@ const Login = ({ setToken }: LoginPropsType) => {
         </div>
       )}
 
-      <div
-        className="d-flex align-items-center justify-content-center"
-        style={{ height: "100vh" }}
-      >
-        <div className="card" style={{ width: "45rem" }}>
-          <div className="card-body">
-            <h1 className="d-flex justify-content-center mt-5 mb-5">
-              SCRIBBLE
-            </h1>
-            <form onSubmit={handleLoginSubmit}>
-              <div className="d-flex row justify-content-center">
-                <div className="col-sm-9 form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control custom-input"
-                    id="email"
-                    name="email"
-                    placeholder="name@example.com"
-                    value={formValues.email}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="email" className="custom-label">
-                    Email
-                  </label>
+      <form onSubmit={handleLoginSubmit}>
+        <div className="d-flex row justify-content-center">
+          <div className="col-sm-9 form-floating mb-3">
+            <input
+              type="text"
+              className="form-control custom-input"
+              id="email"
+              name="email"
+              placeholder="name@example.com"
+              value={formValues.email}
+              onChange={handleChange}
+            />
+            <label htmlFor="email" className="custom-label">
+              Email
+            </label>
 
-                  <div className="warning-text text-danger">{errors.email}</div>
-                </div>
-                <div className="col-sm-9 form-floating mb-3">
-                  <input
-                    type="password"
-                    className="form-control custom-input"
-                    id="password"
-                    name="password"
-                    placeholder="Abc@12345"
-                    value={formValues.password}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="password" className="custom-label">
-                    Password
-                  </label>
+            <div className="warning-text text-danger">{errors.email}</div>
+          </div>
+          <div className="col-sm-9 form-floating mb-3">
+            <input
+              type="password"
+              className="form-control custom-input"
+              id="password"
+              name="password"
+              placeholder="Abc@12345"
+              value={formValues.password}
+              onChange={handleChange}
+            />
+            <label htmlFor="password" className="custom-label">
+              Password
+            </label>
 
-                  <div className="warning-text text-danger">
-                    {errors.password}
-                  </div>
-                </div>
+            <div className="warning-text text-danger">{errors.password}</div>
+          </div>
 
-                <div className="d-flex justify-content-center mb-3">
-                  <button type="submit" className="btn btn-warning">
-                    LOG IN
-                  </button>
-                </div>
-                <span className="d-flex justify-content-center fs-6 fw-light">
-                  Don't have an account?
-                </span>
-                <div
-                  className="d-flex justify-content-center"
-                  onClick={navigateToSignup}
-                >
-                  <button type="button" className="btn btn-link">
-                    SIGN UP
-                  </button>
-                </div>
-              </div>
-            </form>
+          <div className="d-flex justify-content-center mb-3">
+            <button type="submit" className="btn btn-warning">
+              LOG IN
+            </button>
+          </div>
+          <span className="d-flex justify-content-center fs-6 fw-light">
+            Don't have an account?
+          </span>
+          <div
+            className="d-flex justify-content-center"
+            onClick={navigateToSignup}
+          >
+            <button type="button" className="btn btn-link">
+              SIGN UP
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 };
 
-export default Login;
+export default withAuth(Login);

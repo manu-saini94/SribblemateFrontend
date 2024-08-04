@@ -9,6 +9,7 @@ import {
 } from "utility/validationutils/authValidationUtils";
 import { registerUser } from "../api/services";
 import { PWD_WARN } from "../utility/miscsUtils";
+import withAuth from "./withAuth";
 
 const Register = () => {
   const [formValues, setFormValues] = useState<
@@ -94,115 +95,99 @@ const Register = () => {
         </div>
       )}
 
-      <div
-        className="d-flex align-items-center justify-content-center"
-        style={{ height: "100vh" }}
-      >
-        <div className="card" style={{ width: "45rem" }}>
-          <div className="card-body">
-            <h1 className="d-flex justify-content-center mt-5 mb-5">
-              SCRIBBLE
-            </h1>
-            <form onSubmit={handleSignupSubmit}>
-              <div className="d-flex row justify-content-center">
-                <div className="col-sm-9 form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control custom-input"
-                    id="fullName"
-                    name="fullName"
-                    placeholder="Abc Xyz"
-                    value={formValues.fullName}
-                    onChange={handleChange}
-                  />
+      <form onSubmit={handleSignupSubmit}>
+        <div className="d-flex row justify-content-center">
+          <div className="col-sm-9 form-floating mb-3">
+            <input
+              type="text"
+              className="form-control custom-input"
+              id="fullName"
+              name="fullName"
+              placeholder="Abc Xyz"
+              value={formValues.fullName}
+              onChange={handleChange}
+            />
 
-                  <label htmlFor="fullName" className="custom-label">
-                    Full Name
-                  </label>
-                  <div className="warning-text text-danger">
-                    {errors.fullName}
-                  </div>
-                </div>
+            <label htmlFor="fullName" className="custom-label">
+              Full Name
+            </label>
+            <div className="warning-text text-danger">{errors.fullName}</div>
+          </div>
 
-                <div className="col-sm-9 form-floating mb-3">
-                  <input
-                    type="text"
-                    className="form-control custom-input"
-                    id="email"
-                    name="email"
-                    placeholder="name@example.com"
-                    value={formValues.email}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="email" className="custom-label">
-                    Email
-                  </label>
-                  <div className="warning-text text-danger">{errors.email}</div>
-                </div>
-                <div className="col-sm-9 form-floating mb-3">
-                  <input
-                    type="password"
-                    className="form-control custom-input"
-                    id="password"
-                    name="password"
-                    placeholder="Abc@12345"
-                    value={formValues.password}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="password" className="custom-label">
-                    Password
-                  </label>
-                  {errors.password ? (
-                    <div className="warning-text text-danger">
-                      {errors.password}
-                    </div>
-                  ) : (
-                    <span className="warning-text">({PWD_WARN})</span>
-                  )}
-                </div>
+          <div className="col-sm-9 form-floating mb-3">
+            <input
+              type="text"
+              className="form-control custom-input"
+              id="email"
+              name="email"
+              placeholder="name@example.com"
+              value={formValues.email}
+              onChange={handleChange}
+            />
+            <label htmlFor="email" className="custom-label">
+              Email
+            </label>
+            <div className="warning-text text-danger">{errors.email}</div>
+          </div>
+          <div className="col-sm-9 form-floating mb-3">
+            <input
+              type="password"
+              className="form-control custom-input"
+              id="password"
+              name="password"
+              placeholder="Abc@12345"
+              value={formValues.password}
+              onChange={handleChange}
+            />
+            <label htmlFor="password" className="custom-label">
+              Password
+            </label>
+            {errors.password ? (
+              <div className="warning-text text-danger">{errors.password}</div>
+            ) : (
+              <span className="warning-text">({PWD_WARN})</span>
+            )}
+          </div>
 
-                <div className="col-sm-9 form-floating mb-3">
-                  <input
-                    type="password"
-                    className="form-control custom-input"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="Abc@12345"
-                    value={formValues.confirmPassword}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="confirmPassword" className="custom-label">
-                    Confirm Password
-                  </label>
+          <div className="col-sm-9 form-floating mb-3">
+            <input
+              type="password"
+              className="form-control custom-input"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Abc@12345"
+              value={formValues.confirmPassword}
+              onChange={handleChange}
+            />
+            <label htmlFor="confirmPassword" className="custom-label">
+              Confirm Password
+            </label>
 
-                  <div className="warning-text text-danger">
-                    {errors.confirmPassword}
-                  </div>
-                </div>
+            <div className="warning-text text-danger">
+              {errors.confirmPassword}
+            </div>
+          </div>
 
-                <div className="d-flex justify-content-center mb-3">
-                  <button type="submit" className="btn btn-warning">
-                    SIGN UP
-                  </button>
-                </div>
-                <span className="d-flex justify-content-center fs-6 fw-light">
-                  Already have an account?
-                </span>
-                <div
-                  className="d-flex justify-content-center"
-                  onClick={navigateToLogin}
-                >
-                  <button type="button" className="btn btn-link">
-                    LOG IN
-                  </button>
-                </div>
-              </div>
-            </form>
+          <div className="d-flex justify-content-center mb-3">
+            <button type="submit" className="btn btn-warning">
+              SIGN UP
+            </button>
+          </div>
+          <span className="d-flex justify-content-center fs-6 fw-light">
+            Already have an account?
+          </span>
+          <div
+            className="d-flex justify-content-center"
+            onClick={navigateToLogin}
+          >
+            <button type="button" className="btn btn-link">
+              LOG IN
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 };
 
-export default Register;
+export default withAuth(Register);

@@ -4,7 +4,7 @@ import TakeNote from "./TakeNote";
 import TakeNoteDetails from "./TakeNoteDetails";
 
 const Notes = () => {
-  const [isTakeNoteActive, setIsTakeNoteActive] = useState(true);
+  const [isTakeNoteActive, setIsTakeNoteActive] = useState<Boolean>(true);
   const notes = useSelector((state) => state.allNotes.notes);
 
   const onTakeNoteClick = () => {
