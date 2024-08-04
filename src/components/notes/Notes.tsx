@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 import TakeNote from "./TakeNote";
 import TakeNoteDetails from "./TakeNoteDetails";
 
 const Notes = () => {
   const [isTakeNoteActive, setIsTakeNoteActive] = useState<Boolean>(true);
-  const notes = useSelector((state) => state.allNotes.notes);
+
+  const notes = useSelector((state: RootState) => state.allNotes.notes);
 
   const onTakeNoteClick = () => {
     setIsTakeNoteActive(false);

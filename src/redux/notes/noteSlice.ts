@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { NoteStoreInitialStateType } from "storetypes";
 import { getAllNotesByUser } from "../../api/services";
 
-const initialState = {
+const initialState: NoteStoreInitialStateType = {
   loading: false,
   notes: [],
   error: "",
@@ -14,6 +15,7 @@ export const fetchNotes = createAsyncThunk("notes/fetchNotes", () => {
 const noteSlice = createSlice({
   name: "notes",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchNotes.pending, (state) => {
       state.loading = true;
@@ -26,7 +28,7 @@ const noteSlice = createSlice({
     builder.addCase(fetchNotes.rejected, (state, action) => {
       state.loading = false;
       state.notes = [];
-      state.error = action.error.message;
+      state.error = action.error.message || "Failed to fetch notes";
     });
   },
 });
