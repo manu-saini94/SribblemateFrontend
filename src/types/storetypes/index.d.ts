@@ -1,7 +1,7 @@
-import { Note } from "@types/notetypes";
+import { UpdateNoteType } from "@types/notetypes";
 
 export type NoteStoreInitialStateType = {
   loading: Boolean;
-  notes: Note[];
+  notes: UpdateNoteType[];
   error?: string;
 };

@@ -1,10 +1,11 @@
 import { Id } from "@types/global";
 
-export type LabelType = {
-  id: Id;
+export type UpdateLabelType = CreateLabelType & Id;
+
+export type CreateLabelType = {
   labelName: string;
 };
 
 export type LabelSetType = {
-  labelArray: LabelType[];
+  labelArray: CreateLabelType[];
 };

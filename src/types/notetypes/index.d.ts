@@ -5,17 +5,17 @@ export type ImageType = {
   image: string[];
 };
 
-export type CollaboratorType = {
-  id: Id;
+export type UpdateCollaboratorType = CreateCollaboratorType & Id;
+
+export type CreateCollaboratorType = {
   email: string;
 };
 
 export type CollaboratorListType = {
-  collaboratorArray: CollaboratorType[];
+  collaboratorArray: CreateCollaboratorType[];
 };
 
-export type Note = {
-  id: Id;
+export type CreateNoteType = {
   title: string;
   content: string;
   images: ImageType;
@@ -29,3 +29,5 @@ export type Note = {
   labelSet: LabelSetType;
   collaboratorList: CollaboratorListType;
 };
+
+export type UpdateNoteType = CreateNoteType & Id;

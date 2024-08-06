@@ -26,5 +26,5 @@ export type AuthProps = {
 };
 
 export type WithAuthProps = {
-  setToken?: (token: string) => void;
+  setToken: (token: string) => void;
 };

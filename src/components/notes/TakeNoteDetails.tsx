@@ -1,6 +1,7 @@
-import { PropTypes } from "prop-types";
+import { CreateNoteType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 import ArchiveIcon from "../../assets/archive.svg";
 import BellIcon from "../../assets/bell.svg";
 import ColorPalleteIcon from "../../assets/colorpallete.svg";
@@ -11,32 +12,20 @@ import UnpinIcon from "../../assets/unpin.svg";
 import IconImage from "../IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-const TakeNoteDetails = (props) => {
-  const noteColor = useSelector((state) => state.noteColor.color);
+const TakeNoteDetails = ({ props }: any) => {
+  const noteColor = useSelector((state: RootState) => state.noteColor.color);
 
-  const [noteData, setNoteData] = useState({
-    id: "",
-    title: "",
-    content: "",
-    images: [],
-    isTrashed: false,
-    isArchived: false,
-    isPinned: false,
-    color: noteColor,
-    reminder: "",
-    createdAt: "",
-    updatedAt: "",
-    labelSet: [],
-    collaboratorList: [],
-  });
+  const [noteData, setNoteData] = useState<CreateNoteType>(
+    {} as CreateNoteType
+  );
 
-  const colorPaletteRef = useRef(null);
-  const takeNoteDetailsRef = useRef(null);
-  const [openPalette, setOpenPalette] = useState(false);
+  const colorPaletteRef = useRef<HTMLDivElement>(null);
+  const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
+  const [openPalette, setOpenPalette] = useState<Boolean>(false);
 
   const { setIsTakeNoteActive } = props;
 
-  const handleChange = (event) => {
+  const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
     setNoteData((prevValues) => ({
       ...prevValues,
@@ -47,7 +36,12 @@ const TakeNoteDetails = (props) => {
     }
   };
 
-  const adjustTextareaHeight = (textarea) => {
+  const adjustTextareaHeight = (textarea: {
+    name?: any;
+    value?: any;
+    style?: any;
+    scrollHeight?: any;
+  }) => {
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
   };
@@ -78,10 +72,11 @@ const TakeNoteDetails = (props) => {
   }, [noteColor]);
 
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
       if (
         colorPaletteRef.current &&
-        !colorPaletteRef.current.contains(event.target)
+        !colorPaletteRef.current.contains(target)
       ) {
         setOpenPalette(false);
       }
@@ -93,10 +88,11 @@ const TakeNoteDetails = (props) => {
   }, [colorPaletteRef]);
 
   useEffect(() => {
-    function handleClickOutsideNote(event) {
+    function handleClickOutsideNote(event: MouseEvent) {
+      const target = event.target as HTMLElement;
       if (
         takeNoteDetailsRef.current &&
-        !takeNoteDetailsRef.current.contains(event.target)
+        !takeNoteDetailsRef.current.contains(target)
       ) {
         setIsTakeNoteActive(true);
       }
@@ -203,10 +199,6 @@ const TakeNoteDetails = (props) => {
       </div>
     </div>
   );
-};
-
-TakeNoteDetails.propTypes = {
-  setIsTakeNoteActive: PropTypes.func.isRequired,
 };
 
 export default TakeNoteDetails;
