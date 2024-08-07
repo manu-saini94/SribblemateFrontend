@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import IconImage from "../IconImage";
+import IconImage from "../global/IconImage";
 
 const MenuItem = (props) => {
   const { itemProps, active, onMenuItemClick } = props;

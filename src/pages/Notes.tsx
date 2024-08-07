@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import TakeNote from "./TakeNote";
-import TakeNoteDetails from "./TakeNoteDetails";
+import TakeNote from "../components/notes/TakeNote";
+import TakeNoteDetails from "../components/notes/TakeNoteDetails";
 
 const Notes = () => {
   const [isTakeNoteActive, setIsTakeNoteActive] = useState<Boolean>(true);

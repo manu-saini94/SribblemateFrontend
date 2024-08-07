@@ -6,21 +6,23 @@ import {
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
+import { AppDispatch } from "redux/store";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
-import Archive from "./components/archive/Archive";
 import NavBar from "./components/navbar/NavBar";
-import Notes from "./components/notes/Notes";
-import Reminder from "./components/reminder/Reminder";
 import SideBar from "./components/sidebar/SideBar";
-import Trash from "./components/trash/Trash";
+import Archive from "./pages/Archive";
+import Notes from "./pages/Notes";
+import Reminder from "./pages/Reminder";
+
+import Trash from "pages/Trash";
 import { fetchLabels } from "./redux/labels/labelSlice";
 import { fetchNotes } from "./redux/notes/noteSlice";
 import { fetchReminderNotes } from "./redux/reminder/reminderSlice";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const handleStorageChange = () => {

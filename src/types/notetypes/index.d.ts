@@ -31,3 +31,7 @@ export type CreateNoteType = {
 };
 
 export type UpdateNoteType = CreateNoteType & Id;
+
+export type NoteCardPropsType = {
+  noteCardValues: UpdateNoteType;
+};

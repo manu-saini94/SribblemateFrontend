@@ -1,7 +1,7 @@
 import React from "react";
 import Search from "../../assets/search.svg";
 
-import IconImage from "../IconImage";
+import IconImage from "../global/IconImage";
 
 const SearchBar = () => {
   return (

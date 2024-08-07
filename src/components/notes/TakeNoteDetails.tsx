@@ -9,7 +9,7 @@ import ImageIcon from "../../assets/image.svg";
 import MoreIcon from "../../assets/more.svg";
 import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
-import IconImage from "../IconImage";
+import IconImage from "../global/IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
 const TakeNoteDetails = ({ props }: any) => {

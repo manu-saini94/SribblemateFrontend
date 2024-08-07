@@ -2,7 +2,7 @@ import React from "react";
 import Avatar from "../../assets/avatar.svg";
 import ListView from "../../assets/listview.svg";
 import Settings from "../../assets/settings.svg";
-import IconImage from "../IconImage";
+import IconImage from "../global/IconImage";
 
 const ViewSettingsAvatar = () => {
   return (

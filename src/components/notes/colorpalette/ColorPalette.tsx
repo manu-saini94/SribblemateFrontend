@@ -23,7 +23,7 @@ const ColorPalette = () => {
 
   const dispatch = useDispatch();
 
-  const onColorClick = (colorItem) => {
+  const onColorClick = (colorItem: string) => {
     dispatch(changeColor(colorItem));
   };
 

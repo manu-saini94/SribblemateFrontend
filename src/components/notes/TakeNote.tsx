@@ -1,4 +1,4 @@
-import IconImage from "components/IconImage";
+import IconImage from "components/global/IconImage";
 import React from "react";
 import ImageIcon from "../../assets/imageicon.svg";
 

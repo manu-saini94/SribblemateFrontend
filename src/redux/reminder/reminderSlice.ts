@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ReminderNoteStoreInitialStateType } from "storetypes";
 import { getAllReminderNotesByUser } from "../../api/services";
 
-const initialState = {
+const initialState: ReminderNoteStoreInitialStateType = {
   loading: false,
   reminderNotes: [],
   error: "",
@@ -17,6 +18,7 @@ export const fetchReminderNotes = createAsyncThunk(
 const reminderSlice = createSlice({
   name: "reminderNotes",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchReminderNotes.pending, (state) => {
       state.loading = true;
@@ -29,7 +31,7 @@ const reminderSlice = createSlice({
     builder.addCase(fetchReminderNotes.rejected, (state, action) => {
       state.loading = false;
       state.reminderNotes = [];
-      state.error = action.error.message;
+      state.error = action.error.message || "Failed to fetch notes";
     });
   },
 });

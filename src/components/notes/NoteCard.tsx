@@ -1,41 +1,59 @@
-import React from "react";
+import IconImage from "components/global/IconImage";
+import { NoteCardPropsType, UpdateNoteType } from "notetypes";
+import React, { useEffect, useRef, useState } from "react";
+import ArchiveIcon from "../../assets/archive.svg";
+import BellIcon from "../../assets/bell.svg";
+import ColorPalleteIcon from "../../assets/colorpallete.svg";
+import ImageIcon from "../../assets/image.svg";
+import MoreIcon from "../../assets/more.svg";
+import PinIcon from "../../assets/pin.svg";
+import UnpinIcon from "../../assets/unpin.svg";
+import ColorPalette from "./colorpalette/ColorPalette";
 
-function NoteCard(props) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [pin, setPin] = useState(false);
-  const [archive, setArchive] = useState(false);
-  const color = useSelector((state) => state.noteColor.color);
-  const colorPaletteRef = useRef(null);
-  const takeNoteDetailsRef = useRef(null);
+function NoteCard(
+  { noteCardValues }: NoteCardPropsType,
+  props: { setIsTakeNoteActive: any }
+) {
+  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(
+    noteCardValues as UpdateNoteType
+  );
+
+  const colorPaletteRef = useRef<HTMLDivElement>(null);
+  const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [openPalette, setOpenPalette] = useState(false);
-
-  // const {  } = props;
 
   const onPaletteIconClick = () => {
     setOpenPalette(true);
   };
+
   const onPinClick = () => {
-    setPin(!pin);
+    // setPin(!pin);
   };
 
-  const handleTitleChange = (event) => {
+  const handleTitleClick = (event: React.MouseEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setTitle(event.target.value);
+    const target = event.target as HTMLElement;
+    // event.preventDefault();
   };
-  const handleDescriptionChange = (event) => {
+
+  const handleContentClick = (event: React.MouseEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
-    setDescription(event.target.value);
+    const target = event.target as HTMLElement;
+    // event.preventDefault();
   };
+
   const onArchiveClick = () => {
-    setArchive(true);
+    // setArchive(true);
   };
+
+  const { setIsTakeNoteActive } = props;
 
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as HTMLElement;
       if (
         colorPaletteRef.current &&
-        !colorPaletteRef.current.contains(event.target)
+        !colorPaletteRef.current.contains(target)
       ) {
         setOpenPalette(false);
       }
@@ -47,10 +65,11 @@ function NoteCard(props) {
   }, [colorPaletteRef]);
 
   useEffect(() => {
-    function handleClickOutsideNote(event) {
+    function handleClickOutsideNote(event: MouseEvent) {
+      const target = event.target as HTMLElement;
       if (
         takeNoteDetailsRef.current &&
-        !takeNoteDetailsRef.current.contains(event.target)
+        !takeNoteDetailsRef.current.contains(target)
       ) {
         setIsTakeNoteActive(true);
       }
@@ -59,12 +78,16 @@ function NoteCard(props) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNote);
     };
-  }, [takeNoteDetailsRef]);
+  }, [takeNoteDetailsRef, setIsTakeNoteActive]);
 
   return (
     <div
       className="card "
-      style={{ height: "auto", backgroundColor: `${color}`, width: "35rem" }}
+      style={{
+        height: "auto",
+        backgroundColor: `${updateNote.color}`,
+        width: "20rem",
+      }}
       ref={takeNoteDetailsRef}
     >
       <div className="card-body pb-2">
@@ -72,15 +95,16 @@ function NoteCard(props) {
           <div className="input-group mb-3">
             <input
               type="text"
+              readOnly
               className="form-control border-0 p-0 m-0"
               placeholder="Title"
               aria-label="Title"
               aria-describedby="basic-addon1"
-              style={{ backgroundColor: `${color}` }}
-              value={title}
-              onChange={handleTitleChange}
+              style={{ backgroundColor: `${updateNote.color}` }}
+              value={updateNote.title}
+              onClick={handleTitleClick}
             />
-            {pin ? (
+            {updateNote.isPinned ? (
               <IconImage
                 x={0}
                 y={0}
@@ -105,13 +129,13 @@ function NoteCard(props) {
             aria-label="Take a note..."
             aria-describedby="basic-addon1"
             style={{
-              backgroundColor: `${color}`,
+              backgroundColor: `${updateNote.color}`,
               resize: "none",
               overflow: "hidden",
               minHeight: "auto",
             }}
-            value={description}
-            onChange={handleDescriptionChange}
+            value={updateNote.content}
+            onClick={handleContentClick}
           />
         </div>
         <div className="d-flex justify-content-between">
