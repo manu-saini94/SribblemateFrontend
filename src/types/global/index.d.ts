@@ -2,7 +2,7 @@ export type Id = {
   id: number;
 };
 
-export type IconImagePropsType = {
+export type IconImageType = {
   x: number;
   y: number;
   src: string;

@@ -35,3 +35,17 @@ export type UpdateNoteType = CreateNoteType & Id;
 export type NoteCardPropsType = {
   noteCardValues: UpdateNoteType;
 };
+
+export type TakeNoteDetailsPropsType = {
+  setIsTakeNoteActive: boolean;
+};
+
+interface ColorPaletteProps {
+  onChangeColor?: (color: string) => void;
+}
+
+type ColorCircleProps = {
+  colorItem: string;
+  onColorClick: (color: string) => void;
+  colorSelectClass: string;
+};

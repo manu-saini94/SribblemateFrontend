@@ -6,9 +6,10 @@ import EditIcon from "../../assets/editicon.svg";
 import NotesIcon from "../../assets/notesicon.svg";
 import TrashIcon from "../../assets/trashicon.svg";
 
+import { MenuItemType } from "sidebartypes";
 import MenuItem from "./MenuItem";
 
-const menuList = [
+const menuList: MenuItemType[] = [
   {
     name: "Notes",
     path: "note",
@@ -36,17 +37,18 @@ const menuList = [
   },
 ];
 
-const SideBar = (props) => {
+const SideBar = () => {
   const [active, setActive] = useState("Notes");
 
   const navigate = useNavigate();
-  const handleMenuItemClick = (path) => {
+  const handleMenuItemClick = (path: string) => {
     navigate(path);
   };
 
-  const onMenuItemClick = (menuItem) => {
-    console.log("event", menuItem.name);
-    setActive(menuItem.name);
+  const onMenuItemClick = (menuItem: MenuItemType) => {
+    const { name, path } = menuItem;
+    setActive(name);
+    handleMenuItemClick(path);
   };
 
   return (
@@ -62,7 +64,6 @@ const SideBar = (props) => {
                 key={menuItem.name}
                 itemProps={menuItem}
                 onMenuItemClick={() => onMenuItemClick(menuItem)}
-                onClick={() => handleMenuItemClick(menuItem.path)}
                 active={
                   active === menuItem.name
                     ? "active custom-active-bg"

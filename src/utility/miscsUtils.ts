@@ -10,3 +10,17 @@ export const PWD_WARN =
   "Password must contain one digit from 1 to 9, one lowercase letter, one uppercase letter, one special character, no space, and it must be 8 to 16 characters long";
 export const FULLNAME_RQD = "Full Name is required";
 export const PWD_NOT_MATCH = "Passwords do not match";
+export const colorList = [
+  "#fff",
+  "#faafa8",
+  "#f39f76",
+  "#fff8b8",
+  "#e2f6d3",
+  "#b4ddd3",
+  "#d4e4ed",
+  "#aeccdc",
+  "#d3bfdb",
+  "#f6e2dd",
+  "#e9e3d4",
+  "#efeff1",
+];
