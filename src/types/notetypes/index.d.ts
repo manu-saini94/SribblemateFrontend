@@ -37,7 +37,7 @@ export type NoteCardPropsType = {
 };
 
 export type TakeNoteDetailsPropsType = {
-  setIsTakeNoteActive: boolean;
+  setIsTakeNoteActive: (value: Boolean) => void;
 };
 
 interface ColorPaletteProps {

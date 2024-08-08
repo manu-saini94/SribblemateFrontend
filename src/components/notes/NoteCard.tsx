@@ -14,9 +14,7 @@ function NoteCard(
   { noteCardValues }: NoteCardPropsType,
   props: { setIsTakeNoteActive: any }
 ) {
-  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(
-    noteCardValues as UpdateNoteType
-  );
+  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
