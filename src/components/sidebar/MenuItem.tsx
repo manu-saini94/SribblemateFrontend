@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { MenuItemPropsType } from "sidebartypes";
 import IconImage from "../global/IconImage";
 
-const MenuItem = (props) => {
+const MenuItem = (props: MenuItemPropsType) => {
   const { itemProps, active, onMenuItemClick } = props;
   return (
     <Link to={`${itemProps.path}`} style={{ textDecoration: "none" }}>

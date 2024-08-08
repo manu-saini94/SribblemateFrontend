@@ -1,6 +1,7 @@
+import { ColorCircleProps } from "notetypes";
 import React from "react";
 
-const ColorCircle = (props) => {
+const ColorCircle = (props: ColorCircleProps) => {
   const { colorSelectClass, colorItem, onColorClick } = props;
   return (
     <div key={colorItem} className="px-1">

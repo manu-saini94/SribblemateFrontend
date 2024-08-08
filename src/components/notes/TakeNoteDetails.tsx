@@ -1,4 +1,4 @@
-import { CreateNoteType } from "notetypes";
+import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
@@ -12,7 +12,7 @@ import UnpinIcon from "../../assets/unpin.svg";
 import IconImage from "../global/IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-const TakeNoteDetails = ({ props }: any) => {
+const TakeNoteDetails = ({ setIsTakeNoteActive }: TakeNoteDetailsPropsType) => {
   const noteColor = useSelector((state: RootState) => state.noteColor.color);
 
   const [noteData, setNoteData] = useState<CreateNoteType>(
@@ -22,8 +22,6 @@ const TakeNoteDetails = ({ props }: any) => {
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [openPalette, setOpenPalette] = useState<Boolean>(false);
-
-  const { setIsTakeNoteActive } = props;
 
   const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;

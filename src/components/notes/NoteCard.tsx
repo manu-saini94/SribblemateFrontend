@@ -14,9 +14,7 @@ function NoteCard(
   { noteCardValues }: NoteCardPropsType,
   props: { setIsTakeNoteActive: any }
 ) {
-  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(
-    noteCardValues as UpdateNoteType
-  );
+  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
@@ -105,19 +103,9 @@ function NoteCard(
               onClick={handleTitleClick}
             />
             {updateNote.isPinned ? (
-              <IconImage
-                x={0}
-                y={0}
-                src={UnpinIcon}
-                onClick={() => onPinClick()}
-              />
+              <IconImage x={0} y={0} src={UnpinIcon} onClick={onPinClick} />
             ) : (
-              <IconImage
-                x={0}
-                y={0}
-                src={PinIcon}
-                onClick={() => onPinClick()}
-              />
+              <IconImage x={0} y={0} src={PinIcon} onClick={onPinClick} />
             )}
           </div>
         </div>
