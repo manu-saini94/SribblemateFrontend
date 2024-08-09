@@ -9,9 +9,10 @@ import { loginUser } from "../api/services";
 import withAuth from "./withAuth";
 
 const Login = ({ setToken }: LoginPropsType) => {
-  const [formValues, setFormValues] = useState<LoginCredentialsType>(
-    {} as LoginCredentialsType
-  );
+  const [formValues, setFormValues] = useState<LoginCredentialsType>({
+    email: "",
+    password: "",
+  } as LoginCredentialsType);
 
   const [errors, setErrors] = useState<Partial<LoginCredentialsType>>(
     {} as Partial<LoginCredentialsType>
