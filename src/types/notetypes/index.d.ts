@@ -34,7 +34,7 @@ export type UpdateNoteType = CreateNoteType & Id;
 
 export type NoteCardPropsType = {
   noteCardValues: UpdateNoteType;
-};
+} & TakeNoteDetailsPropsType;
 
 export type TakeNoteDetailsPropsType = {
   setIsTakeNoteActive: (value: Boolean) => void;

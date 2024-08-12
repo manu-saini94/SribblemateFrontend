@@ -30,7 +30,13 @@ const Notes = () => {
       </div>
       <div className="d-flex flex-row flex-wrap">
         {notes.map((noteCard) => {
-          return <NoteCard key={noteCard.id} noteCardValues={noteCard} />;
+          return (
+            <NoteCard
+              key={noteCard.id}
+              noteCardValues={noteCard}
+              setIsTakeNoteActive={setIsTakeNoteActive}
+            />
+          );
         })}
       </div>
       <div className="d-flex flex-row flex-wrap d-none">Flex item 4</div>

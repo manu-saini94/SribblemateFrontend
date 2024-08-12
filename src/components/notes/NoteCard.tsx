@@ -10,10 +10,7 @@ import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-function NoteCard(
-  { noteCardValues }: NoteCardPropsType,
-  props: { setIsTakeNoteActive: any }
-) {
+function NoteCard({ noteCardValues, setIsTakeNoteActive }: NoteCardPropsType) {
   const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
   const colorPaletteRef = useRef<HTMLDivElement>(null);
@@ -43,8 +40,6 @@ function NoteCard(
   const onArchiveClick = () => {
     // setArchive(true);
   };
-
-  const { setIsTakeNoteActive } = props;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -95,7 +90,6 @@ function NoteCard(
               type="text"
               readOnly
               className="form-control border-0 p-0 m-0"
-              placeholder="Title"
               aria-label="Title"
               aria-describedby="basic-addon1"
               style={{ backgroundColor: `${updateNote.color}` }}
@@ -112,6 +106,7 @@ function NoteCard(
 
         <div className="input-group mb-3">
           <textarea
+            readOnly
             className="form-control border-0 p-0 m-0"
             placeholder="Take a note..."
             aria-label="Take a note..."
