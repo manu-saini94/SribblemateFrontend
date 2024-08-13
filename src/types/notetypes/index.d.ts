@@ -1,4 +1,4 @@
-import { Id } from "@types/global";
+import { Id, ReactNodeHOCProps } from "@types/global";
 import { LabelSetType } from "@types/labeltypes";
 
 export type ImageType = {
@@ -49,3 +49,5 @@ type ColorCircleProps = {
   onColorClick: (color: string) => void;
   colorSelectClass: string;
 };
+
+export interface CommonNoteProps extends ReactNodeHOCProps {}
