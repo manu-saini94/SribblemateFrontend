@@ -12,3 +12,9 @@ export type IconImageType = {
 export interface ReactNodeHOCProps {
   children: ReactNode;
 }
+export interface ThemeContextType {
+  isDarkMode: Boolean;
+  toggleTheme: () => void;
+}
+
+export interface ThemeContextProps extends ReactNodeHOCProps {}

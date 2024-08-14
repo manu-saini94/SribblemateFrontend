@@ -34,11 +34,12 @@ export type UpdateNoteType = CreateNoteType & Id;
 
 export type NoteCardPropsType = {
   noteCardValues: UpdateNoteType;
-} & TakeNoteDetailsPropsType;
-
-export type TakeNoteDetailsPropsType = {
-  setIsTakeNoteActive: (value: Boolean) => void;
+  onClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
+
+// export type TakeNoteDetailsPropsType = {
+//   setIsTakeNoteActive: (value: Boolean) => void;
+// };
 
 interface ColorPaletteProps {
   onChangeColor?: (color: string) => void;
@@ -50,4 +51,15 @@ type ColorCircleProps = {
   colorSelectClass: string;
 };
 
+export type TakeNotePropsType = {
+  onClick: (event: React.MouseEvent<HTMLElement>) => void;
+};
+
 export interface CommonNoteProps extends ReactNodeHOCProps {}
+
+export interface TakeNoteContextType {
+  isTakeNoteActive: Boolean;
+  setIsTakeNoteActive: (value: Boolean) => void;
+}
+
+export interface TakeNoteContextProps extends ReactNodeHOCProps {}

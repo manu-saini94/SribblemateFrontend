@@ -1,8 +1,9 @@
 import IconImage from "components/global/IconImage";
+import { TakeNotePropsType } from "notetypes";
 import React from "react";
 import ImageIcon from "../../assets/imageicon.svg";
 
-const TakeNote = () => {
+const TakeNote = (props: TakeNotePropsType) => {
   return (
     <div className="card" style={{ height: "50px" }}>
       <div className="card-body">

@@ -1,14 +1,10 @@
+import { TakeNoteContextType } from "notetypes";
 import { createContext } from "react";
-
-interface TakeNoteContextType {
-  isTakeNoteActive: Boolean;
-  setIsTakeNoteActive: (value: Boolean) => void;
-}
 
 // Define a default value that matches the ThemeContextType interface
 const defaultTakeNoteContext: TakeNoteContextType = {
   isTakeNoteActive: true,
-  setIsTakeNoteActive: (prevValue) => !prevValue,
+  setIsTakeNoteActive: () => false,
 };
 
 const TakeNoteContext = createContext<TakeNoteContextType>(

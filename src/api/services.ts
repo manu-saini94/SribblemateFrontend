@@ -5,7 +5,7 @@ import {
   LABEL_FETCH_URL,
   NOTE_FETCH_BY_REMINDER_URL,
   NOTE_FETCH_URL,
-} from "../serviceUtils";
+} from "./serviceUtils";
 
 const token = localStorage.getItem("token");
 

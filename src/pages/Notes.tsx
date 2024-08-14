@@ -1,10 +1,18 @@
 import NoteCard from "components/notes/NoteCard";
-import React from "react";
+import { UpdateNoteType } from "notetypes";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 
 const Notes = () => {
   const notes = useSelector((state: RootState) => state.allNotes.notes);
+  const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
+
+  const handleNoteCardClick = (event: {
+    target: { value: UpdateNoteType };
+  }) => {
+    const noteCard: UpdateNoteType = event.target.value;
+  };
 
   return (
     <>
@@ -13,7 +21,7 @@ const Notes = () => {
           <NoteCard
             key={noteCard.id}
             noteCardValues={noteCard}
-            setIsTakeNoteActive={setIsTakeNoteActive}
+            onClick={() => handleNoteCardClick}
           />
         );
       })}

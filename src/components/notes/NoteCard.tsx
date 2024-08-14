@@ -10,7 +10,7 @@ import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-function NoteCard({ noteCardValues, setIsTakeNoteActive }: NoteCardPropsType) {
+function NoteCard({ noteCardValues }: NoteCardPropsType) {
   const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
   const colorPaletteRef = useRef<HTMLDivElement>(null);
@@ -57,21 +57,21 @@ function NoteCard({ noteCardValues, setIsTakeNoteActive }: NoteCardPropsType) {
     };
   }, [colorPaletteRef]);
 
-  useEffect(() => {
-    function handleClickOutsideNote(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-      if (
-        takeNoteDetailsRef.current &&
-        !takeNoteDetailsRef.current.contains(target)
-      ) {
-        setIsTakeNoteActive(true);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutsideNote);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideNote);
-    };
-  }, [takeNoteDetailsRef, setIsTakeNoteActive]);
+  // useEffect(() => {
+  //   function handleClickOutsideNote(event: MouseEvent) {
+  //     const target = event.target as HTMLElement;
+  //     if (
+  //       takeNoteDetailsRef.current &&
+  //       !takeNoteDetailsRef.current.contains(target)
+  //     ) {
+  //       setIsTakeNoteActive(true);
+  //     }
+  //   }
+  //   document.addEventListener("mousedown", handleClickOutsideNote);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutsideNote);
+  //   };
+  // }, [takeNoteDetailsRef, setIsTakeNoteActive]);
 
   return (
     <div

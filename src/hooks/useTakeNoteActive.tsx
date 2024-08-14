@@ -1,17 +1,6 @@
-import { useState } from "react";
+import TakeNoteContext from "contexts/TakeNoteContext";
+import { TakeNoteContextType } from "notetypes";
+import { useContext } from "react";
 
-const useTakeNoteActive = (): [
-  Boolean,
-  React.Dispatch<React.SetStateAction<Boolean>>,
-  () => void
-] => {
-  const [isTakeNoteActive, setIsTakeNoteActive] = useState<Boolean>(true);
-
-  const onTakeNoteClick = () => {
-    setIsTakeNoteActive(false);
-  };
-
-  return [isTakeNoteActive, setIsTakeNoteActive, onTakeNoteClick];
-};
-
-export default useTakeNoteActive;
+export const useTakeNoteActive = () =>
+  useContext<TakeNoteContextType>(TakeNoteContext);
