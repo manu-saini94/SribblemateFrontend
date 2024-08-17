@@ -4,13 +4,14 @@ import Search from "../../assets/search.svg";
 import IconImage from "../global/IconImage";
 
 const SearchBar = () => {
+  const onPaletteIconClick = () => {};
   return (
     <div className="input-group">
       <span
         className="input-group-text bg-secondary bg-opacity-10"
         id="basic-addon1"
       >
-        <IconImage x={1} y={1} src={Search} />
+        <IconImage x={1} y={1} src={Search} onClick={onPaletteIconClick} />
       </span>
       <input
         type="text"

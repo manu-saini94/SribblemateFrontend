@@ -1,5 +1,4 @@
-import { useTakeNoteActive } from "hooks/useTakeNoteActive";
-import { CreateNoteType } from "notetypes";
+import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
@@ -13,9 +12,10 @@ import UnpinIcon from "../../assets/unpin.svg";
 import IconImage from "../global/IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-const TakeNoteDetails = () => {
+const TakeNoteDetails = ({
+  toggleTakeNoteActive,
+}: TakeNoteDetailsPropsType) => {
   const noteColor = useSelector((state: RootState) => state.noteColor.color);
-  const { setIsTakeNoteActive } = useTakeNoteActive();
 
   const [noteData, setNoteData] = useState<CreateNoteType>(
     {} as CreateNoteType
@@ -37,16 +37,18 @@ const TakeNoteDetails = () => {
   };
 
   const adjustTextareaHeight = (textarea: {
-    name?: any;
-    value?: any;
+    name?: string;
+    value?: string;
     style?: any;
-    scrollHeight?: any;
+    scrollHeight?: string;
   }) => {
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
   };
 
   const onPinClick = () => {
+    console.log("pin");
+
     setNoteData((prevValues) => ({
       ...prevValues,
       isPinned: !prevValues.isPinned,
@@ -94,14 +96,14 @@ const TakeNoteDetails = () => {
         takeNoteDetailsRef.current &&
         !takeNoteDetailsRef.current.contains(target)
       ) {
-        setIsTakeNoteActive(true);
+        toggleTakeNoteActive();
       }
     }
     document.addEventListener("mousedown", handleClickOutsideNote);
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNote);
     };
-  }, [takeNoteDetailsRef, setIsTakeNoteActive]);
+  }, [takeNoteDetailsRef, toggleTakeNoteActive]);
 
   return (
     <div
@@ -127,21 +129,13 @@ const TakeNoteDetails = () => {
               value={noteData.title}
               onChange={handleChange}
             />
-            {noteData.isPinned ? (
-              <IconImage
-                x={0}
-                y={0}
-                src={UnpinIcon}
-                onClick={() => onPinClick()}
-              />
-            ) : (
-              <IconImage
-                x={0}
-                y={0}
-                src={PinIcon}
-                onClick={() => onPinClick()}
-              />
-            )}
+
+            <IconImage
+              x={0}
+              y={0}
+              src={noteData.isPinned ? UnpinIcon : PinIcon}
+              onClick={onPinClick}
+            />
           </div>
         </div>
 
@@ -166,9 +160,19 @@ const TakeNoteDetails = () => {
 
         <div className="d-flex justify-content-between">
           <div>
-            <IconImage x={0} y={0} src={BellIcon} />
+            <IconImage
+              x={0}
+              y={0}
+              src={BellIcon}
+              onClick={onPaletteIconClick}
+            />
 
-            <IconImage x={5} y={0} src={ImageIcon} />
+            <IconImage
+              x={5}
+              y={0}
+              src={ImageIcon}
+              onClick={onPaletteIconClick}
+            />
             <IconImage
               x={0}
               y={0}
@@ -183,7 +187,12 @@ const TakeNoteDetails = () => {
               onClick={() => onArchiveClick()}
             />
 
-            <IconImage x={0} y={0} src={MoreIcon} />
+            <IconImage
+              x={0}
+              y={0}
+              src={MoreIcon}
+              onClick={onPaletteIconClick}
+            />
           </div>
           <div>
             <button type="button" className="btn btn-sm fw-medium">

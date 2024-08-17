@@ -6,7 +6,7 @@ export type IconImageType = {
   x: number;
   y: number;
   src: string;
-  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+  onClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
 export interface ReactNodeHOCProps {

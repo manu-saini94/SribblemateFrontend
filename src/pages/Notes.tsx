@@ -1,18 +1,28 @@
 import NoteCard from "components/notes/NoteCard";
 import { UpdateNoteType } from "notetypes";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
+import withNote from "./withNote";
 
 const Notes = () => {
   const notes = useSelector((state: RootState) => state.allNotes.notes);
   const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
+  const [currentNoteCard, setCurrentNoteCard] = useState<UpdateNoteType>(
+    {} as UpdateNoteType
+  );
 
-  const handleNoteCardClick = (event: {
-    target: { value: UpdateNoteType };
-  }) => {
-    const noteCard: UpdateNoteType = event.target.value;
+  const handleNoteCardClick = (noteCard: UpdateNoteType) => {
+    setCurrentNoteCard(noteCard);
+    setIsUpdateCardActive(true);
   };
+
+  const handleClick = useCallback(
+    (noteCard: UpdateNoteType) => () => {
+      handleNoteCardClick(noteCard);
+    },
+    []
+  );
 
   return (
     <>
@@ -21,12 +31,13 @@ const Notes = () => {
           <NoteCard
             key={noteCard.id}
             noteCardValues={noteCard}
-            onClick={() => handleNoteCardClick}
+            onNoteClick={handleClick(noteCard)}
           />
         );
       })}
+      {isUpdateCardActive && <>hi</>}
     </>
   );
 };
 
-export default Notes;
+export default withNote(Notes);

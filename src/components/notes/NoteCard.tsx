@@ -10,7 +10,7 @@ import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-function NoteCard({ noteCardValues }: NoteCardPropsType) {
+function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
   const colorPaletteRef = useRef<HTMLDivElement>(null);
@@ -94,7 +94,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
               aria-describedby="basic-addon1"
               style={{ backgroundColor: `${updateNote.color}` }}
               value={updateNote.title}
-              onClick={handleTitleClick}
+              onClick={onNoteClick}
             />
             {updateNote.isPinned ? (
               <IconImage x={0} y={0} src={UnpinIcon} onClick={onPinClick} />
@@ -118,14 +118,24 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
               minHeight: "auto",
             }}
             value={updateNote.content}
-            onClick={handleContentClick}
+            onClick={onNoteClick}
           />
         </div>
         <div className="d-flex justify-content-between">
           <div>
-            <IconImage x={0} y={0} src={BellIcon} />
+            <IconImage
+              x={0}
+              y={0}
+              src={BellIcon}
+              onClick={onPaletteIconClick}
+            />
 
-            <IconImage x={5} y={0} src={ImageIcon} />
+            <IconImage
+              x={5}
+              y={0}
+              src={ImageIcon}
+              onClick={onPaletteIconClick}
+            />
             <IconImage
               x={0}
               y={0}
@@ -140,7 +150,12 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
               onClick={() => onArchiveClick()}
             />
 
-            <IconImage x={0} y={0} src={MoreIcon} />
+            <IconImage
+              x={0}
+              y={0}
+              src={MoreIcon}
+              onClick={onPaletteIconClick}
+            />
           </div>
           <div>
             <button type="button" className="btn btn-sm fw-medium">
