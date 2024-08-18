@@ -17,19 +17,20 @@ const noteSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchNotes.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchNotes.fulfilled, (state, action) => {
-      state.loading = false;
-      state.notes = action.payload;
-      state.error = "";
-    });
-    builder.addCase(fetchNotes.rejected, (state, action) => {
-      state.loading = false;
-      state.notes = [];
-      state.error = action.error.message || "Failed to fetch notes";
-    });
+    builder
+      .addCase(fetchNotes.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchNotes.fulfilled, (state, action) => {
+        state.loading = false;
+        state.notes = action.payload;
+        state.error = "";
+      })
+      .addCase(fetchNotes.rejected, (state, action) => {
+        state.loading = false;
+        state.notes = [];
+        state.error = action.error.message ?? "Failed to fetch notes";
+      });
   },
 });
 
