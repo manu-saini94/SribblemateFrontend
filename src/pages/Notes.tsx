@@ -6,7 +6,9 @@ import { RootState } from "redux/store";
 import withNote from "./withNote";
 
 const Notes = () => {
-  const notes = useSelector((state: RootState) => state.allNotes.notes);
+  const notes = useSelector(
+    (state: RootState) => state.notes.pinnedAndOthersNotes
+  );
   const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
   const [currentNoteCard, setCurrentNoteCard] = useState<UpdateNoteType>(
     {} as UpdateNoteType

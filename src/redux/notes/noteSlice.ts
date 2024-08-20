@@ -4,7 +4,7 @@ import { getAllNotesByUser } from "../../api/services";
 
 const initialState: NoteStoreInitialStateType = {
   loading: false,
-  notes: [],
+  pinnedAndOthersNotes: [],
   error: "",
 };
 
@@ -23,12 +23,12 @@ const noteSlice = createSlice({
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
         state.loading = false;
-        state.notes = action.payload;
+        state.pinnedAndOthersNotes = action.payload;
         state.error = "";
       })
       .addCase(fetchNotes.rejected, (state, action) => {
         state.loading = false;
-        state.notes = [];
+        state.pinnedAndOthersNotes = [];
         state.error = action.error.message ?? "Failed to fetch notes";
       });
   },

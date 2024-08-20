@@ -11,7 +11,7 @@ export type LabelStoreInitialStateType = NoteInitialStateType & {
 };
 
 export type NoteStoreInitialStateType = NoteInitialStateType & {
-  notes: UpdateNoteType[];
+  pinnedAndOthersNotes: UpdateNoteType[];
 };
 
 export type ReminderNoteStoreInitialStateType = NoteInitialStateType & {

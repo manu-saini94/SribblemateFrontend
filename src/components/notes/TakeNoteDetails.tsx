@@ -1,5 +1,5 @@
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
-import React, { useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import ArchiveIcon from "../../assets/archive.svg";
@@ -66,6 +66,10 @@ const TakeNoteDetails = ({
     setOpenPalette(true);
   };
 
+  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
   useEffect(() => {
     setNoteData((prevValues) => ({
       ...prevValues,
@@ -106,107 +110,109 @@ const TakeNoteDetails = ({
   }, [takeNoteDetailsRef, toggleTakeNoteActive]);
 
   return (
-    <div
-      className="card "
-      style={{
-        height: "auto",
-        backgroundColor: `${noteData.color}`,
-        width: "35rem",
-      }}
-      ref={takeNoteDetailsRef}
-    >
-      <div className="card-body pb-2">
-        <div className="d-flex flex-row">
+    <form onSubmit={handleNoteSubmit}>
+      <div
+        className="card "
+        style={{
+          height: "auto",
+          backgroundColor: `${noteData.color}`,
+          width: "35rem",
+        }}
+        ref={takeNoteDetailsRef}
+      >
+        <div className="card-body pb-2">
+          <div className="d-flex flex-row">
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className="form-control border-0 p-0 m-0"
+                name="title"
+                placeholder="Title"
+                aria-label="Title"
+                aria-describedby="basic-addon1"
+                style={{ backgroundColor: `${noteData.color}` }}
+                value={noteData.title}
+                onChange={handleChange}
+              />
+
+              <IconImage
+                x={0}
+                y={0}
+                src={noteData.isPinned ? UnpinIcon : PinIcon}
+                onClick={onPinClick}
+              />
+            </div>
+          </div>
+
           <div className="input-group mb-3">
-            <input
-              type="text"
+            <textarea
               className="form-control border-0 p-0 m-0"
-              name="title"
-              placeholder="Title"
-              aria-label="Title"
+              name="content"
+              placeholder="Take a note..."
+              aria-label="Take a note..."
               aria-describedby="basic-addon1"
-              style={{ backgroundColor: `${noteData.color}` }}
-              value={noteData.title}
+              style={{
+                backgroundColor: `${noteData.color}`,
+                resize: "none",
+                overflow: "hidden",
+                minHeight: "auto",
+              }}
+              value={noteData.content}
               onChange={handleChange}
-            />
-
-            <IconImage
-              x={0}
-              y={0}
-              src={noteData.isPinned ? UnpinIcon : PinIcon}
-              onClick={onPinClick}
+              id="content"
             />
           </div>
+
+          <div className="d-flex justify-content-between">
+            <div>
+              <IconImage
+                x={0}
+                y={0}
+                src={BellIcon}
+                onClick={onPaletteIconClick}
+              />
+
+              <IconImage
+                x={5}
+                y={0}
+                src={ImageIcon}
+                onClick={onPaletteIconClick}
+              />
+              <IconImage
+                x={0}
+                y={0}
+                src={ColorPalleteIcon}
+                onClick={() => onPaletteIconClick()}
+              />
+
+              <IconImage
+                x={5}
+                y={0}
+                src={ArchiveIcon}
+                onClick={() => onArchiveClick()}
+              />
+
+              <IconImage
+                x={0}
+                y={0}
+                src={MoreIcon}
+                onClick={onPaletteIconClick}
+              />
+            </div>
+            <div>
+              <button type="submit" className="btn btn-sm fw-medium">
+                Save
+              </button>
+            </div>
+          </div>
+          {openPalette && (
+            <div className="position-relative" ref={colorPaletteRef}>
+              <ColorPalette />
+            </div>
+          )}
         </div>
-
-        <div className="input-group mb-3">
-          <textarea
-            className="form-control border-0 p-0 m-0"
-            name="content"
-            placeholder="Take a note..."
-            aria-label="Take a note..."
-            aria-describedby="basic-addon1"
-            style={{
-              backgroundColor: `${noteData.color}`,
-              resize: "none",
-              overflow: "hidden",
-              minHeight: "auto",
-            }}
-            value={noteData.content}
-            onChange={handleChange}
-            id="content"
-          />
-        </div>
-
-        <div className="d-flex justify-content-between">
-          <div>
-            <IconImage
-              x={0}
-              y={0}
-              src={BellIcon}
-              onClick={onPaletteIconClick}
-            />
-
-            <IconImage
-              x={5}
-              y={0}
-              src={ImageIcon}
-              onClick={onPaletteIconClick}
-            />
-            <IconImage
-              x={0}
-              y={0}
-              src={ColorPalleteIcon}
-              onClick={() => onPaletteIconClick()}
-            />
-
-            <IconImage
-              x={5}
-              y={0}
-              src={ArchiveIcon}
-              onClick={() => onArchiveClick()}
-            />
-
-            <IconImage
-              x={0}
-              y={0}
-              src={MoreIcon}
-              onClick={onPaletteIconClick}
-            />
-          </div>
-          <div>
-            <button type="button" className="btn btn-sm fw-medium">
-              Save
-            </button>
-          </div>
-        </div>
-        {openPalette && (
-          <div className="position-relative" ref={colorPaletteRef}>
-            <ColorPalette />
-          </div>
-        )}
       </div>
-    </div>
+    </form>
   );
 };
 
