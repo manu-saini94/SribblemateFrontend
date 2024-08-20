@@ -1,4 +1,4 @@
-import { Id } from "@types/global";
+import { CommonInitialState, Id } from "@types/global";
 
 export type CreateLabelType = {
   labelName: string;
@@ -9,3 +9,8 @@ export type LabelSetType = {
 };
 
 export type UpdateLabelType = CreateLabelType & Id;
+
+// Redux store types for Labels
+export type LabelStoreInitialStateType = CommonInitialState & {
+  labels: UpdateLabelType[];
+};

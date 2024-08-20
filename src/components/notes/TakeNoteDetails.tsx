@@ -1,7 +1,12 @@
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/store";
+import { useDispatch, useSelector } from "react-redux";
+
+import { AppDispatch, RootState } from "redux/store";
+import {
+  hasNoteChanged,
+  initialCreateNoteValue,
+} from "utility/reduxutils/noteUtils";
 import ArchiveIcon from "../../assets/archive.svg";
 import BellIcon from "../../assets/bell.svg";
 import ColorPalleteIcon from "../../assets/colorpallete.svg";
@@ -9,6 +14,7 @@ import ImageIcon from "../../assets/image.svg";
 import MoreIcon from "../../assets/more.svg";
 import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
+import { createNote } from "../../redux/notes/noteSlice";
 import IconImage from "../global/IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
@@ -18,8 +24,10 @@ const TakeNoteDetails = ({
   const noteColor = useSelector((state: RootState) => state.noteColor.color);
 
   const [noteData, setNoteData] = useState<CreateNoteType>(
-    {} as CreateNoteType
+    initialCreateNoteValue
   );
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
@@ -48,7 +56,6 @@ const TakeNoteDetails = ({
 
   const onPinClick = () => {
     console.log("pin");
-
     setNoteData((prevValues) => ({
       ...prevValues,
       isPinned: !prevValues.isPinned,
@@ -56,6 +63,8 @@ const TakeNoteDetails = ({
   };
 
   const onArchiveClick = () => {
+    console.log("archive clicked");
+
     setNoteData((prevValues) => ({
       ...prevValues,
       isArchived: true,
@@ -68,6 +77,7 @@ const TakeNoteDetails = ({
 
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
   };
 
   useEffect(() => {
@@ -101,13 +111,14 @@ const TakeNoteDetails = ({
         !takeNoteDetailsRef.current.contains(target)
       ) {
         toggleTakeNoteActive();
+        // if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
       }
     }
     document.addEventListener("mousedown", handleClickOutsideNote);
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNote);
     };
-  }, [takeNoteDetailsRef, toggleTakeNoteActive]);
+  }, [takeNoteDetailsRef, toggleTakeNoteActive, dispatch, noteData]);
 
   return (
     <form onSubmit={handleNoteSubmit}>

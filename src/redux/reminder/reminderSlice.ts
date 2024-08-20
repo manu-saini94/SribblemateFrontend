@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ReminderNoteStoreInitialStateType } from "storetypes";
+import { ReminderNoteStoreInitialStateType } from "notetypes";
 import { getAllReminderNotesByUser } from "../../api/services";
 
 const initialState: ReminderNoteStoreInitialStateType = {
