@@ -47,7 +47,6 @@ interface ColorPaletteProps {
 
 type ColorCircleProps = {
   colorItem: string;
-  onColorClick: (color: string) => void;
   colorSelectClass: string;
 };
 

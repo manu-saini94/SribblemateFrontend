@@ -1,8 +1,9 @@
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { AppDispatch, RootState } from "redux/store";
+import { useColor } from "hooks/useColor";
+import { AppDispatch } from "redux/store";
 import {
   hasNoteChanged,
   initialCreateNoteValue,
@@ -21,17 +22,38 @@ import ColorPalette from "./colorpalette/ColorPalette";
 const TakeNoteDetails = ({
   toggleTakeNoteActive,
 }: TakeNoteDetailsPropsType) => {
-  const noteColor = useSelector((state: RootState) => state.noteColor.color);
-
-  const [noteData, setNoteData] = useState<CreateNoteType>(
-    initialCreateNoteValue
-  );
-
   const dispatch = useDispatch<AppDispatch>();
-
-  const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [openPalette, setOpenPalette] = useState<Boolean>(false);
+  const colorContext = useColor();
+  const [noteData, setNoteData] = useState<CreateNoteType>({
+    ...initialCreateNoteValue,
+    color: colorContext.color,
+  });
+
+  useEffect(() => {
+    setNoteData((prevValues) => ({
+      ...prevValues,
+      color: colorContext.color,
+    }));
+  }, [colorContext.color]);
+
+  useEffect(() => {
+    function handleClickOutsideNote(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      if (
+        takeNoteDetailsRef.current &&
+        !takeNoteDetailsRef.current.contains(target)
+      ) {
+        toggleTakeNoteActive();
+        setOpenPalette(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutsideNote);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideNote);
+    };
+  }, [takeNoteDetailsRef, toggleTakeNoteActive]);
 
   const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
@@ -80,45 +102,11 @@ const TakeNoteDetails = ({
     if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
   };
 
-  useEffect(() => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      color: noteColor,
-    }));
-  }, [noteColor]);
+  const onReminderIconClick = (): void => {};
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-      if (
-        colorPaletteRef.current &&
-        !colorPaletteRef.current.contains(target)
-      ) {
-        setOpenPalette(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [colorPaletteRef]);
+  const onImageIconClick = (): void => {};
 
-  useEffect(() => {
-    function handleClickOutsideNote(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-      if (
-        takeNoteDetailsRef.current &&
-        !takeNoteDetailsRef.current.contains(target)
-      ) {
-        toggleTakeNoteActive();
-        // if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutsideNote);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideNote);
-    };
-  }, [takeNoteDetailsRef, toggleTakeNoteActive, dispatch, noteData]);
+  const onMoreIconClick = (): void => {};
 
   return (
     <form onSubmit={handleNoteSubmit}>
@@ -173,6 +161,15 @@ const TakeNoteDetails = ({
               id="content"
             />
           </div>
+          {openPalette && (
+            <div className="collapse show" id="collapsePalette">
+              <div className="card border-dark">
+                <div className="card-body align-items-center">
+                  <ColorPalette />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="d-flex justify-content-between">
             <div>
@@ -180,35 +177,36 @@ const TakeNoteDetails = ({
                 x={0}
                 y={0}
                 src={BellIcon}
-                onClick={onPaletteIconClick}
+                onClick={onReminderIconClick}
               />
 
               <IconImage
                 x={5}
                 y={0}
                 src={ImageIcon}
-                onClick={onPaletteIconClick}
+                onClick={onImageIconClick}
               />
-              <IconImage
-                x={0}
-                y={0}
-                src={ColorPalleteIcon}
-                onClick={() => onPaletteIconClick()}
-              />
-
+              <div
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePalette"
+                aria-expanded="false"
+                aria-controls="collapsePalette"
+              >
+                <IconImage
+                  x={0}
+                  y={0}
+                  src={ColorPalleteIcon}
+                  onClick={onPaletteIconClick}
+                />
+              </div>
               <IconImage
                 x={5}
                 y={0}
                 src={ArchiveIcon}
-                onClick={() => onArchiveClick()}
+                onClick={onArchiveClick}
               />
 
-              <IconImage
-                x={0}
-                y={0}
-                src={MoreIcon}
-                onClick={onPaletteIconClick}
-              />
+              <IconImage x={0} y={0} src={MoreIcon} onClick={onMoreIconClick} />
             </div>
             <div>
               <button type="submit" className="btn btn-sm fw-medium">
@@ -216,11 +214,6 @@ const TakeNoteDetails = ({
               </button>
             </div>
           </div>
-          {openPalette && (
-            <div className="position-relative" ref={colorPaletteRef}>
-              <ColorPalette />
-            </div>
-          )}
         </div>
       </div>
     </form>

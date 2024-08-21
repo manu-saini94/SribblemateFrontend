@@ -17,6 +17,13 @@ export interface ThemeContextType {
   toggleTheme: () => void;
 }
 
+export interface ColorContextType {
+  color: string;
+  changeColorClick: (color: string) => void;
+}
+
+export interface ColorContextProps extends ReactNodeHOCProps {}
+
 export interface ThemeContextProps extends ReactNodeHOCProps {}
 
 // Redux store global types for Notes
