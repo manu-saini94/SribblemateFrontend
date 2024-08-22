@@ -7,7 +7,7 @@ export const initialCreateNoteValue: CreateNoteType = {
   isTrashed: false,
   isArchived: false,
   isPinned: false,
-  color: "",
+  color: "#fff",
   reminder: "",
   createdAt: "",
   updatedAt: "",

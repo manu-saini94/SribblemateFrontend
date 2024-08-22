@@ -23,13 +23,13 @@ const TakeNoteDetails = ({
   toggleTakeNoteActive,
 }: TakeNoteDetailsPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
+  const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-  const [openPalette, setOpenPalette] = useState<Boolean>(false);
+
   const colorContext = useColor();
-  const [noteData, setNoteData] = useState<CreateNoteType>({
-    ...initialCreateNoteValue,
-    color: colorContext.color,
-  });
+  const [noteData, setNoteData] = useState<CreateNoteType>(
+    initialCreateNoteValue
+  );
 
   useEffect(() => {
     setNoteData((prevValues) => ({
@@ -39,21 +39,28 @@ const TakeNoteDetails = ({
   }, [colorContext.color]);
 
   useEffect(() => {
-    function handleClickOutsideNote(event: MouseEvent) {
+    const handleClickOutsideNote = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (
-        takeNoteDetailsRef.current &&
-        !takeNoteDetailsRef.current.contains(target)
-      ) {
+      const isClickInsideNote = takeNoteDetailsRef.current?.contains(target);
+      const isClickInsidePalette = colorPaletteRef.current?.contains(target);
+      const palette = colorPaletteRef.current;
+      if (!isClickInsideNote) {
+        if (palette?.classList.contains("show")) {
+          palette.classList.remove("show");
+        }
         toggleTakeNoteActive();
-        setOpenPalette(false);
+        if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
+      } else if (!isClickInsidePalette) {
+        if (palette?.classList.contains("show")) {
+          palette.classList.remove("show");
+        }
       }
-    }
+    };
     document.addEventListener("mousedown", handleClickOutsideNote);
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNote);
     };
-  }, [takeNoteDetailsRef, toggleTakeNoteActive]);
+  }, [dispatch, noteData, takeNoteDetailsRef, toggleTakeNoteActive]);
 
   const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
@@ -93,13 +100,16 @@ const TakeNoteDetails = ({
     }));
   };
 
-  const onPaletteIconClick = () => {
-    setOpenPalette(true);
-  };
-
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
+    if (hasNoteChanged(noteData)) {
+      dispatch(createNote(noteData));
+      toggleTakeNoteActive();
+    }
+  };
+
+  const toggleColorPalette = () => {
+    colorPaletteRef.current?.classList.toggle("show");
   };
 
   const onReminderIconClick = (): void => {};
@@ -161,15 +171,14 @@ const TakeNoteDetails = ({
               id="content"
             />
           </div>
-          {openPalette && (
-            <div className="collapse show" id="collapsePalette">
-              <div className="card border-dark">
-                <div className="card-body align-items-center">
-                  <ColorPalette />
-                </div>
+
+          <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>
+            <div className="card border-dark">
+              <div className="card-body align-items-center">
+                <ColorPalette />
               </div>
             </div>
-          )}
+          </div>
 
           <div className="d-flex justify-content-between">
             <div>
@@ -196,7 +205,7 @@ const TakeNoteDetails = ({
                   x={0}
                   y={0}
                   src={ColorPalleteIcon}
-                  onClick={onPaletteIconClick}
+                  onClick={toggleColorPalette}
                 />
               </div>
               <IconImage

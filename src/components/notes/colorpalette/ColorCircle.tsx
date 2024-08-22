@@ -5,7 +5,8 @@ import React from "react";
 const ColorCircle = (props: ColorCircleProps) => {
   const { colorSelectClass, colorItem } = props;
   const colorContext = useColor();
-  const onColorClick = (color: string) => {
+  const onColorClick = (color: string, event: React.MouseEvent) => {
+    event.stopPropagation();
     colorContext.changeColorClick(color);
   };
   return (
@@ -13,7 +14,7 @@ const ColorCircle = (props: ColorCircleProps) => {
       <button
         className={`button ${colorSelectClass} mx-1`}
         style={{ backgroundColor: `${colorItem}` }}
-        onClick={() => onColorClick(colorItem)}
+        onClick={(event) => onColorClick(colorItem, event)}
         type="button"
       ></button>
     </div>
