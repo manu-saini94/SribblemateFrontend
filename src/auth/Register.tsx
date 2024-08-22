@@ -14,7 +14,8 @@ import withAuth from "./withAuth";
 const Register = () => {
   const [formValues, setFormValues] = useState<
     RegistrationDetailsType & ConfirmPasswordType
-  >({} as RegistrationDetailsType & ConfirmPasswordType);
+  >({ fullName: "", email: "", password: "" } as RegistrationDetailsType &
+    ConfirmPasswordType);
   const [errors, setErrors] = useState<
     Partial<RegistrationDetailsType & ConfirmPasswordType>
   >({} as Partial<RegistrationDetailsType & ConfirmPasswordType>);

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LabelStoreInitialStateType } from "storetypes";
+import { LabelStoreInitialStateType } from "labeltypes";
 import { getAllLabelsByUser } from "../../api/services";
 
 const initialState: LabelStoreInitialStateType = {

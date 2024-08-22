@@ -1,7 +1,8 @@
 import React from "react";
+import withNote from "./withNote";
 
 const Archive = () => {
-  return <div></div>;
+  return <div>Archive</div>;
 };
 
-export default Archive;
+export default withNote(Archive);

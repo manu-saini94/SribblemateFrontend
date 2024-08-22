@@ -10,10 +10,7 @@ import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-function NoteCard(
-  { noteCardValues }: NoteCardPropsType,
-  props: { setIsTakeNoteActive: any }
-) {
+function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
   const colorPaletteRef = useRef<HTMLDivElement>(null);
@@ -44,8 +41,6 @@ function NoteCard(
     // setArchive(true);
   };
 
-  const { setIsTakeNoteActive } = props;
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
@@ -62,21 +57,21 @@ function NoteCard(
     };
   }, [colorPaletteRef]);
 
-  useEffect(() => {
-    function handleClickOutsideNote(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-      if (
-        takeNoteDetailsRef.current &&
-        !takeNoteDetailsRef.current.contains(target)
-      ) {
-        setIsTakeNoteActive(true);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutsideNote);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideNote);
-    };
-  }, [takeNoteDetailsRef, setIsTakeNoteActive]);
+  // useEffect(() => {
+  //   function handleClickOutsideNote(event: MouseEvent) {
+  //     const target = event.target as HTMLElement;
+  //     if (
+  //       takeNoteDetailsRef.current &&
+  //       !takeNoteDetailsRef.current.contains(target)
+  //     ) {
+  //       setIsTakeNoteActive(true);
+  //     }
+  //   }
+  //   document.addEventListener("mousedown", handleClickOutsideNote);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutsideNote);
+  //   };
+  // }, [takeNoteDetailsRef, setIsTakeNoteActive]);
 
   return (
     <div
@@ -95,12 +90,11 @@ function NoteCard(
               type="text"
               readOnly
               className="form-control border-0 p-0 m-0"
-              placeholder="Title"
               aria-label="Title"
               aria-describedby="basic-addon1"
               style={{ backgroundColor: `${updateNote.color}` }}
               value={updateNote.title}
-              onClick={handleTitleClick}
+              onClick={onNoteClick}
             />
             {updateNote.isPinned ? (
               <IconImage x={0} y={0} src={UnpinIcon} onClick={onPinClick} />
@@ -112,6 +106,7 @@ function NoteCard(
 
         <div className="input-group mb-3">
           <textarea
+            readOnly
             className="form-control border-0 p-0 m-0"
             placeholder="Take a note..."
             aria-label="Take a note..."
@@ -123,14 +118,24 @@ function NoteCard(
               minHeight: "auto",
             }}
             value={updateNote.content}
-            onClick={handleContentClick}
+            onClick={onNoteClick}
           />
         </div>
         <div className="d-flex justify-content-between">
           <div>
-            <IconImage x={0} y={0} src={BellIcon} />
+            <IconImage
+              x={0}
+              y={0}
+              src={BellIcon}
+              onClick={onPaletteIconClick}
+            />
 
-            <IconImage x={5} y={0} src={ImageIcon} />
+            <IconImage
+              x={5}
+              y={0}
+              src={ImageIcon}
+              onClick={onPaletteIconClick}
+            />
             <IconImage
               x={0}
               y={0}
@@ -145,7 +150,12 @@ function NoteCard(
               onClick={() => onArchiveClick()}
             />
 
-            <IconImage x={0} y={0} src={MoreIcon} />
+            <IconImage
+              x={0}
+              y={0}
+              src={MoreIcon}
+              onClick={onPaletteIconClick}
+            />
           </div>
           <div>
             <button type="button" className="btn btn-sm fw-medium">

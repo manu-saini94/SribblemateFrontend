@@ -1,5 +1,5 @@
-import { Id } from "@types/global";
-import { LabelSetType } from "@types/labeltypes";
+import { CreateLabelType } from "@types/labeltypes";
+import { CommonInitialState, Id, ReactNodeHOCProps } from "global";
 
 export type ImageType = {
   image: string[];
@@ -18,7 +18,7 @@ export type CollaboratorListType = {
 export type CreateNoteType = {
   title: string;
   content: string;
-  images: ImageType;
+  images: string[];
   isTrashed: Boolean;
   isArchived: Boolean;
   isPinned: Boolean;
@@ -26,18 +26,19 @@ export type CreateNoteType = {
   reminder: string;
   createdAt: string;
   updatedAt: string;
-  labelSet: LabelSetType;
-  collaboratorList: CollaboratorListType;
+  labelSet: CreateLabelType[];
+  collaboratorList: CreateCollaboratorType[];
 };
 
 export type UpdateNoteType = CreateNoteType & Id;
 
 export type NoteCardPropsType = {
   noteCardValues: UpdateNoteType;
+  onNoteClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
 export type TakeNoteDetailsPropsType = {
-  setIsTakeNoteActive: (value: Boolean) => void;
+  toggleTakeNoteActive: () => void;
 };
 
 interface ColorPaletteProps {
@@ -46,6 +47,46 @@ interface ColorPaletteProps {
 
 type ColorCircleProps = {
   colorItem: string;
-  onColorClick: (color: string) => void;
   colorSelectClass: string;
+};
+
+export type TakeNotePropsType = {
+  onTakeNoteClick: (event: React.MouseEvent<HTMLElement>) => void;
+};
+
+export interface CommonNoteProps extends ReactNodeHOCProps {}
+
+export interface TakeNoteContextType {
+  isTakeNoteActive: Boolean;
+  toggleTakeNoteActive: () => void;
+}
+
+export interface TakeNoteContextProps extends ReactNodeHOCProps {}
+
+// Redux Store types for Notes
+
+export type NoteInitialStateType = CommonInitialState & {
+  createdNoteLoading: Boolean;
+  createdNoteError: string;
+};
+
+export type NoteStoreInitialStateType = NoteInitialStateType & {
+  createdNoteObject: UpdateNoteType;
+  pinnedAndOthersNotes: UpdateNoteType[];
+};
+
+export type ReminderNoteStoreInitialStateType = CommonInitialState & {
+  reminderNotes: UpdateNoteType[];
+};
+
+export type LabelNoteStoreInitialState = NoteInitialStateType & {
+  labelNotes: UpdateNoteType[];
+};
+
+export type ArchiveStoreInitialStateType = NoteInitialStateType & {
+  archiveNotes: UpdateNoteType[];
+};
+
+export type StoreInitialStateType = NoteInitialStateType & {
+  trashNotes: UpdateNoteType[];
 };

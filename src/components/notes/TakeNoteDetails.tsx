@@ -1,7 +1,13 @@
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/store";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { useColor } from "hooks/useColor";
+import { AppDispatch } from "redux/store";
+import {
+  hasNoteChanged,
+  initialCreateNoteValue,
+} from "utility/reduxutils/noteUtils";
 import ArchiveIcon from "../../assets/archive.svg";
 import BellIcon from "../../assets/bell.svg";
 import ColorPalleteIcon from "../../assets/colorpallete.svg";
@@ -9,19 +15,52 @@ import ImageIcon from "../../assets/image.svg";
 import MoreIcon from "../../assets/more.svg";
 import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
+import { createNote } from "../../redux/notes/noteSlice";
 import IconImage from "../global/IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
-const TakeNoteDetails = ({ setIsTakeNoteActive }: TakeNoteDetailsPropsType) => {
-  const noteColor = useSelector((state: RootState) => state.noteColor.color);
-
-  const [noteData, setNoteData] = useState<CreateNoteType>(
-    {} as CreateNoteType
-  );
-
+const TakeNoteDetails = ({
+  toggleTakeNoteActive,
+}: TakeNoteDetailsPropsType) => {
+  const dispatch = useDispatch<AppDispatch>();
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-  const [openPalette, setOpenPalette] = useState<Boolean>(false);
+
+  const colorContext = useColor();
+  const [noteData, setNoteData] = useState<CreateNoteType>(
+    initialCreateNoteValue
+  );
+
+  useEffect(() => {
+    setNoteData((prevValues) => ({
+      ...prevValues,
+      color: colorContext.color,
+    }));
+  }, [colorContext.color]);
+
+  useEffect(() => {
+    const handleClickOutsideNote = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const isClickInsideNote = takeNoteDetailsRef.current?.contains(target);
+      const isClickInsidePalette = colorPaletteRef.current?.contains(target);
+      const palette = colorPaletteRef.current;
+      if (!isClickInsideNote) {
+        if (palette?.classList.contains("show")) {
+          palette.classList.remove("show");
+        }
+        toggleTakeNoteActive();
+        if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
+      } else if (!isClickInsidePalette) {
+        if (palette?.classList.contains("show")) {
+          palette.classList.remove("show");
+        }
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutsideNote);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideNote);
+    };
+  }, [dispatch, noteData, takeNoteDetailsRef, toggleTakeNoteActive]);
 
   const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
@@ -35,16 +74,17 @@ const TakeNoteDetails = ({ setIsTakeNoteActive }: TakeNoteDetailsPropsType) => {
   };
 
   const adjustTextareaHeight = (textarea: {
-    name?: any;
-    value?: any;
+    name?: string;
+    value?: string;
     style?: any;
-    scrollHeight?: any;
+    scrollHeight?: string;
   }) => {
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
   };
 
   const onPinClick = () => {
+    console.log("pin");
     setNoteData((prevValues) => ({
       ...prevValues,
       isPinned: !prevValues.isPinned,
@@ -52,150 +92,140 @@ const TakeNoteDetails = ({ setIsTakeNoteActive }: TakeNoteDetailsPropsType) => {
   };
 
   const onArchiveClick = () => {
+    console.log("archive clicked");
+
     setNoteData((prevValues) => ({
       ...prevValues,
       isArchived: true,
     }));
   };
 
-  const onPaletteIconClick = () => {
-    setOpenPalette(true);
+  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (hasNoteChanged(noteData)) {
+      dispatch(createNote(noteData));
+      toggleTakeNoteActive();
+    }
   };
 
-  useEffect(() => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      color: noteColor,
-    }));
-  }, [noteColor]);
+  const toggleColorPalette = () => {
+    colorPaletteRef.current?.classList.toggle("show");
+  };
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-      if (
-        colorPaletteRef.current &&
-        !colorPaletteRef.current.contains(target)
-      ) {
-        setOpenPalette(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [colorPaletteRef]);
+  const onReminderIconClick = (): void => {};
 
-  useEffect(() => {
-    function handleClickOutsideNote(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-      if (
-        takeNoteDetailsRef.current &&
-        !takeNoteDetailsRef.current.contains(target)
-      ) {
-        setIsTakeNoteActive(true);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutsideNote);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideNote);
-    };
-  }, [takeNoteDetailsRef, setIsTakeNoteActive]);
+  const onImageIconClick = (): void => {};
+
+  const onMoreIconClick = (): void => {};
 
   return (
-    <div
-      className="card "
-      style={{
-        height: "auto",
-        backgroundColor: `${noteData.color}`,
-        width: "35rem",
-      }}
-      ref={takeNoteDetailsRef}
-    >
-      <div className="card-body pb-2">
-        <div className="d-flex flex-row">
+    <form onSubmit={handleNoteSubmit}>
+      <div
+        className="card "
+        style={{
+          height: "auto",
+          backgroundColor: `${noteData.color}`,
+          width: "35rem",
+        }}
+        ref={takeNoteDetailsRef}
+      >
+        <div className="card-body pb-2">
+          <div className="d-flex flex-row">
+            <div className="input-group mb-3">
+              <input
+                type="text"
+                className="form-control border-0 p-0 m-0"
+                name="title"
+                placeholder="Title"
+                aria-label="Title"
+                aria-describedby="basic-addon1"
+                style={{ backgroundColor: `${noteData.color}` }}
+                value={noteData.title}
+                onChange={handleChange}
+              />
+
+              <IconImage
+                x={0}
+                y={0}
+                src={noteData.isPinned ? UnpinIcon : PinIcon}
+                onClick={onPinClick}
+              />
+            </div>
+          </div>
+
           <div className="input-group mb-3">
-            <input
-              type="text"
+            <textarea
               className="form-control border-0 p-0 m-0"
-              name="title"
-              placeholder="Title"
-              aria-label="Title"
+              name="content"
+              placeholder="Take a note..."
+              aria-label="Take a note..."
               aria-describedby="basic-addon1"
-              style={{ backgroundColor: `${noteData.color}` }}
-              value={noteData.title}
+              style={{
+                backgroundColor: `${noteData.color}`,
+                resize: "none",
+                overflow: "hidden",
+                minHeight: "auto",
+              }}
+              value={noteData.content}
               onChange={handleChange}
+              id="content"
             />
-            {noteData.isPinned ? (
+          </div>
+
+          <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>
+            <div className="card border-dark">
+              <div className="card-body align-items-center">
+                <ColorPalette />
+              </div>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-between">
+            <div>
               <IconImage
                 x={0}
                 y={0}
-                src={UnpinIcon}
-                onClick={() => onPinClick()}
+                src={BellIcon}
+                onClick={onReminderIconClick}
               />
-            ) : (
+
               <IconImage
-                x={0}
+                x={5}
                 y={0}
-                src={PinIcon}
-                onClick={() => onPinClick()}
+                src={ImageIcon}
+                onClick={onImageIconClick}
               />
-            )}
+              <div
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePalette"
+                aria-expanded="false"
+                aria-controls="collapsePalette"
+              >
+                <IconImage
+                  x={0}
+                  y={0}
+                  src={ColorPalleteIcon}
+                  onClick={toggleColorPalette}
+                />
+              </div>
+              <IconImage
+                x={5}
+                y={0}
+                src={ArchiveIcon}
+                onClick={onArchiveClick}
+              />
+
+              <IconImage x={0} y={0} src={MoreIcon} onClick={onMoreIconClick} />
+            </div>
+            <div>
+              <button type="submit" className="btn btn-sm fw-medium">
+                Save
+              </button>
+            </div>
           </div>
         </div>
-
-        <div className="input-group mb-3">
-          <textarea
-            className="form-control border-0 p-0 m-0"
-            name="content"
-            placeholder="Take a note..."
-            aria-label="Take a note..."
-            aria-describedby="basic-addon1"
-            style={{
-              backgroundColor: `${noteData.color}`,
-              resize: "none",
-              overflow: "hidden",
-              minHeight: "auto",
-            }}
-            value={noteData.content}
-            onChange={handleChange}
-            id="content"
-          />
-        </div>
-
-        <div className="d-flex justify-content-between">
-          <div>
-            <IconImage x={0} y={0} src={BellIcon} />
-
-            <IconImage x={5} y={0} src={ImageIcon} />
-            <IconImage
-              x={0}
-              y={0}
-              src={ColorPalleteIcon}
-              onClick={() => onPaletteIconClick()}
-            />
-
-            <IconImage
-              x={5}
-              y={0}
-              src={ArchiveIcon}
-              onClick={() => onArchiveClick()}
-            />
-
-            <IconImage x={0} y={0} src={MoreIcon} />
-          </div>
-          <div>
-            <button type="button" className="btn btn-sm fw-medium">
-              Save
-            </button>
-          </div>
-        </div>
-        {openPalette && (
-          <div className="position-relative" ref={colorPaletteRef}>
-            <ColorPalette />
-          </div>
-        )}
       </div>
-    </div>
+    </form>
   );
 };
 

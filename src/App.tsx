@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useToken } from "hooks/useToken";
+import Trash from "pages/Trash";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   Navigate,
@@ -14,15 +16,14 @@ import SideBar from "./components/sidebar/SideBar";
 import Archive from "./pages/Archive";
 import Notes from "./pages/Notes";
 import Reminder from "./pages/Reminder";
-
-import Trash from "pages/Trash";
 import { fetchLabels } from "./redux/labels/labelSlice";
 import { fetchNotes } from "./redux/notes/noteSlice";
 import { fetchReminderNotes } from "./redux/reminder/reminderSlice";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
   const dispatch = useDispatch<AppDispatch>();
+
+  const [token, setToken] = useToken();
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -33,9 +34,11 @@ function App() {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
+  });
 
   useEffect(() => {
+    console.log("UE Token", token);
+
     if (token) {
       dispatch(fetchNotes());
       dispatch(fetchReminderNotes());

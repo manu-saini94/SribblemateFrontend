@@ -1,3 +1,5 @@
+import { ReactNodeHOCProps } from "@types/global";
+
 export type LoginCredentialsType = {
   email: string;
   password: string;
@@ -21,9 +23,7 @@ export type ConfirmPasswordType = {
   confirmPassword: string;
 };
 
-export type AuthProps = {
-  children: ReactNode;
-};
+export interface AuthProps extends ReactNodeHOCProps {}
 
 export type WithAuthProps = {
   setToken: (token: string) => void;
