@@ -1,8 +1,13 @@
-import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-
 import { useColor } from "hooks/useColor";
+import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
 import {
   hasNoteChanged,
@@ -15,7 +20,8 @@ import ImageIcon from "../../assets/image.svg";
 import MoreIcon from "../../assets/more.svg";
 import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
-import { createNote } from "../../redux/notes/noteSlice";
+import { createNote } from "../../redux/asyncThunks";
+import { insertNewNote } from "../../redux/notes/noteSlice";
 import IconImage from "../global/IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
@@ -38,6 +44,12 @@ const TakeNoteDetails = ({
     }));
   }, [colorContext.color]);
 
+  const dispatchCreatedNote = useCallback(() => {
+    if (hasNoteChanged(noteData)) {
+      dispatch(createNote(noteData)).then(() => dispatch(insertNewNote()));
+    }
+  }, [noteData, dispatch]);
+
   useEffect(() => {
     const handleClickOutsideNote = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -49,7 +61,7 @@ const TakeNoteDetails = ({
           palette.classList.remove("show");
         }
         toggleTakeNoteActive();
-        if (hasNoteChanged(noteData)) dispatch(createNote(noteData));
+        dispatchCreatedNote();
       } else if (!isClickInsidePalette) {
         if (palette?.classList.contains("show")) {
           palette.classList.remove("show");
@@ -60,7 +72,13 @@ const TakeNoteDetails = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideNote);
     };
-  }, [dispatch, noteData, takeNoteDetailsRef, toggleTakeNoteActive]);
+  }, [
+    dispatch,
+    noteData,
+    takeNoteDetailsRef,
+    toggleTakeNoteActive,
+    dispatchCreatedNote,
+  ]);
 
   const handleChange = (event: { target: { name: any; value: any } }) => {
     const { name, value } = event.target;
@@ -84,7 +102,6 @@ const TakeNoteDetails = ({
   };
 
   const onPinClick = () => {
-    console.log("pin");
     setNoteData((prevValues) => ({
       ...prevValues,
       isPinned: !prevValues.isPinned,
@@ -92,8 +109,6 @@ const TakeNoteDetails = ({
   };
 
   const onArchiveClick = () => {
-    console.log("archive clicked");
-
     setNoteData((prevValues) => ({
       ...prevValues,
       isArchived: true,
@@ -102,10 +117,8 @@ const TakeNoteDetails = ({
 
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (hasNoteChanged(noteData)) {
-      dispatch(createNote(noteData));
-      toggleTakeNoteActive();
-    }
+    dispatchCreatedNote();
+    toggleTakeNoteActive();
   };
 
   const toggleColorPalette = () => {
@@ -180,48 +193,35 @@ const TakeNoteDetails = ({
             </div>
           </div>
 
-          <div className="d-flex justify-content-between">
-            <div>
+          <div className="d-flex flex-row justify-content-between mt-1">
+            <IconImage
+              x={0}
+              y={0}
+              src={BellIcon}
+              onClick={onReminderIconClick}
+            />
+
+            <IconImage x={0} y={0} src={ImageIcon} onClick={onImageIconClick} />
+            <div
+              data-bs-toggle="collapse"
+              data-bs-target="#collapsePalette"
+              aria-expanded="false"
+              aria-controls="collapsePalette"
+            >
               <IconImage
                 x={0}
                 y={0}
-                src={BellIcon}
-                onClick={onReminderIconClick}
+                src={ColorPalleteIcon}
+                onClick={toggleColorPalette}
               />
-
-              <IconImage
-                x={5}
-                y={0}
-                src={ImageIcon}
-                onClick={onImageIconClick}
-              />
-              <div
-                data-bs-toggle="collapse"
-                data-bs-target="#collapsePalette"
-                aria-expanded="false"
-                aria-controls="collapsePalette"
-              >
-                <IconImage
-                  x={0}
-                  y={0}
-                  src={ColorPalleteIcon}
-                  onClick={toggleColorPalette}
-                />
-              </div>
-              <IconImage
-                x={5}
-                y={0}
-                src={ArchiveIcon}
-                onClick={onArchiveClick}
-              />
-
-              <IconImage x={0} y={0} src={MoreIcon} onClick={onMoreIconClick} />
             </div>
-            <div>
-              <button type="submit" className="btn btn-sm fw-medium">
-                Save
-              </button>
-            </div>
+            <IconImage x={0} y={0} src={ArchiveIcon} onClick={onArchiveClick} />
+
+            <IconImage x={0} y={0} src={MoreIcon} onClick={onMoreIconClick} />
+
+            <button type="submit" className="btn btn-sm fw-medium">
+              Save
+            </button>
           </div>
         </div>
       </div>

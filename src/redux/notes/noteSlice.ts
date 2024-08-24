@@ -1,11 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  CreateNoteType,
-  NoteStoreInitialStateType,
-  UpdateNoteType,
-} from "notetypes";
+import { createSlice } from "@reduxjs/toolkit";
+import { NoteStoreInitialStateType, UpdateNoteType } from "notetypes";
 import { initialNoteValue } from "utility/reduxutils/noteUtils";
-import { createNoteForUser, getAllNotesByUser } from "../../api/services";
+import { createNote, fetchNotes } from "../asyncThunks";
 
 const initialState: NoteStoreInitialStateType = {
   loading: false,
@@ -16,21 +12,16 @@ const initialState: NoteStoreInitialStateType = {
   error: "",
 };
 
-export const fetchNotes = createAsyncThunk("notes/fetchNotes", () => {
-  return getAllNotesByUser().then((response) => response.data.object);
-});
-
-export const createNote = createAsyncThunk(
-  "notes/createNote",
-  (noteData: CreateNoteType) => {
-    return createNoteForUser(noteData).then((response) => response.data.object);
-  }
-);
-
 const noteSlice = createSlice({
   name: "notes",
   initialState,
-  reducers: {},
+  reducers: {
+    insertNewNote(state) {
+      state.pinnedAndOthersNotes.unshift(state.createdNoteObject);
+    },
+
+    updateNote(state, action) {},
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchNotes.pending, (state) => {
@@ -63,4 +54,15 @@ const noteSlice = createSlice({
   },
 });
 
+export const { insertNewNote, updateNote } = noteSlice.actions;
 export default noteSlice.reducer;
+
+// transformById(state) {
+//   state.byIdTransformObject = state.pinnedAndOthersNotes.reduce(
+//     (acc, note) => {
+//       acc[note.id] = note;
+//       return acc;
+//     },
+//     {} as ByIdTransformObjectType
+//   );
+// },
