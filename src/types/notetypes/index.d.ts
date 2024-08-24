@@ -70,6 +70,10 @@ export type NoteInitialStateType = CommonInitialState & {
   createdNoteError: string;
 };
 
+// export type ByIdTransformObjectType = {
+//   [id: number]: UpdateNoteType;
+// };
+
 export type NoteStoreInitialStateType = NoteInitialStateType & {
   createdNoteObject: UpdateNoteType;
   pinnedAndOthersNotes: UpdateNoteType[];

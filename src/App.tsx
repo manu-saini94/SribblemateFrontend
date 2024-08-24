@@ -17,7 +17,8 @@ import Archive from "./pages/Archive";
 import Notes from "./pages/Notes";
 import Reminder from "./pages/Reminder";
 import { fetchLabels } from "./redux/labels/labelSlice";
-import { fetchNotes } from "./redux/notes/noteSlice";
+
+import { fetchNotes } from "./redux/asyncThunks";
 import { fetchReminderNotes } from "./redux/reminder/reminderSlice";
 
 function App() {
