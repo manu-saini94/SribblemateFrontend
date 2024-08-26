@@ -10,8 +10,6 @@ export const useToken = (): [
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    console.log(storedToken, "token");
-
     setToken(storedToken);
   }, []);
 

@@ -38,8 +38,6 @@ function App() {
   });
 
   useEffect(() => {
-    console.log("UE Token", token);
-
     if (token) {
       dispatch(fetchNotes());
       dispatch(fetchReminderNotes());
