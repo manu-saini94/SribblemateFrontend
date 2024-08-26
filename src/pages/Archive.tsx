@@ -1,5 +1,5 @@
+import withNote from "components/notes/withNote";
 import React from "react";
-import withNote from "./withNote";
 
 const Archive = () => {
   return <div>Archive</div>;

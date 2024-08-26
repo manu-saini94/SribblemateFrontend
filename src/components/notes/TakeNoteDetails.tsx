@@ -31,7 +31,6 @@ const TakeNoteDetails = ({
   const dispatch = useDispatch<AppDispatch>();
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-
   const colorContext = useColor();
   const [noteData, setNoteData] = useState<CreateNoteType>(
     initialCreateNoteValue

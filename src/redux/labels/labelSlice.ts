@@ -28,7 +28,7 @@ const labelSlice = createSlice({
     builder.addCase(fetchLabels.rejected, (state, action) => {
       state.loading = false;
       state.labels = [];
-      state.error = action.error.message || "Failed to fetch labels";
+      state.error = action.error.message ?? "Failed to fetch labels";
     });
   },
 });
