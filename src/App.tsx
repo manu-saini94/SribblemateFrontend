@@ -19,7 +19,6 @@ import Reminder from "./pages/Reminder";
 import { fetchLabels } from "./redux/labels/labelSlice";
 
 import { fetchNotes } from "./redux/asyncThunks";
-import { fetchReminderNotes } from "./redux/reminder/reminderSlice";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,11 +37,8 @@ function App() {
   });
 
   useEffect(() => {
-    console.log("UE Token", token);
-
     if (token) {
       dispatch(fetchNotes());
-      dispatch(fetchReminderNotes());
       dispatch(fetchLabels());
     }
   }, [dispatch, token]);

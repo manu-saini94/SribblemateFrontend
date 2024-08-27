@@ -3,7 +3,7 @@ import { UpdateNoteType } from "notetypes";
 import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import withNote from "./withNote";
+import withNote from "../components/notes/withNote";
 
 const Notes = () => {
   const notes = useSelector(

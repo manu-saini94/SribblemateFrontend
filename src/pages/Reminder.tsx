@@ -1,5 +1,5 @@
 import React from "react";
-import withNote from "./withNote";
+import withNote from "../components/notes/withNote";
 
 const Reminder = () => {
   return <div>Reminder</div>;
