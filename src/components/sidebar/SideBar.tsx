@@ -1,11 +1,13 @@
+import useTransformedMenuList from "hooks/useTransformedMenuList";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuItemType } from "sidebartypes";
-import { menuList } from "utility/miscsUtils";
 import MenuItem from "./MenuItem";
 
 const SideBar = () => {
   const [active, setActive] = useState("Notes");
+
+  const transformedMenuList = useTransformedMenuList();
 
   const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ const SideBar = () => {
         style={{ minHeight: "100vh", width: "270px" }}
       >
         <ul className="list-group list-group-flush d-flex flex-column ">
-          {menuList.map((menuItem) => {
+          {transformedMenuList.map((menuItem) => {
             return (
               <MenuItem
                 key={menuItem.name}

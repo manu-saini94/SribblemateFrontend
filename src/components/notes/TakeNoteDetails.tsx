@@ -23,6 +23,8 @@ import UnpinIcon from "../../assets/unpin.svg";
 import { createNote } from "../../redux/asyncThunks";
 import { insertNewNote } from "../../redux/notes/noteSlice";
 import IconImage from "../global/IconImage";
+
+import useAutoResizeTextArea from "../../hooks/useAutoResizeTextArea";
 import ColorPalette from "./colorpalette/ColorPalette";
 
 const TakeNoteDetails = ({
@@ -35,6 +37,47 @@ const TakeNoteDetails = ({
   const [noteData, setNoteData] = useState<CreateNoteType>(
     initialCreateNoteValue
   );
+
+  const handleChange = (event: { target: { name: any; value: any } }) => {
+    const { name, value } = event.target;
+    setNoteData((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const onPinClick = () => {
+    setNoteData((prevValues) => ({
+      ...prevValues,
+      isPinned: !prevValues.isPinned,
+    }));
+  };
+
+  const onArchiveClick = () => {
+    setNoteData((prevValues) => ({
+      ...prevValues,
+      isArchived: true,
+    }));
+  };
+
+  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    dispatchCreatedNote();
+    toggleTakeNoteActive();
+  };
+
+  const toggleColorPalette = () => {
+    colorPaletteRef.current?.classList.toggle("show");
+  };
+
+  const onReminderIconClick = (): void => {};
+
+  const onImageIconClick = (): void => {};
+
+  const onMoreIconClick = (): void => {};
+
+  const { textareaRef, handleContentChange } =
+    useAutoResizeTextArea(handleChange);
 
   useEffect(() => {
     setNoteData((prevValues) => ({
@@ -78,57 +121,6 @@ const TakeNoteDetails = ({
     toggleTakeNoteActive,
     dispatchCreatedNote,
   ]);
-
-  const handleChange = (event: { target: { name: any; value: any } }) => {
-    const { name, value } = event.target;
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-    if (name === "content") {
-      adjustTextareaHeight(event.target);
-    }
-  };
-
-  const adjustTextareaHeight = (textarea: {
-    name?: string;
-    value?: string;
-    style?: any;
-    scrollHeight?: string;
-  }) => {
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-  };
-
-  const onPinClick = () => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      isPinned: !prevValues.isPinned,
-    }));
-  };
-
-  const onArchiveClick = () => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      isArchived: true,
-    }));
-  };
-
-  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    dispatchCreatedNote();
-    toggleTakeNoteActive();
-  };
-
-  const toggleColorPalette = () => {
-    colorPaletteRef.current?.classList.toggle("show");
-  };
-
-  const onReminderIconClick = (): void => {};
-
-  const onImageIconClick = (): void => {};
-
-  const onMoreIconClick = (): void => {};
 
   return (
     <form onSubmit={handleNoteSubmit}>
@@ -179,8 +171,9 @@ const TakeNoteDetails = ({
                 minHeight: "auto",
               }}
               value={noteData.content}
-              onChange={handleChange}
+              onChange={handleContentChange}
               id="content"
+              ref={textareaRef}
             />
           </div>
 

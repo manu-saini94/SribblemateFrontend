@@ -7,7 +7,7 @@ const MenuItem = (props: MenuItemPropsType) => {
   const { itemProps, active, onMenuItemClick } = props;
   return (
     <Link to={`${itemProps.path}`} style={{ textDecoration: "none" }}>
-      <li
+      <button
         className={`list-group-item list-group-item-action border-0 rounded-5 ${active} `}
         onClick={onMenuItemClick}
       >
@@ -21,7 +21,7 @@ const MenuItem = (props: MenuItemPropsType) => {
             </div>
           </div>
         </div>
-      </li>
+      </button>
     </Link>
   );
 };
