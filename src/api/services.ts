@@ -5,6 +5,7 @@ import {
   BASE_URL,
   CREATE_NOTE_URL,
   LABEL_FETCH_URL,
+  LABEL_URL,
   NOTE_FETCH_BY_REMINDER_URL,
   NOTE_FETCH_URL,
   REGISTER_USER_URL,
@@ -20,6 +21,13 @@ export const getAllNotesByUser = () => {
   return axios.get(BASE_URL + NOTE_FETCH_URL, config);
 };
 
+export const getAllLabelNotesByUser = () => {
+  return axios.get(BASE_URL + NOTE_FETCH_URL + LABEL_URL, config);
+};
+
+export const getAllNotesByLabel = (labelId: number) => {
+  return axios.get(BASE_URL + NOTE_FETCH_URL + LABEL_URL + labelId, config);
+};
 export const getAllReminderNotesByUser = () => {
   return axios.get(BASE_URL + NOTE_FETCH_BY_REMINDER_URL, config);
 };

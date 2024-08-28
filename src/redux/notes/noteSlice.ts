@@ -1,15 +1,31 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { NoteStoreInitialStateType, UpdateNoteType } from "notetypes";
 import { initialNoteValue } from "utility/reduxutils/noteUtils";
-import { createNote, fetchNotes } from "../asyncThunks";
+import { createNote, fetchAllLabelNotes, fetchNotes } from "../asyncThunks";
 
-const initialState: NoteStoreInitialStateType = {
+const initialLoadingNoteStates = {
   loading: false,
   createdNoteLoading: false,
+  allLabelNotesLoading: false,
+};
+
+const initialDataStates = {
   createdNoteObject: initialNoteValue,
-  createdNoteError: "",
   pinnedAndOthersNotes: [],
+  allLabelNotes: [],
+  allNotesByLabelId: {},
+};
+
+const initialErrorStates = {
   error: "",
+  createdNoteError: "",
+  allLabelNotesError: "",
+};
+
+const initialState: NoteStoreInitialStateType = {
+  ...initialLoadingNoteStates,
+  ...initialDataStates,
+  ...initialErrorStates,
 };
 
 const noteSlice = createSlice({
@@ -50,6 +66,20 @@ const noteSlice = createSlice({
         state.createdNoteObject = {} as UpdateNoteType;
         state.createdNoteError =
           action.error.message ?? "Failed to create note";
+      })
+      .addCase(fetchAllLabelNotes.pending, (state) => {
+        state.allLabelNotesLoading = true;
+      })
+      .addCase(fetchAllLabelNotes.fulfilled, (state, action) => {
+        state.allLabelNotesLoading = false;
+        state.allLabelNotes = action.payload;
+        state.allLabelNotesError = "";
+      })
+      .addCase(fetchAllLabelNotes.rejected, (state, action) => {
+        state.allLabelNotesLoading = false;
+        state.allLabelNotes = [] as UpdateNoteType[];
+        state.allLabelNotesError =
+          action.error.message ?? "Failed to fetch notes with labels";
       });
   },
 });

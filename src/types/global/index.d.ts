@@ -25,9 +25,3 @@ export interface ColorContextType {
 export interface ColorContextProps extends ReactNodeHOCProps {}
 
 export interface ThemeContextProps extends ReactNodeHOCProps {}
-
-// Redux store global types for Notes
-export type CommonInitialState = {
-  loading: Boolean;
-  error: string;
-};

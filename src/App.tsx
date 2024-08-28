@@ -18,6 +18,7 @@ import Notes from "./pages/Notes";
 import Reminder from "./pages/Reminder";
 import { fetchLabels } from "./redux/labels/labelSlice";
 
+import Label from "pages/Label";
 import { fetchNotes } from "./redux/asyncThunks";
 
 function App() {
@@ -71,6 +72,7 @@ function MainLayout() {
           <Routes>
             <Route path="/note" element={<Notes />} />
             <Route path="/reminder" element={<Reminder />} />
+            <Route path={`/label/:labelId`} element={<Label />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/trash" element={<Trash />} />
           </Routes>
