@@ -1,16 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { LabelStoreInitialStateType } from "labeltypes";
-import { getAllLabelsByUser } from "../../api/services";
+import { fetchLabels } from "../asyncThunks";
 
 const initialState: LabelStoreInitialStateType = {
   loading: false,
   labels: [],
   error: "",
 };
-
-export const fetchLabels = createAsyncThunk("labels/fetchLabels", () => {
-  return getAllLabelsByUser().then((response) => response.data.object);
-});
 
 const labelSlice = createSlice({
   name: "labels",
