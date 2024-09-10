@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./auth/authSlice";
 import labelReducer from "./labels/labelSlice";
 import colorReducer from "./notes/color/colorSlice";
 import noteReducer from "./notes/noteSlice";
@@ -11,6 +12,7 @@ const store = configureStore({
     notes: noteReducer,
     allReminderNotes: reminderNoteReducer,
     allLabels: labelReducer,
+    auth: authReducer,
   },
 });
 

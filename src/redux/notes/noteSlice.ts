@@ -1,15 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NoteStoreInitialStateType, UpdateNoteType } from "notetypes";
 import { initialNoteValue } from "utility/reduxutils/noteUtils";
-import { createNote, fetchNotes } from "../asyncThunks";
+import {
+  createNote,
+  fetchAllLabelNotes,
+  fetchNotes,
+  fetchNotesByLabel,
+} from "../asyncThunks";
 
-const initialState: NoteStoreInitialStateType = {
+const initialLoadingNoteStates = {
   loading: false,
   createdNoteLoading: false,
+  allLabelNotesLoading: false,
+  notesByLabelIdLoading: false,
+};
+
+const initialDataStates = {
   createdNoteObject: initialNoteValue,
-  createdNoteError: "",
   pinnedAndOthersNotes: [],
+  allLabelNotes: [],
+  notesByLabelId: {},
+  currentLabelNotes: [],
+};
+
+const initialErrorStates = {
   error: "",
+  createdNoteError: "",
+  allLabelNotesError: "",
+  notesByLabelIdError: "",
+};
+
+const initialState: NoteStoreInitialStateType = {
+  labelId: 0,
+  ...initialLoadingNoteStates,
+  ...initialDataStates,
+  ...initialErrorStates,
 };
 
 const noteSlice = createSlice({
@@ -19,7 +44,12 @@ const noteSlice = createSlice({
     insertNewNote(state) {
       state.pinnedAndOthersNotes.unshift(state.createdNoteObject);
     },
-
+    extractFromNotesByLabelId(state, action: PayloadAction<number>) {
+      state.labelId = action.payload;
+      if (state.notesByLabelId[state.labelId]) {
+        state.currentLabelNotes = state.notesByLabelId[state.labelId] || [];
+      }
+    },
     updateNote(state, action) {},
   },
   extraReducers: (builder) => {
@@ -50,11 +80,39 @@ const noteSlice = createSlice({
         state.createdNoteObject = {} as UpdateNoteType;
         state.createdNoteError =
           action.error.message ?? "Failed to create note";
+      })
+      .addCase(fetchAllLabelNotes.pending, (state) => {
+        state.allLabelNotesLoading = true;
+      })
+      .addCase(fetchAllLabelNotes.fulfilled, (state, action) => {
+        state.allLabelNotesLoading = false;
+        state.allLabelNotes = action.payload;
+        state.allLabelNotesError = "";
+      })
+      .addCase(fetchAllLabelNotes.rejected, (state, action) => {
+        state.allLabelNotesLoading = false;
+        state.allLabelNotes = [] as UpdateNoteType[];
+        state.allLabelNotesError =
+          action.error.message ?? "Failed to fetch notes with labels";
+      })
+      .addCase(fetchNotesByLabel.pending, (state) => {
+        state.notesByLabelIdLoading = true;
+      })
+      .addCase(fetchNotesByLabel.fulfilled, (state, action) => {
+        state.notesByLabelIdLoading = false;
+        state.notesByLabelId[state.labelId] = action.payload;
+        state.notesByLabelIdError = "";
+      })
+      .addCase(fetchNotesByLabel.rejected, (state, action) => {
+        state.notesByLabelIdLoading = false;
+        state.notesByLabelIdError =
+          action.error.message ?? "Failed to fetch notes with labels";
       });
   },
 });
 
-export const { insertNewNote, updateNote } = noteSlice.actions;
+export const { insertNewNote, updateNote, extractFromNotesByLabelId } =
+  noteSlice.actions;
 export default noteSlice.reducer;
 
 // transformById(state) {

@@ -1,5 +1,5 @@
 import { CreateLabelType } from "@types/labeltypes";
-import { CommonInitialState, Id, ReactNodeHOCProps } from "global";
+import { Id, ReactNodeHOCProps } from "global";
 
 export type ImageType = {
   image: string[];
@@ -65,18 +65,28 @@ export interface TakeNoteContextProps extends ReactNodeHOCProps {}
 
 // Redux Store types for Notes
 
-export type NoteInitialStateType = CommonInitialState & {
+export type NoteInitialStateType = {
+  loading: Boolean;
+  error: string;
   createdNoteLoading: Boolean;
   createdNoteError: string;
+  allLabelNotesLoading: Boolean;
+  allLabelNotesError: string;
+  notesByLabelIdLoading: Boolean;
+  notesByLabelIdError: string;
 };
 
-// export type ByIdTransformObjectType = {
-//   [id: number]: UpdateNoteType;
-// };
+export type ByIdTransformType = {
+  [id: number]: UpdateNoteType[];
+};
 
 export type NoteStoreInitialStateType = NoteInitialStateType & {
+  labelId: number;
   createdNoteObject: UpdateNoteType;
   pinnedAndOthersNotes: UpdateNoteType[];
+  allLabelNotes: UpdateNoteType[];
+  notesByLabelId: ByIdTransformType;
+  currentLabelNotes: UpdateNoteType[];
 };
 
 export type ReminderNoteStoreInitialStateType = CommonInitialState & {

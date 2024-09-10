@@ -28,3 +28,17 @@ export interface AuthProps extends ReactNodeHOCProps {}
 export type WithAuthProps = {
   setToken: (token: string) => void;
 };
+
+export type LoginInitialStateType = {
+  loginLoading: Boolean;
+  token: string | null;
+  loginSuccess: Boolean;
+  loginError: string | null;
+};
+export type RegisterInitialStateType = {
+  registerLoading: Boolean;
+  registerSuccess: Boolean;
+  registerError: string | null;
+};
+export type AuthStoreInitialStateType = LoginInitialStateType &
+  RegisterInitialStateType;
