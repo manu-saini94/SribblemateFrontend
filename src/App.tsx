@@ -1,43 +1,45 @@
-import { useToken } from "hooks/useToken";
 import Trash from "pages/Trash";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-import { AppDispatch } from "redux/store";
-import Login from "./auth/Login";
-import Register from "./auth/Register";
+import { AppDispatch, RootState } from "redux/store";
 import NavBar from "./components/navbar/NavBar";
 import SideBar from "./components/sidebar/SideBar";
 import Archive from "./pages/Archive";
 import Notes from "./pages/Notes";
+import Register from "./pages/Register";
 import Reminder from "./pages/Reminder";
-import { fetchLabels } from "./redux/labels/labelSlice";
 
 import Label from "pages/Label";
-import { fetchNotes } from "./redux/asyncThunks";
+
+import Login from "pages/Login";
+import { fetchLabels, fetchNotes } from "./redux/asyncThunks";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
+  const token = useSelector((state: RootState) => state.auth.token);
 
-  const [token, setToken] = useToken();
+  // const [token, setToken] = useToken();
+
+  // useEffect(() => {
+  //   const handleStorageChange = () => {
+  //     setToken(localStorage.getItem("token"));
+  //   };
+
+  //   window.addEventListener("storage", handleStorageChange);
+  //   return () => {
+  //     window.removeEventListener("storage", handleStorageChange);
+  //   };
+  // });
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      setToken(localStorage.getItem("token"));
-    };
+    console.log("Token => ", token);
 
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  });
-
-  useEffect(() => {
     if (token) {
       dispatch(fetchNotes());
       dispatch(fetchLabels());
@@ -47,8 +49,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login setToken={setToken} />} />
-        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
         {token ? (
           <Route path="/*" element={<MainLayout />} />

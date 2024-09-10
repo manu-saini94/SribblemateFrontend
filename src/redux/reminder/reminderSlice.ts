@@ -1,19 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { ReminderNoteStoreInitialStateType } from "notetypes";
-import { getAllReminderNotesByUser } from "../../api/services";
+
+import { fetchReminderNotes } from "../asyncThunks";
 
 const initialState: ReminderNoteStoreInitialStateType = {
   loading: false,
   reminderNotes: [],
   error: "",
 };
-
-export const fetchReminderNotes = createAsyncThunk(
-  "reminderNotes/fetchNotes",
-  () => {
-    return getAllReminderNotesByUser().then((response) => response.data.object);
-  }
-);
 
 const reminderSlice = createSlice({
   name: "reminderNotes",
