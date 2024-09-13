@@ -1,22 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getAllLabelsByUser } from "api/requests/LabelRequests";
+import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
+import { CreateNoteType } from "notetypes";
+import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
 import {
   createNoteForUser,
   getAllLabelNotesByUser,
   getAllNotesByLabel,
   getAllNotesByUser,
   getAllReminderNotesByUser,
-} from "api/requests/NoteRequests";
-import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
-import { CreateNoteType } from "notetypes";
-import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
+} from "../api/requests/NoteRequests";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async (loginDetails: LoginCredentialsType) => {
-    const response = await loginAuthUser(loginDetails);
-    const data = await response.json();
-    return data.object; // Ensure that `data.object` exists
+  (loginDetails: LoginCredentialsType) => {
+    return loginAuthUser(loginDetails).then((response) => response.data);
   }
 );
 
@@ -29,7 +27,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const fetchNotes = createAsyncThunk("notes/fetchNotes", () => {
+export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
   return getAllNotesByUser().then((response) => response.data.object);
 });
 

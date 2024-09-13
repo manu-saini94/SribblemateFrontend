@@ -1,17 +1,9 @@
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
 
-export const useToken = (): [
-  string | null,
-  React.Dispatch<React.SetStateAction<string | null>>
-] => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
-  );
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
-  }, []);
-
-  return [token, setToken];
+export const useToken = (): {} => {
+  const token = useSelector((state: RootState) => state.auth.token);
+  return {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 };

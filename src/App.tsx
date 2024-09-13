@@ -1,4 +1,3 @@
-import Trash from "pages/Trash";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,10 +13,11 @@ import Archive from "./pages/Archive";
 import Notes from "./pages/Notes";
 import Register from "./pages/Register";
 import Reminder from "./pages/Reminder";
+import Trash from "./pages/Trash";
 
-import Label from "pages/Label";
+import Label from "./pages/Label";
 
-import Login from "pages/Login";
+import Login from "./pages/Login";
 import { fetchLabels, fetchNotes } from "./redux/asyncThunks";
 
 function App() {

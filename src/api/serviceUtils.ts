@@ -12,9 +12,3 @@ export const CREATE_NOTE_URL = NOTE_URL + "/create";
 export const NOTE_FETCH_BY_REMINDER_URL = NOTE_FETCH_URL + "/reminder";
 
 export const LABEL_FETCH_URL = LABEL_URL + "/get";
-
-const token = localStorage.getItem("token");
-
-export const config = {
-  headers: { Authorization: `Bearer ${token}` },
-};

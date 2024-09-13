@@ -2,7 +2,8 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "redux/store";
-import { fetchAllLabelNotes, fetchNotesByLabel } from "../redux/asyncThunks";
+
+import { fetchAllLabelNotes, fetchNotesByLabel } from "redux/asyncThunks";
 import { extractFromNotesByLabelId } from "../redux/notes/noteSlice";
 
 const useAllLabelNotes = () => {

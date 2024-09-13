@@ -20,11 +20,10 @@ import ImageIcon from "../../assets/image.svg";
 import MoreIcon from "../../assets/more.svg";
 import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
+import useAutoResizeTextArea from "../../hooks/useAutoResizeTextArea";
 import { createNote } from "../../redux/asyncThunks";
 import { insertNewNote } from "../../redux/notes/noteSlice";
 import IconImage from "../global/IconImage";
-
-import useAutoResizeTextArea from "../../hooks/useAutoResizeTextArea";
 import ColorPalette from "./colorpalette/ColorPalette";
 
 const TakeNoteDetails = ({
@@ -66,6 +65,12 @@ const TakeNoteDetails = ({
     toggleTakeNoteActive();
   };
 
+  const dispatchCreatedNote = useCallback(() => {
+    if (hasNoteChanged(noteData)) {
+      dispatch(createNote(noteData)).then(() => dispatch(insertNewNote()));
+    }
+  }, [noteData, dispatch]);
+
   const toggleColorPalette = () => {
     colorPaletteRef.current?.classList.toggle("show");
   };
@@ -85,12 +90,6 @@ const TakeNoteDetails = ({
       color: colorContext.color,
     }));
   }, [colorContext.color]);
-
-  const dispatchCreatedNote = useCallback(() => {
-    if (hasNoteChanged(noteData)) {
-      dispatch(createNote(noteData)).then(() => dispatch(insertNewNote()));
-    }
-  }, [noteData, dispatch]);
 
   useEffect(() => {
     const handleClickOutsideNote = (event: MouseEvent) => {

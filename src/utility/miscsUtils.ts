@@ -1,11 +1,10 @@
 // Constants for validation errors and regex patterns
 import { MenuItemType } from "sidebartypes";
+import AddLabelIcon from "../assets/addlabel.svg";
 import ArchiveIcon from "../assets/archiveicon.svg";
 import ReminderIcon from "../assets/bellicon.svg";
-import EditIcon from "../assets/editicon.svg";
 import NotesIcon from "../assets/notesicon.svg";
 import TrashIcon from "../assets/trashicon.svg";
-
 export const EMAIL_REGEX = /^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const PWD_REGEX =
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])(?!.*\s).{8,16}$/;
@@ -44,9 +43,9 @@ export const menuList: MenuItemType[] = [
     iconSrc: ReminderIcon,
   },
   {
-    name: "Edit labels",
+    name: "Add labels",
     path: "edit",
-    iconSrc: EditIcon,
+    iconSrc: AddLabelIcon,
   },
   {
     name: "Archive",
