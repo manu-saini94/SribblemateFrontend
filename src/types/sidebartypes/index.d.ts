@@ -1,7 +1,9 @@
 export type MenuItemType = {
   name: string;
   path: string;
-  iconSrc: any;
+  iconSrc: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+    muiName: string;
+  };
 };
 
 export type MenuItemPropsType = {

@@ -1,9 +1,13 @@
-import React from "react";
-import Menu from "../../assets/menu.svg";
-import IconImage from "../global/IconImage";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import { IconButton } from "@mui/material";
+import React, { useState } from "react";
 
 const MenuButton = () => {
-  const onPaletteIconClick = () => {};
+  const [isCollapse, setIsCollapse] = useState<Boolean>(false);
+  const onMenuIconClick = () => {
+    setIsCollapse((prev) => !prev);
+  };
   return (
     <>
       <div
@@ -12,7 +16,15 @@ const MenuButton = () => {
         aria-expanded="false"
         aria-controls="collapseSideBar"
       >
-        <IconImage x={3} y={1} src={Menu} onClick={onPaletteIconClick} />
+        {isCollapse ? (
+          <IconButton onClick={onMenuIconClick}>
+            <ArrowForwardIosOutlinedIcon />
+          </IconButton>
+        ) : (
+          <IconButton onClick={onMenuIconClick}>
+            <ArrowBackIosNewOutlinedIcon />
+          </IconButton>
+        )}
       </div>
       <a className="navbar-brand px-3 py-1" href="https://www.google.com">
         Notesy

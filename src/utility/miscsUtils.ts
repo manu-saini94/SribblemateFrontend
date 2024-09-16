@@ -1,10 +1,10 @@
-// Constants for validation errors and regex patterns
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
+import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import { MenuItemType } from "sidebartypes";
-import AddLabelIcon from "../assets/addlabel.svg";
-import ArchiveIcon from "../assets/archiveicon.svg";
-import ReminderIcon from "../assets/bellicon.svg";
-import NotesIcon from "../assets/notesicon.svg";
-import TrashIcon from "../assets/trashicon.svg";
+
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 export const EMAIL_REGEX = /^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const PWD_REGEX =
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])(?!.*\s).{8,16}$/;
@@ -35,26 +35,26 @@ export const menuList: MenuItemType[] = [
   {
     name: "Notes",
     path: "note",
-    iconSrc: NotesIcon,
+    iconSrc: EditNoteOutlinedIcon,
   },
   {
     name: "Reminders",
     path: "reminder",
-    iconSrc: ReminderIcon,
+    iconSrc: NotificationsActiveOutlinedIcon,
   },
   {
     name: "Add labels",
     path: "edit",
-    iconSrc: AddLabelIcon,
+    iconSrc: LabelOutlinedIcon,
   },
   {
     name: "Archive",
     path: "archive",
-    iconSrc: ArchiveIcon,
+    iconSrc: ArchiveOutlinedIcon,
   },
   {
     name: "Trash",
     path: "trash",
-    iconSrc: TrashIcon,
+    iconSrc: DeleteOutlinedIcon,
   },
 ];

@@ -21,18 +21,19 @@ const useDisplayNoteCards = (notes: UpdateNoteType[]) => {
   );
 
   return (
-    <>
+    <div className=" row gx-3 gy-3 ">
       {notes.map((noteCard) => {
         return (
-          <NoteCard
-            key={noteCard.id}
-            noteCardValues={noteCard}
-            onNoteClick={handleClick(noteCard)}
-          />
+          <div className="col" key={noteCard.id}>
+            <NoteCard
+              key={noteCard.id}
+              noteCardValues={noteCard}
+              onNoteClick={handleClick(noteCard)}
+            />
+          </div>
         );
       })}
-      {isUpdateCardActive && <>hi</>}
-    </>
+    </div>
   );
 };
 

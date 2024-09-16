@@ -1,15 +1,16 @@
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
+import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
+import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import { IconButton } from "@mui/material";
 import IconImage from "components/global/IconImage";
 import { NoteCardPropsType, UpdateNoteType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
-import ArchiveIcon from "../../assets/archive.svg";
-import BellIcon from "../../assets/bell.svg";
-import ColorPalleteIcon from "../../assets/colorpallete.svg";
-import ImageIcon from "../../assets/image.svg";
-import MoreIcon from "../../assets/more.svg";
 import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
+import "../../scss/components/notecard.scss";
 import ColorPalette from "./colorpalette/ColorPalette";
-
 function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
@@ -37,10 +38,15 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
     // event.preventDefault();
   };
 
+  const onCollaboratorClick = () => {};
+
+  const onReminderClick = () => {};
+
   const onArchiveClick = () => {
     // setArchive(true);
   };
 
+  const onImageClick = () => {};
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
@@ -123,39 +129,21 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
         </div>
         <div className="d-flex justify-content-between">
           <div>
-            <IconImage
-              x={0}
-              y={0}
-              src={BellIcon}
-              onClick={onPaletteIconClick}
-            />
-
-            <IconImage
-              x={5}
-              y={0}
-              src={ImageIcon}
-              onClick={onPaletteIconClick}
-            />
-            <IconImage
-              x={0}
-              y={0}
-              src={ColorPalleteIcon}
-              onClick={() => onPaletteIconClick()}
-            />
-
-            <IconImage
-              x={5}
-              y={0}
-              src={ArchiveIcon}
-              onClick={() => onArchiveClick()}
-            />
-
-            <IconImage
-              x={0}
-              y={0}
-              src={MoreIcon}
-              onClick={onPaletteIconClick}
-            />
+            <IconButton onClick={onReminderClick}>
+              <NotificationAddOutlinedIcon className="fs-5" />
+            </IconButton>
+            <IconButton onClick={onImageClick}>
+              <PermMediaOutlinedIcon className="fs-5" />
+            </IconButton>
+            <IconButton onClick={onCollaboratorClick}>
+              <PersonAddOutlinedIcon className="fs-5" />
+            </IconButton>
+            <IconButton onClick={onArchiveClick}>
+              <ArchiveOutlinedIcon className="fs-5" />
+            </IconButton>
+            <IconButton onClick={onPaletteIconClick}>
+              <PaletteOutlinedIcon className="fs-5" />
+            </IconButton>
           </div>
           <div>
             <button type="button" className="btn btn-sm fw-medium">
