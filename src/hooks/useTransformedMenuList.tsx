@@ -20,11 +20,7 @@ const useTransformedMenuList = (): MenuItemType[] => {
       };
     });
 
-    const updatedMenuList = [
-      ...menuList.slice(0, 2),
-      ...labelMap,
-      ...menuList.slice(2),
-    ];
+    const updatedMenuList = [...menuList, ...labelMap];
 
     setTransformedMenuList(updatedMenuList);
   }, [userLabels]);

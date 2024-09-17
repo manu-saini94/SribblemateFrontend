@@ -1,4 +1,5 @@
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
@@ -46,6 +47,8 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
     // setArchive(true);
   };
 
+  const onMoreClick = () => {};
+
   const onImageClick = () => {};
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -85,7 +88,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
       style={{
         height: "auto",
         backgroundColor: `${updateNote.color}`,
-        width: "20rem",
+        width: "15.625rem",
       }}
       ref={takeNoteDetailsRef}
     >
@@ -127,28 +130,36 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             onClick={onNoteClick}
           />
         </div>
-        <div className="d-flex justify-content-between">
-          <div>
+        <div className="row">
+          <div className="col-2">
             <IconButton onClick={onReminderClick}>
-              <NotificationAddOutlinedIcon className="fs-5" />
-            </IconButton>
-            <IconButton onClick={onImageClick}>
-              <PermMediaOutlinedIcon className="fs-5" />
-            </IconButton>
-            <IconButton onClick={onCollaboratorClick}>
-              <PersonAddOutlinedIcon className="fs-5" />
-            </IconButton>
-            <IconButton onClick={onArchiveClick}>
-              <ArchiveOutlinedIcon className="fs-5" />
-            </IconButton>
-            <IconButton onClick={onPaletteIconClick}>
-              <PaletteOutlinedIcon className="fs-5" />
+              <NotificationAddOutlinedIcon className="fs-6 " />
             </IconButton>
           </div>
-          <div>
-            <button type="button" className="btn btn-sm fw-medium">
-              Save
-            </button>
+          <div className="col-2">
+            <IconButton onClick={onImageClick}>
+              <PermMediaOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={onCollaboratorClick}>
+              <PersonAddOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={onArchiveClick}>
+              <ArchiveOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={onPaletteIconClick}>
+              <PaletteOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={onMoreClick}>
+              <MoreVertOutlinedIcon className="fs-6" />
+            </IconButton>
           </div>
         </div>
         {openPalette && (

@@ -1,10 +1,10 @@
-import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
-import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
-import { MenuItemType } from "sidebartypes";
-
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
+import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
+import { MenuItemType } from "sidebartypes";
 export const EMAIL_REGEX = /^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const PWD_REGEX =
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])(?!.*\s).{8,16}$/;
@@ -42,11 +42,7 @@ export const menuList: MenuItemType[] = [
     path: "reminder",
     iconSrc: NotificationsActiveOutlinedIcon,
   },
-  {
-    name: "Add labels",
-    path: "edit",
-    iconSrc: LabelOutlinedIcon,
-  },
+
   {
     name: "Archive",
     path: "archive",
@@ -56,5 +52,15 @@ export const menuList: MenuItemType[] = [
     name: "Trash",
     path: "trash",
     iconSrc: DeleteOutlinedIcon,
+  },
+  {
+    name: "Labelled Notes",
+    path: "labellednotes",
+    iconSrc: LabelOutlinedIcon,
+  },
+  {
+    name: "Edit Labels",
+    path: "editlabels",
+    iconSrc: EditOutlinedIcon,
   },
 ];

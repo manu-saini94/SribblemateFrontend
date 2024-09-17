@@ -17,6 +17,8 @@ import Trash from "./pages/Trash";
 
 import Label from "./pages/Label";
 
+import AllLabelledNotes from "pages/AllLabelledNotes";
+import EditLabels from "pages/EditLabels";
 import Login from "./pages/Login";
 import { fetchLabels, fetchNotes } from "./redux/asyncThunks";
 
@@ -72,9 +74,12 @@ function MainLayout() {
           <Routes>
             <Route path="/note" element={<Notes />} />
             <Route path="/reminder" element={<Reminder />} />
-            <Route path={`/label/:labelId`} element={<Label />} />
+
             <Route path="/archive" element={<Archive />} />
             <Route path="/trash" element={<Trash />} />
+            <Route path="/labellednotes" element={<AllLabelledNotes />} />
+            <Route path="/editlabels" element={<EditLabels />} />
+            <Route path={`/label/:labelId`} element={<Label />} />
           </Routes>
         </div>
       </div>
