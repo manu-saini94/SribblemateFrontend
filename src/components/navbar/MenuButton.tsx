@@ -2,6 +2,7 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { IconButton } from "@mui/material";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const MenuButton = () => {
   const [isCollapse, setIsCollapse] = useState<Boolean>(false);
@@ -26,9 +27,9 @@ const MenuButton = () => {
           </IconButton>
         )}
       </div>
-      <a className="navbar-brand px-3 py-1" href="https://www.google.com">
-        Notesy
-      </a>
+      <Link to="/note" style={{ textDecoration: "none" }}>
+        <div className="navbar-brand px-3 py-1">Scribble Mate</div>
+      </Link>
     </>
   );
 };

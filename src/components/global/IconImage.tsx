@@ -1,6 +1,6 @@
 import { IconImageType } from "global";
 import React from "react";
-import "../../Button.scss";
+import "../../scss/Button.scss";
 
 const IconImage = ({ x, y, src, onClick }: IconImageType) => {
   return (

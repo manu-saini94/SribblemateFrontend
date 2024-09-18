@@ -10,8 +10,9 @@ import { NoteCardPropsType, UpdateNoteType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
 import PinIcon from "../../assets/pin.svg";
 import UnpinIcon from "../../assets/unpin.svg";
-import "../../scss/components/notecard.scss";
+import "../../scss/notecard.scss";
 import ColorPalette from "./colorpalette/ColorPalette";
+
 function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
 
