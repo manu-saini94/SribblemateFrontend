@@ -1,9 +1,9 @@
+import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import { MenuItemType } from "sidebartypes";
 import { menuList } from "utility/miscsUtils";
-import LabelIcon from "../assets/labelicon.svg";
 
 const useTransformedMenuList = (): MenuItemType[] => {
   const [transformedMenuList, setTransformedMenuList] =
@@ -16,7 +16,7 @@ const useTransformedMenuList = (): MenuItemType[] => {
       return {
         name: label.labelName,
         path: `/label/${label.id}`,
-        iconSrc: LabelIcon,
+        iconSrc: LabelOutlinedIcon,
       };
     });
 

@@ -2,6 +2,8 @@ import { Id } from "@types/global";
 
 export type CreateLabelType = {
   labelName: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type LabelSetType = {
@@ -10,9 +12,15 @@ export type LabelSetType = {
 
 export type UpdateLabelType = CreateLabelType & Id;
 
-// Redux store types for Labels
-export type LabelStoreInitialStateType = {
+export type LabelInitialStateType = {
   loading: Boolean;
   error: string;
+  createdLabelLoading: Boolean;
+  createdLabelError: string;
+};
+
+// Redux store types for Labels
+export type LabelStoreInitialStateType = LabelInitialStateType & {
   labels: UpdateLabelType[];
+  createdLabelObject: UpdateLabelType;
 };
