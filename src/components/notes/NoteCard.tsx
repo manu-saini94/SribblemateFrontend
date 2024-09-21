@@ -4,13 +4,13 @@ import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutl
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import PushPinIcon from "@mui/icons-material/PushPin";
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { IconButton } from "@mui/material";
-import IconImage from "components/global/IconImage";
 import { NoteCardPropsType, UpdateNoteType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
-import PinIcon from "../../assets/pin.svg";
-import UnpinIcon from "../../assets/unpin.svg";
 import "../../scss/notecard.scss";
+
 import ColorPalette from "./colorpalette/ColorPalette";
 
 function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
@@ -19,10 +19,6 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [openPalette, setOpenPalette] = useState(false);
-
-  const onPaletteIconClick = () => {
-    setOpenPalette(true);
-  };
 
   const onPinClick = () => {
     // setPin(!pin);
@@ -51,6 +47,11 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const onMoreClick = () => {};
 
   const onImageClick = () => {};
+
+  const toggleColorPalette = () => {
+    colorPaletteRef.current?.classList.toggle("show");
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
@@ -106,12 +107,18 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
               value={updateNote.title}
               onClick={onNoteClick}
             />
-            {updateNote.isPinned ? (
-              <IconImage x={0} y={0} src={UnpinIcon} onClick={onPinClick} />
-            ) : (
-              <IconImage x={0} y={0} src={PinIcon} onClick={onPinClick} />
-            )}
           </div>
+          {updateNote.isPinned ? (
+            <IconButton onClick={onPinClick}>
+              {" "}
+              <PushPinIcon className="fs-6 mt-n4" />
+            </IconButton>
+          ) : (
+            <IconButton onClick={onPinClick}>
+              {" "}
+              <PushPinOutlinedIcon className="fs-6 " />
+            </IconButton>
+          )}
         </div>
 
         <div className="input-group mb-3">
@@ -131,7 +138,14 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             onClick={onNoteClick}
           />
         </div>
-        <div className="row">
+        <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>
+          <div className="card border-light">
+            <div className="card-body align-items-center">
+              <ColorPalette />
+            </div>
+          </div>
+        </div>
+        <div className="row note-card-icon">
           <div className="col-2">
             <IconButton onClick={onReminderClick}>
               <NotificationAddOutlinedIcon className="fs-6 " />
@@ -153,7 +167,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             </IconButton>
           </div>
           <div className="col-2">
-            <IconButton onClick={onPaletteIconClick}>
+            <IconButton onClick={toggleColorPalette}>
               <PaletteOutlinedIcon className="fs-6" />
             </IconButton>
           </div>
@@ -163,11 +177,6 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             </IconButton>
           </div>
         </div>
-        {openPalette && (
-          <div className="position-relative" ref={colorPaletteRef}>
-            <ColorPalette />
-          </div>
-        )}
       </div>
     </div>
   );

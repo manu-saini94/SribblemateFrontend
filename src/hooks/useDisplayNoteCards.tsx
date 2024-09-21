@@ -21,10 +21,10 @@ const useDisplayNoteCards = (notes: UpdateNoteType[]) => {
   );
 
   return (
-    <div className=" row gx-3 gy-3 ">
+    <div className="d-flex flex-wrap justify-content-center">
       {notes.map((noteCard) => {
         return (
-          <div className="col" key={noteCard.id}>
+          <div className="p-2 g-col-2" key={noteCard.id}>
             <NoteCard
               key={noteCard.id}
               noteCardValues={noteCard}

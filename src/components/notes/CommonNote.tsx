@@ -23,7 +23,7 @@ const CommonNote = ({ children }: CommonNoteProps): ReactNode => {
           </ColorProvider>
         )}
       </div>
-      <div className="d-flex flex-row flex-wrap">{children}</div>
+      <div className="d-flex">{children}</div>
     </div>
   );
 };

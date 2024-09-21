@@ -1,3 +1,12 @@
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
+import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
+import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import PushPinIcon from "@mui/icons-material/PushPin";
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
+import { IconButton } from "@mui/material";
 import { useColor } from "hooks/useColor";
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
 import React, {
@@ -13,17 +22,9 @@ import {
   hasNoteChanged,
   initialCreateNoteValue,
 } from "utility/reduxutils/noteUtils";
-import ArchiveIcon from "../../assets/archive.svg";
-import BellIcon from "../../assets/bell.svg";
-import ColorPalleteIcon from "../../assets/colorpallete.svg";
-import ImageIcon from "../../assets/image.svg";
-import MoreIcon from "../../assets/more.svg";
-import PinIcon from "../../assets/pin.svg";
-import UnpinIcon from "../../assets/unpin.svg";
 import useAutoResizeTextArea from "../../hooks/useAutoResizeTextArea";
 import { createNote } from "../../redux/asyncThunks";
 import { insertNewNote } from "../../redux/notes/noteSlice";
-import IconImage from "../global/IconImage";
 import ColorPalette from "./colorpalette/ColorPalette";
 
 const TakeNoteDetails = ({
@@ -80,6 +81,8 @@ const TakeNoteDetails = ({
   const onImageIconClick = (): void => {};
 
   const onMoreIconClick = (): void => {};
+
+  const onCollaboratorIconClick = (): void => {};
 
   const { textareaRef, handleContentChange } =
     useAutoResizeTextArea(handleChange);
@@ -147,12 +150,13 @@ const TakeNoteDetails = ({
                 onChange={handleChange}
               />
 
-              <IconImage
-                x={0}
-                y={0}
-                src={noteData.isPinned ? UnpinIcon : PinIcon}
-                onClick={onPinClick}
-              />
+              <IconButton onClick={onPinClick}>
+                {noteData.isPinned ? (
+                  <PushPinIcon className="fs-6 mt-n4" />
+                ) : (
+                  <PushPinOutlinedIcon className="fs-6 " />
+                )}{" "}
+              </IconButton>
             </div>
           </div>
 
@@ -177,7 +181,7 @@ const TakeNoteDetails = ({
           </div>
 
           <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>
-            <div className="card border-dark">
+            <div className="card border-light">
               <div className="card-body align-items-center">
                 <ColorPalette />
               </div>
@@ -185,30 +189,43 @@ const TakeNoteDetails = ({
           </div>
 
           <div className="d-flex flex-row justify-content-between mt-1">
-            <IconImage
-              x={0}
-              y={0}
-              src={BellIcon}
-              onClick={onReminderIconClick}
-            />
-
-            <IconImage x={0} y={0} src={ImageIcon} onClick={onImageIconClick} />
-            <div
-              data-bs-toggle="collapse"
-              data-bs-target="#collapsePalette"
-              aria-expanded="false"
-              aria-controls="collapsePalette"
-            >
-              <IconImage
-                x={0}
-                y={0}
-                src={ColorPalleteIcon}
-                onClick={toggleColorPalette}
-              />
+            <div className="col-2">
+              <IconButton onClick={onReminderIconClick}>
+                <NotificationAddOutlinedIcon className="fs-6 " />
+              </IconButton>
             </div>
-            <IconImage x={0} y={0} src={ArchiveIcon} onClick={onArchiveClick} />
-
-            <IconImage x={0} y={0} src={MoreIcon} onClick={onMoreIconClick} />
+            <div className="col-2">
+              <IconButton onClick={onImageIconClick}>
+                <PermMediaOutlinedIcon className="fs-6" />
+              </IconButton>
+            </div>
+            <div className="col-2">
+              <IconButton onClick={onCollaboratorIconClick}>
+                <PersonAddOutlinedIcon className="fs-6" />
+              </IconButton>
+            </div>
+            <div className="col-2">
+              <IconButton onClick={onArchiveClick}>
+                <ArchiveOutlinedIcon className="fs-6" />
+              </IconButton>
+            </div>
+            <div className="col-2">
+              <div
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePalette"
+                aria-expanded="false"
+                aria-controls="collapsePalette"
+              >
+                <IconButton onClick={toggleColorPalette}>
+                  <PaletteOutlinedIcon className="fs-6" />
+                </IconButton>
+              </div>
+            </div>
+            <div className="col-2">
+              <IconButton onClick={onMoreIconClick}>
+                <MoreVertOutlinedIcon className="fs-6" />
+              </IconButton>
+            </div>
 
             <button type="submit" className="btn btn-sm fw-medium">
               Save
