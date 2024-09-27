@@ -1,3 +1,5 @@
+import AllLabelledNotes from "pages/AllLabelledNotes";
+import EditLabels from "pages/EditLabels";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -10,16 +12,12 @@ import { AppDispatch } from "redux/store";
 import NavBar from "./components/navbar/NavBar";
 import SideBar from "./components/sidebar/SideBar";
 import Archive from "./pages/Archive";
+import Label from "./pages/Label";
+import Login from "./pages/Login";
 import Notes from "./pages/Notes";
 import Register from "./pages/Register";
 import Reminder from "./pages/Reminder";
 import Trash from "./pages/Trash";
-
-import Label from "./pages/Label";
-
-import AllLabelledNotes from "pages/AllLabelledNotes";
-import EditLabels from "pages/EditLabels";
-import Login from "./pages/Login";
 import { fetchLabels, fetchNotes } from "./redux/asyncThunks";
 
 function App() {
@@ -38,8 +36,6 @@ function App() {
   });
 
   useEffect(() => {
-    console.log("Token => ", token);
-
     if (token) {
       dispatch(fetchNotes());
       dispatch(fetchLabels());
@@ -74,7 +70,6 @@ function MainLayout() {
           <Routes>
             <Route path="/note" element={<Notes />} />
             <Route path="/reminder" element={<Reminder />} />
-
             <Route path="/archive" element={<Archive />} />
             <Route path="/trash" element={<Trash />} />
             <Route path="/labellednotes" element={<AllLabelledNotes />} />

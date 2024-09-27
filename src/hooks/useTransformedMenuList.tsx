@@ -1,5 +1,5 @@
-import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
-import { useCallback, useEffect, useState } from "react";
+import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import { MenuItemType } from "sidebartypes";
@@ -16,7 +16,11 @@ const useTransformedMenuList = (): MenuItemType[] => {
       return {
         name: label.labelName,
         path: `/label/${label.id}`,
-        iconSrc: LabelOutlinedIcon,
+        iconSrc: () => (
+          <LabelImportantTwoToneIcon
+            style={{ color: label.important ? "#ffc61a" : "" }} // Yellow if important, default otherwise
+          />
+        ),
       };
     });
 

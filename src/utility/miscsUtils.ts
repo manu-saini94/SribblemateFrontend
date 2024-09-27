@@ -2,13 +2,12 @@ import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
+import EditLabelIcon from "components/icons/EditLabelIcon";
 import { MenuItemType } from "sidebartypes";
 export const EMAIL_REGEX = /^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const PWD_REGEX =
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])(?!.*\s).{8,16}$/;
-
 export const EMAIL_RQD = "Email is required";
 export const EMAIL_WARN = "Email address is invalid";
 export const PWD_RQD = "Password is required";
@@ -56,7 +55,7 @@ export const menuList: MenuItemType[] = [
   {
     name: "Labelled Notes",
     path: "labellednotes",
-    iconSrc: LabelOutlinedIcon,
+    iconSrc: EditLabelIcon,
   },
   {
     name: "Edit Labels",

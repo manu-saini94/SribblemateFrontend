@@ -4,6 +4,7 @@ export const initialCreateLabelValue: CreateLabelType = {
   labelName: "",
   createdAt: "",
   updatedAt: "",
+  important: false,
 };
 
 export const initialLabelValue: UpdateLabelType = {

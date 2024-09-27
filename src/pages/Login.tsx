@@ -52,7 +52,7 @@ const Login = () => {
     }));
   };
 
-  const handleLoginSubmit = (event: { preventDefault: () => void }) => {
+  const handleLoginSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
@@ -60,7 +60,7 @@ const Login = () => {
     } else {
       const { email, password } = formValues;
       const loginDetails: LoginCredentialsType = { email, password };
-      dispatch(loginUser(loginDetails))
+      await dispatch(loginUser(loginDetails))
         .unwrap()
         .then(() => {
           console.log("Login Successful!");

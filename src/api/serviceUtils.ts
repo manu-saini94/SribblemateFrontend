@@ -13,3 +13,4 @@ export const NOTE_FETCH_BY_REMINDER_URL = NOTE_FETCH_URL + "/reminder";
 
 export const LABEL_FETCH_URL = LABEL_URL + "/get";
 export const CREATE_LABEL__URL = LABEL_URL + "/create";
+export const UPDATE_LABEL__URL = LABEL_URL + "/update";

@@ -138,9 +138,13 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             onClick={onNoteClick}
           />
         </div>
-        <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>
-          <div className="card border-light">
-            <div className="card-body align-items-center">
+        <div
+          className="collapse"
+          id="collapseColorPalette"
+          ref={colorPaletteRef}
+        >
+          <div className="card border-light z-1 position-absolute">
+            <div className="card-body align-items-center ">
               <ColorPalette />
             </div>
           </div>

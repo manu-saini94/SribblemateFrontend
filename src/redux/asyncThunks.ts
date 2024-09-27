@@ -2,9 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createLabelForUser,
   getAllLabelsByUser,
+  updateLabelForUser,
 } from "api/requests/LabelRequests";
 import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
-import { CreateLabelType } from "labeltypes";
+import { CreateLabelType, UpdateLabelType } from "labeltypes";
 import { CreateNoteType } from "notetypes";
 import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
 import {
@@ -60,6 +61,15 @@ export const createLabel = createAsyncThunk(
   "labels/createLabel",
   (labelData: CreateLabelType) => {
     return createLabelForUser(labelData).then(
+      (response) => response.data.object
+    );
+  }
+);
+
+export const updateLabel = createAsyncThunk(
+  "labels/updateLabel",
+  (labelData: UpdateLabelType) => {
+    return updateLabelForUser(labelData).then(
       (response) => response.data.object
     );
   }
