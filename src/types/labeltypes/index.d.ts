@@ -27,6 +27,7 @@ export type LabelStoreInitialStateType = LabelInitialStateType & {
   labels: UpdateLabelType[];
   createdLabelObject: UpdateLabelType;
   updateLabelObject: UpdateLabelType;
+  isDeleted: Boolean;
 };
 
 export type UpdateLabelCardPropsType = {

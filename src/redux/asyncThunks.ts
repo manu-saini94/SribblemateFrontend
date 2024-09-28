@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createLabelForUser,
+  deleteLabelForUser,
   getAllLabelsByUser,
   updateLabelForUser,
 } from "api/requests/LabelRequests";
@@ -72,6 +73,13 @@ export const updateLabel = createAsyncThunk(
     return updateLabelForUser(labelData).then(
       (response) => response.data.object
     );
+  }
+);
+
+export const deleteLabel = createAsyncThunk(
+  "labels/deleteLabel",
+  (id: number) => {
+    return deleteLabelForUser(id).then((response) => response.data.object);
   }
 );
 

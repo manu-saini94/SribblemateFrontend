@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LabelStoreInitialStateType, UpdateLabelType } from "labeltypes";
 import { initialLabelValue } from "utility/reduxutils/labelUtils";
-import { createLabel, fetchLabels, updateLabel } from "../asyncThunks";
+import {
+  createLabel,
+  deleteLabel,
+  fetchLabels,
+  updateLabel,
+} from "../asyncThunks";
 
 const initialLoadingStates = {
   loading: false,
@@ -13,6 +18,7 @@ const initialDataStates = {
   createdLabelObject: initialLabelValue,
   updateLabelObject: initialLabelValue,
   labels: [],
+  isDeleted: false,
 };
 
 const initialErrorStates = {
@@ -36,6 +42,9 @@ const labelSlice = createSlice({
     },
     updateCurrentLabel(state, action) {
       state.labels.splice(action.payload, 1, state.updateLabelObject);
+    },
+    deleteCurrentLabel(state, action) {
+      state.labels.splice(action.payload, 1);
     },
   },
   extraReducers: (builder) => {
@@ -79,8 +88,22 @@ const labelSlice = createSlice({
       state.updateLabelObject = {} as UpdateLabelType;
       state.updateLabelError = action.error.message ?? "Failed to update label";
     });
+    builder.addCase(deleteLabel.pending, (state) => {
+      state.updateLabelLoading = true;
+    });
+    builder.addCase(deleteLabel.fulfilled, (state, action) => {
+      state.updateLabelLoading = false;
+      state.isDeleted = action.payload;
+      state.updateLabelError = "";
+    });
+    builder.addCase(deleteLabel.rejected, (state, action) => {
+      state.updateLabelLoading = false;
+      state.isDeleted = false;
+      state.updateLabelError = action.error.message ?? "Failed to delete label";
+    });
   },
 });
 
-export const { insertNewLabel, updateCurrentLabel } = labelSlice.actions;
+export const { insertNewLabel, updateCurrentLabel, deleteCurrentLabel } =
+  labelSlice.actions;
 export default labelSlice.reducer;
