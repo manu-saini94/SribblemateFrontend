@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { authMiddleware } from "./auth/authMiddleware";
 import authReducer from "./auth/authSlice";
 import labelReducer from "./labels/labelSlice";
 import colorReducer from "./notes/color/colorSlice";
 import noteReducer from "./notes/noteSlice";
 import reminderNoteReducer from "./reminder/reminderSlice";
-// const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const store = configureStore({
   reducer: {
@@ -14,6 +14,9 @@ const store = configureStore({
     allLabels: labelReducer,
     auth: authReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(authMiddleware),
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;

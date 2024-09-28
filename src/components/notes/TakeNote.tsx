@@ -1,12 +1,14 @@
-import IconImage from "components/global/IconImage";
+import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
+import { IconButton } from "@mui/material";
 import { TakeNotePropsType } from "notetypes";
 import React from "react";
-import ImageIcon from "../../assets/imageicon.svg";
 
 const TakeNote = ({ onTakeNoteClick }: TakeNotePropsType) => {
+  const onImageIconClick = () => {};
+
   return (
     <div className="card" style={{ height: "50px" }}>
-      <div className="card-body">
+      <div className="card-body ">
         <div className="d-flex flex-row ">
           <div className="d-flex input-group align-middle">
             <input
@@ -21,7 +23,11 @@ const TakeNote = ({ onTakeNoteClick }: TakeNotePropsType) => {
               onClick={onTakeNoteClick}
             />
           </div>
-          <IconImage x={3} y={0} src={ImageIcon} onClick={onTakeNoteClick} />
+          <div>
+            <IconButton onClick={onImageIconClick}>
+              <PermMediaOutlinedIcon className="take-note-card " />
+            </IconButton>
+          </div>
         </div>
       </div>
     </div>

@@ -1,13 +1,16 @@
-import IconImage from "components/global/IconImage";
+import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
+import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
+import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
+import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import PushPinIcon from "@mui/icons-material/PushPin";
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
+import { IconButton } from "@mui/material";
 import { NoteCardPropsType, UpdateNoteType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
-import ArchiveIcon from "../../assets/archive.svg";
-import BellIcon from "../../assets/bell.svg";
-import ColorPalleteIcon from "../../assets/colorpallete.svg";
-import ImageIcon from "../../assets/image.svg";
-import MoreIcon from "../../assets/more.svg";
-import PinIcon from "../../assets/pin.svg";
-import UnpinIcon from "../../assets/unpin.svg";
+import "../../scss/notecard.scss";
+
 import ColorPalette from "./colorpalette/ColorPalette";
 
 function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
@@ -16,10 +19,6 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [openPalette, setOpenPalette] = useState(false);
-
-  const onPaletteIconClick = () => {
-    setOpenPalette(true);
-  };
 
   const onPinClick = () => {
     // setPin(!pin);
@@ -37,8 +36,20 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
     // event.preventDefault();
   };
 
+  const onCollaboratorClick = () => {};
+
+  const onReminderClick = () => {};
+
   const onArchiveClick = () => {
     // setArchive(true);
+  };
+
+  const onMoreClick = () => {};
+
+  const onImageClick = () => {};
+
+  const toggleColorPalette = () => {
+    colorPaletteRef.current?.classList.toggle("show");
   };
 
   useEffect(() => {
@@ -79,7 +90,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
       style={{
         height: "auto",
         backgroundColor: `${updateNote.color}`,
-        width: "20rem",
+        width: "15.625rem",
       }}
       ref={takeNoteDetailsRef}
     >
@@ -96,12 +107,18 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
               value={updateNote.title}
               onClick={onNoteClick}
             />
-            {updateNote.isPinned ? (
-              <IconImage x={0} y={0} src={UnpinIcon} onClick={onPinClick} />
-            ) : (
-              <IconImage x={0} y={0} src={PinIcon} onClick={onPinClick} />
-            )}
           </div>
+          {updateNote.isPinned ? (
+            <IconButton onClick={onPinClick}>
+              {" "}
+              <PushPinIcon className="fs-6 mt-n4" />
+            </IconButton>
+          ) : (
+            <IconButton onClick={onPinClick}>
+              {" "}
+              <PushPinOutlinedIcon className="fs-6 " />
+            </IconButton>
+          )}
         </div>
 
         <div className="input-group mb-3">
@@ -121,53 +138,49 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             onClick={onNoteClick}
           />
         </div>
-        <div className="d-flex justify-content-between">
-          <div>
-            <IconImage
-              x={0}
-              y={0}
-              src={BellIcon}
-              onClick={onPaletteIconClick}
-            />
-
-            <IconImage
-              x={5}
-              y={0}
-              src={ImageIcon}
-              onClick={onPaletteIconClick}
-            />
-            <IconImage
-              x={0}
-              y={0}
-              src={ColorPalleteIcon}
-              onClick={() => onPaletteIconClick()}
-            />
-
-            <IconImage
-              x={5}
-              y={0}
-              src={ArchiveIcon}
-              onClick={() => onArchiveClick()}
-            />
-
-            <IconImage
-              x={0}
-              y={0}
-              src={MoreIcon}
-              onClick={onPaletteIconClick}
-            />
-          </div>
-          <div>
-            <button type="button" className="btn btn-sm fw-medium">
-              Save
-            </button>
+        <div
+          className="collapse"
+          id="collapseColorPalette"
+          ref={colorPaletteRef}
+        >
+          <div className="card border-light z-1 position-absolute">
+            <div className="card-body align-items-center ">
+              <ColorPalette />
+            </div>
           </div>
         </div>
-        {openPalette && (
-          <div className="position-relative" ref={colorPaletteRef}>
-            <ColorPalette />
+        <div className="row note-card-icon">
+          <div className="col-2">
+            <IconButton onClick={onReminderClick}>
+              <NotificationAddOutlinedIcon className="fs-6 " />
+            </IconButton>
           </div>
-        )}
+          <div className="col-2">
+            <IconButton onClick={onImageClick}>
+              <PermMediaOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={onCollaboratorClick}>
+              <PersonAddOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={onArchiveClick}>
+              <ArchiveOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={toggleColorPalette}>
+              <PaletteOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+          <div className="col-2">
+            <IconButton onClick={onMoreClick}>
+              <MoreVertOutlinedIcon className="fs-6" />
+            </IconButton>
+          </div>
+        </div>
       </div>
     </div>
   );

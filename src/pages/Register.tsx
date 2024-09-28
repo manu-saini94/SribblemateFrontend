@@ -12,7 +12,6 @@ import {
 import { AppDispatch } from "redux/store";
 import withAuth from "../components/auth/withAuth";
 import { registerUser } from "../redux/asyncThunks";
-import { navigateAfterRegistration } from "../redux/auth/authSlice";
 import { PWD_WARN } from "../utility/miscsUtils";
 
 const Register = () => {
@@ -72,9 +71,15 @@ const Register = () => {
     } else {
       const { fullName, email, password } = formValues;
       const registrationDetails = { fullName, email, password };
-      dispatch(registerUser(registrationDetails)).then(() =>
-        dispatch(navigateAfterRegistration())
-      );
+      dispatch(registerUser(registrationDetails))
+        .unwrap()
+        .then(() => {
+          console.log("Registration Successful!");
+          navigate("/login");
+        })
+        .catch((error) => {
+          console.error("Registration failed: ", error);
+        });
     }
   };
 

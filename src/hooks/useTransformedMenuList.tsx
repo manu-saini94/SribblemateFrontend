@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import { MenuItemType } from "sidebartypes";
 import { menuList } from "utility/miscsUtils";
-import LabelIcon from "../assets/labelicon.svg";
 
 const useTransformedMenuList = (): MenuItemType[] => {
   const [transformedMenuList, setTransformedMenuList] =
@@ -16,15 +16,15 @@ const useTransformedMenuList = (): MenuItemType[] => {
       return {
         name: label.labelName,
         path: `/label/${label.id}`,
-        iconSrc: LabelIcon,
+        iconSrc: () => (
+          <LabelImportantTwoToneIcon
+            style={{ color: label.important ? "#ffc61a" : "" }} // Yellow if important, default otherwise
+          />
+        ),
       };
     });
 
-    const updatedMenuList = [
-      ...menuList.slice(0, 2),
-      ...labelMap,
-      ...menuList.slice(2),
-    ];
+    const updatedMenuList = [...menuList, ...labelMap];
 
     setTransformedMenuList(updatedMenuList);
   }, [userLabels]);

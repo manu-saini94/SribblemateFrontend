@@ -9,7 +9,6 @@ import {
   validatePassword,
 } from "utility/validationutils/authValidationUtils";
 import { loginUser } from "../redux/asyncThunks";
-import { navigateAfterLogin } from "../redux/auth/authSlice";
 
 const Login = () => {
   const [formValues, setFormValues] = useState<LoginCredentialsType>({
@@ -20,8 +19,6 @@ const Login = () => {
   const [errors, setErrors] = useState<Partial<LoginCredentialsType>>(
     {} as Partial<LoginCredentialsType>
   );
-
-  // const [setToken] = useToken();
 
   const navigate = useNavigate();
 
@@ -55,7 +52,7 @@ const Login = () => {
     }));
   };
 
-  const handleLoginSubmit = (event: { preventDefault: () => void }) => {
+  const handleLoginSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
@@ -63,9 +60,15 @@ const Login = () => {
     } else {
       const { email, password } = formValues;
       const loginDetails: LoginCredentialsType = { email, password };
-      dispatch(loginUser(loginDetails)).then(() =>
-        dispatch(navigateAfterLogin())
-      );
+      await dispatch(loginUser(loginDetails))
+        .unwrap()
+        .then(() => {
+          console.log("Login Successful!");
+          navigate("/note");
+        })
+        .catch((error) => {
+          console.error("Login failed: ", error);
+        });
     }
   };
 

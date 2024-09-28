@@ -1,25 +1,26 @@
+import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
+import { IconButton } from "@mui/material";
 import React from "react";
-import Search from "../../assets/search.svg";
-
-import IconImage from "../global/IconImage";
 
 const SearchBar = () => {
   const onPaletteIconClick = () => {};
   return (
     <div className="input-group">
-      <span
-        className="input-group-text bg-secondary bg-opacity-10"
-        id="basic-addon1"
-      >
-        <IconImage x={1} y={1} src={Search} onClick={onPaletteIconClick} />
-      </span>
       <input
         type="text"
-        className="form-control bg-secondary bg-opacity-10"
+        className="form-control"
         placeholder="Search"
         aria-label="Search"
         aria-describedby="addon-wrapping"
       />
+      <span
+        className="input-group-text bg-light bg-opacity-75"
+        id="basic-addon1"
+      >
+        <IconButton style={{ margin: "-6px" }}>
+          <ManageSearchOutlinedIcon style={{ fontSize: "25px" }} />
+        </IconButton>
+      </span>
     </div>
   );
 };

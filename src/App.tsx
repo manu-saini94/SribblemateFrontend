@@ -1,45 +1,41 @@
-import Trash from "pages/Trash";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import AllLabelledNotes from "pages/AllLabelledNotes";
+import EditLabels from "pages/EditLabels";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-import { AppDispatch, RootState } from "redux/store";
+import { AppDispatch } from "redux/store";
 import NavBar from "./components/navbar/NavBar";
 import SideBar from "./components/sidebar/SideBar";
 import Archive from "./pages/Archive";
+import Label from "./pages/Label";
+import Login from "./pages/Login";
 import Notes from "./pages/Notes";
 import Register from "./pages/Register";
 import Reminder from "./pages/Reminder";
-
-import Label from "pages/Label";
-
-import Login from "pages/Login";
+import Trash from "./pages/Trash";
 import { fetchLabels, fetchNotes } from "./redux/asyncThunks";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const token = useSelector((state: RootState) => state.auth.token);
-
-  // const [token, setToken] = useToken();
-
-  // useEffect(() => {
-  //   const handleStorageChange = () => {
-  //     setToken(localStorage.getItem("token"));
-  //   };
-
-  //   window.addEventListener("storage", handleStorageChange);
-  //   return () => {
-  //     window.removeEventListener("storage", handleStorageChange);
-  //   };
-  // });
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
-    console.log("Token => ", token);
+    const handleStorageChange = () => {
+      setToken(localStorage.getItem("token"));
+    };
 
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  });
+
+  useEffect(() => {
     if (token) {
       dispatch(fetchNotes());
       dispatch(fetchLabels());
@@ -74,9 +70,11 @@ function MainLayout() {
           <Routes>
             <Route path="/note" element={<Notes />} />
             <Route path="/reminder" element={<Reminder />} />
-            <Route path={`/label/:labelId`} element={<Label />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/trash" element={<Trash />} />
+            <Route path="/labellednotes" element={<AllLabelledNotes />} />
+            <Route path="/editlabels" element={<EditLabels />} />
+            <Route path={`/label/:labelId`} element={<Label />} />
           </Routes>
         </div>
       </div>

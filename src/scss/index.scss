@@ -81,3 +81,15 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: black !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
+
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 16px; /* Adds space between grid items */
+}
+
+.note-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

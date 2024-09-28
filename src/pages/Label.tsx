@@ -35,7 +35,7 @@ const Label = () => {
     } else if (allLabelNotes.length === 0) {
       dispatch(fetchAllLabelNotes());
     }
-  }, [labelId, dispatch, allLabelNotes]);
+  }, [labelId, dispatch, allLabelNotes, allNotesByLabelId]);
 
   useEffect(() => {
     getLabeledNotes();

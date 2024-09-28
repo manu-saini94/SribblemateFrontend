@@ -13,12 +13,5 @@ export const registerAuthUser = (
 };
 
 export const loginAuthUser = async (loginDetails: LoginCredentialsType) => {
-  return await fetch(BASE_URL_V1 + LOGIN_USER_URL, {
-    method: "POST", // Specify the HTTP method
-    headers: {
-      "Content-Type": "application/json", // Specify the content type
-    },
-    credentials: "include", // Include credentials (cookies) in the request
-    body: JSON.stringify(loginDetails), // Convert loginDetails to a JSON string
-  });
+  return axios.post(BASE_URL_V1 + LOGIN_USER_URL, loginDetails);
 };

@@ -1,12 +1,11 @@
-import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
-
 import App from "App";
 import ThemeProvider from "contexts/providers/ThemeProvider";
 import React from "react";
-import "./index.scss";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import store from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
+import "./scss/index.scss";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
