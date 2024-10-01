@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authMiddleware } from "./auth/authMiddleware";
 import authReducer from "./auth/authSlice";
+import menuReducer from "./global/globalSlice";
 import labelReducer from "./labels/labelSlice";
 import colorReducer from "./notes/color/colorSlice";
 import noteReducer from "./notes/noteSlice";
@@ -12,6 +13,7 @@ const store = configureStore({
     notes: noteReducer,
     allReminderNotes: reminderNoteReducer,
     allLabels: labelReducer,
+    menus: menuReducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>

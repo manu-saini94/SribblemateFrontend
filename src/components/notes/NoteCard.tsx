@@ -7,82 +7,30 @@ import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { IconButton } from "@mui/material";
-import { NoteCardPropsType, UpdateNoteType } from "notetypes";
-import React, { useEffect, useRef, useState } from "react";
+import useNoteCard from "hooks/useNoteCard";
+import { NoteCardPropsType } from "notetypes";
+import React from "react";
 import "../../scss/notecard.scss";
-
 import ColorPalette from "./colorpalette/ColorPalette";
 
 function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
-  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
-
-  const colorPaletteRef = useRef<HTMLDivElement>(null);
-  const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-  const [openPalette, setOpenPalette] = useState(false);
-
-  const onPinClick = () => {
-    // setPin(!pin);
-  };
-
-  const handleTitleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    // event.preventDefault();
-  };
-
-  const handleContentClick = (event: React.MouseEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    // event.preventDefault();
-  };
-
-  const onCollaboratorClick = () => {};
-
-  const onReminderClick = () => {};
-
-  const onArchiveClick = () => {
-    // setArchive(true);
-  };
-
-  const onMoreClick = () => {};
-
-  const onImageClick = () => {};
-
-  const toggleColorPalette = () => {
-    colorPaletteRef.current?.classList.toggle("show");
-  };
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-      if (
-        colorPaletteRef.current &&
-        !colorPaletteRef.current.contains(target)
-      ) {
-        setOpenPalette(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [colorPaletteRef]);
-
-  // useEffect(() => {
-  //   function handleClickOutsideNote(event: MouseEvent) {
-  //     const target = event.target as HTMLElement;
-  //     if (
-  //       takeNoteDetailsRef.current &&
-  //       !takeNoteDetailsRef.current.contains(target)
-  //     ) {
-  //       setIsTakeNoteActive(true);
-  //     }
-  //   }
-  //   document.addEventListener("mousedown", handleClickOutsideNote);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutsideNote);
-  //   };
-  // }, [takeNoteDetailsRef, setIsTakeNoteActive]);
+  const {
+    updateNote,
+    setUpdateNote,
+    takeNoteDetailsRef,
+    openPalette,
+    setOpenPalette,
+    colorPaletteRef,
+    onPinClick,
+    handleTitleClick,
+    handleContentClick,
+    onCollaboratorClick,
+    onReminderClick,
+    onArchiveClick,
+    onMoreClick,
+    onImageClick,
+    toggleColorPalette,
+  } = useNoteCard({ noteCardValues, onNoteClick });
 
   return (
     <div
@@ -108,17 +56,18 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
               onClick={onNoteClick}
             />
           </div>
-          {updateNote.isPinned ? (
-            <IconButton onClick={onPinClick}>
-              {" "}
-              <PushPinIcon className="fs-6 mt-n4" />
+          <div>
+            <IconButton
+              onClick={onPinClick}
+              style={{ marginTop: "-14px", marginRight: "-14px" }}
+            >
+              {updateNote.isPinned ? (
+                <PushPinIcon className="fs-6 " />
+              ) : (
+                <PushPinOutlinedIcon className="fs-6 " />
+              )}
             </IconButton>
-          ) : (
-            <IconButton onClick={onPinClick}>
-              {" "}
-              <PushPinOutlinedIcon className="fs-6 " />
-            </IconButton>
-          )}
+          </div>
         </div>
 
         <div className="input-group mb-3">

@@ -15,6 +15,7 @@ import {
   getAllNotesByLabel,
   getAllNotesByUser,
   getAllReminderNotesByUser,
+  updatePinForUserNote,
 } from "../api/requests/NoteRequests";
 
 export const loginUser = createAsyncThunk(
@@ -55,6 +56,15 @@ export const createNote = createAsyncThunk(
   "notes/createNote",
   (noteData: CreateNoteType) => {
     return createNoteForUser(noteData).then((response) => response.data.object);
+  }
+);
+
+export const updatePinForNote = createAsyncThunk(
+  "notes/updatePin",
+  (noteId: number) => {
+    return updatePinForUserNote(noteId).then(
+      (response) => response.data.object
+    );
   }
 );
 

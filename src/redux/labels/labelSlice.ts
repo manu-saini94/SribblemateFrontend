@@ -61,6 +61,7 @@ const labelSlice = createSlice({
       state.labels = [];
       state.error = action.error.message ?? "Failed to fetch labels";
     });
+
     builder.addCase(createLabel.pending, (state) => {
       state.createdLabelLoading = true;
     });
@@ -75,6 +76,7 @@ const labelSlice = createSlice({
       state.createdLabelError =
         action.error.message ?? "Failed to create label";
     });
+
     builder.addCase(updateLabel.pending, (state) => {
       state.updateLabelLoading = true;
     });
@@ -88,6 +90,7 @@ const labelSlice = createSlice({
       state.updateLabelObject = {} as UpdateLabelType;
       state.updateLabelError = action.error.message ?? "Failed to update label";
     });
+
     builder.addCase(deleteLabel.pending, (state) => {
       state.updateLabelLoading = true;
     });

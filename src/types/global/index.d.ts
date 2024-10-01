@@ -21,7 +21,34 @@ export interface ColorContextType {
   color: string;
   changeColorClick: (color: string) => void;
 }
-
 export interface ColorContextProps extends ReactNodeHOCProps {}
 
 export interface ThemeContextProps extends ReactNodeHOCProps {}
+
+export type LabelEnum = {
+  [key: string]: string;
+};
+
+export type GlobalInitialStateType = {
+  loading: Boolean;
+  error: string;
+};
+
+export type GlobalStoreInitialStateType = GlobalInitialStateType & {
+  activeMenu: string;
+};
+
+// type LabelEnum = {
+//   [key: string]: string;  // Simulating an Enum structure for labels
+// };
+
+// // This type will act like an Enum for dynamic labels
+// let DynamicLabelMenus: LabelEnum = {};
+
+// // Example API labels (you'll fetch this from your API)
+// const fetchedLabels = ['Work', 'Personal', 'Urgent'];  // This is from API
+
+// // Populate the DynamicLabelMenus object to act like an Enum
+// fetchedLabels.forEach(label => {
+//   DynamicLabelMenus[label] = label;
+// });

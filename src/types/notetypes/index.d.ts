@@ -74,10 +74,16 @@ export type NoteInitialStateType = {
   allLabelNotesError: string;
   notesByLabelIdLoading: Boolean;
   notesByLabelIdError: string;
+  noteUpdateLoading: Boolean;
+  noteUpdateError: string;
 };
 
 export type ByIdTransformType = {
   [id: number]: UpdateNoteType[];
+};
+
+export type NotesPropsType = {
+  notes: UpdateNoteType[];
 };
 
 export type NoteStoreInitialStateType = NoteInitialStateType & {
@@ -87,6 +93,7 @@ export type NoteStoreInitialStateType = NoteInitialStateType & {
   allLabelNotes: UpdateNoteType[];
   notesByLabelId: ByIdTransformType;
   currentLabelNotes: UpdateNoteType[];
+  updatedNote: UpdateNoteType;
 };
 
 export type ReminderNoteStoreInitialStateType = CommonInitialState & {

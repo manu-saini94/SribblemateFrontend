@@ -30,35 +30,44 @@ export const colorList = [
   "#efeff1",
 ];
 
+export enum SidebarMenus {
+  Notes = "Notes",
+  Reminders = "Reminders",
+  Archive = "Archive",
+  Trash = "Trash",
+  EditLabels = "Edit Labels",
+  LabelledNotes = "Labelled Notes",
+}
+
 export const menuList: MenuItemType[] = [
   {
-    name: "Notes",
+    name: SidebarMenus.Notes,
     path: "note",
     iconSrc: EditNoteOutlinedIcon,
   },
   {
-    name: "Reminders",
+    name: SidebarMenus.Reminders,
     path: "reminder",
     iconSrc: NotificationsActiveOutlinedIcon,
   },
 
   {
-    name: "Archive",
+    name: SidebarMenus.Archive,
     path: "archive",
     iconSrc: ArchiveOutlinedIcon,
   },
   {
-    name: "Trash",
+    name: SidebarMenus.Trash,
     path: "trash",
     iconSrc: DeleteOutlinedIcon,
   },
   {
-    name: "Labelled Notes",
+    name: SidebarMenus.LabelledNotes,
     path: "labellednotes",
     iconSrc: EditLabelIcon,
   },
   {
-    name: "Edit Labels",
+    name: SidebarMenus.EditLabels,
     path: "editlabels",
     iconSrc: EditOutlinedIcon,
   },

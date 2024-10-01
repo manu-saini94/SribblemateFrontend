@@ -1,5 +1,5 @@
-import useDisplayNoteCards from "hooks/useDisplayNoteCards";
-import { useCallback, useEffect } from "react";
+import DisplayNotes from "components/notes/DisplayNotes";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "redux/store";
@@ -41,7 +41,7 @@ const Label = () => {
     getLabeledNotes();
   }, [getLabeledNotes]);
 
-  return useDisplayNoteCards(labelId ? currentLabelNotes : allLabelNotes);
+  return <DisplayNotes notes={labelId ? currentLabelNotes : allLabelNotes} />;
 };
 
 export default Label;

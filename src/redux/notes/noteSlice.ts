@@ -6,13 +6,15 @@ import {
   fetchAllLabelNotes,
   fetchNotes,
   fetchNotesByLabel,
+  updatePinForNote,
 } from "../asyncThunks";
 
-const initialLoadingNoteStates = {
+const initialLoadingStates = {
   loading: false,
   createdNoteLoading: false,
   allLabelNotesLoading: false,
   notesByLabelIdLoading: false,
+  noteUpdateLoading: false,
 };
 
 const initialDataStates = {
@@ -21,6 +23,7 @@ const initialDataStates = {
   allLabelNotes: [],
   notesByLabelId: {},
   currentLabelNotes: [],
+  updatedNote: initialNoteValue,
 };
 
 const initialErrorStates = {
@@ -28,11 +31,12 @@ const initialErrorStates = {
   createdNoteError: "",
   allLabelNotesError: "",
   notesByLabelIdError: "",
+  noteUpdateError: "",
 };
 
 const initialState: NoteStoreInitialStateType = {
   labelId: 0,
-  ...initialLoadingNoteStates,
+  ...initialLoadingStates,
   ...initialDataStates,
   ...initialErrorStates,
 };
@@ -50,7 +54,7 @@ const noteSlice = createSlice({
         state.currentLabelNotes = state.notesByLabelId[state.labelId] || [];
       }
     },
-    updateNote(state, action) {},
+    updateUserNote(state) {},
   },
   extraReducers: (builder) => {
     builder
@@ -67,6 +71,7 @@ const noteSlice = createSlice({
         state.pinnedAndOthersNotes = [];
         state.error = action.error.message ?? "Failed to fetch notes";
       })
+
       .addCase(createNote.pending, (state) => {
         state.createdNoteLoading = true;
       })
@@ -81,6 +86,7 @@ const noteSlice = createSlice({
         state.createdNoteError =
           action.error.message ?? "Failed to create note";
       })
+
       .addCase(fetchAllLabelNotes.pending, (state) => {
         state.allLabelNotesLoading = true;
       })
@@ -95,6 +101,7 @@ const noteSlice = createSlice({
         state.allLabelNotesError =
           action.error.message ?? "Failed to fetch notes with labels";
       })
+
       .addCase(fetchNotesByLabel.pending, (state) => {
         state.notesByLabelIdLoading = true;
       })
@@ -107,11 +114,25 @@ const noteSlice = createSlice({
         state.notesByLabelIdLoading = false;
         state.notesByLabelIdError =
           action.error.message ?? "Failed to fetch notes with labels";
+      })
+
+      .addCase(updatePinForNote.pending, (state) => {
+        state.noteUpdateLoading = true;
+      })
+      .addCase(updatePinForNote.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.noteUpdateError = "";
+      })
+      .addCase(updatePinForNote.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Failed to update Note";
+        state.updatedNote = {} as UpdateNoteType;
       });
   },
 });
 
-export const { insertNewNote, updateNote, extractFromNotesByLabelId } =
+export const { insertNewNote, updateUserNote, extractFromNotesByLabelId } =
   noteSlice.actions;
 export default noteSlice.reducer;
 

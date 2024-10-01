@@ -4,6 +4,7 @@ import {
   LABEL_URL,
   NOTE_FETCH_BY_REMINDER_URL,
   NOTE_FETCH_URL,
+  NOTE_UPDATE_PIN_URL,
 } from "api/serviceUtils";
 import axios from "axios";
 import { CreateNoteType } from "notetypes";
@@ -27,4 +28,10 @@ export const getAllReminderNotesByUser = () => {
 
 export const createNoteForUser = (createNoteData: CreateNoteType) => {
   return axios.post(BASE_URL_V1 + CREATE_NOTE_URL, createNoteData);
+};
+
+export const updatePinForUserNote = (noteId: number) => {
+  return axios.put(BASE_URL_V1 + NOTE_UPDATE_PIN_URL, {
+    params: noteId ? { noteId } : {},
+  });
 };
