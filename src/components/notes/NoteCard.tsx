@@ -61,7 +61,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
               onClick={onPinClick}
               style={{ marginTop: "-14px", marginRight: "-14px" }}
             >
-              {updateNote.isPinned ? (
+              {updateNote.pinned ? (
                 <PushPinIcon className="fs-6 " />
               ) : (
                 <PushPinOutlinedIcon className="fs-6 " />

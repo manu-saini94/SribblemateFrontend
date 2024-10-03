@@ -31,7 +31,7 @@ export const createNoteForUser = (createNoteData: CreateNoteType) => {
 };
 
 export const updatePinForUserNote = (noteId: number) => {
-  return axios.put(BASE_URL_V1 + NOTE_UPDATE_PIN_URL, {
-    params: noteId ? { noteId } : {},
+  return axios.put(BASE_URL_V1 + NOTE_UPDATE_PIN_URL, null, {
+    params: { noteId },
   });
 };

@@ -1,5 +1,7 @@
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
-import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
+import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
@@ -49,15 +51,19 @@ const TakeNoteDetails = ({
   const onPinClick = () => {
     setNoteData((prevValues) => ({
       ...prevValues,
-      isPinned: !prevValues.isPinned,
+      pinned: !prevValues.pinned,
+      archived: false,
     }));
   };
 
   const onArchiveClick = () => {
     setNoteData((prevValues) => ({
       ...prevValues,
-      isArchived: true,
+      archived: true,
+      pinned: false,
     }));
+    dispatchCreatedNote();
+    toggleTakeNoteActive();
   };
 
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -76,11 +82,15 @@ const TakeNoteDetails = ({
     colorPaletteRef.current?.classList.toggle("show");
   };
 
+  const onCheckboxIconClick = (): void => {};
+
+  const onDeleteIconClick = (): void => {};
+
+  const onLabelAddIconClick = (): void => {};
+
   const onReminderIconClick = (): void => {};
 
   const onImageIconClick = (): void => {};
-
-  const onMoreIconClick = (): void => {};
 
   const onCollaboratorIconClick = (): void => {};
 
@@ -137,7 +147,7 @@ const TakeNoteDetails = ({
       >
         <div className="card-body pb-2">
           <div className="d-flex flex-row">
-            <div className="input-group mb-3">
+            <div className="input-group mb-3 ">
               <input
                 type="text"
                 className="form-control border-0 p-0 m-0"
@@ -149,9 +159,10 @@ const TakeNoteDetails = ({
                 value={noteData.title}
                 onChange={handleChange}
               />
-
+            </div>
+            <div className="">
               <IconButton onClick={onPinClick}>
-                {noteData.isPinned ? (
+                {noteData.pinned ? (
                   <PushPinIcon className="fs-6 mt-n4" />
                 ) : (
                   <PushPinOutlinedIcon className="fs-6 " />
@@ -189,27 +200,27 @@ const TakeNoteDetails = ({
           </div>
 
           <div className="d-flex flex-row justify-content-between mt-1">
-            <div className="col-2">
+            <div className="col-1">
               <IconButton onClick={onReminderIconClick}>
                 <NotificationAddOutlinedIcon className="fs-6 " />
               </IconButton>
             </div>
-            <div className="col-2">
+            <div className="col-1">
               <IconButton onClick={onImageIconClick}>
                 <PermMediaOutlinedIcon className="fs-6" />
               </IconButton>
             </div>
-            <div className="col-2">
+            <div className="col-1">
               <IconButton onClick={onCollaboratorIconClick}>
                 <PersonAddOutlinedIcon className="fs-6" />
               </IconButton>
             </div>
-            <div className="col-2">
+            <div className="col-1">
               <IconButton onClick={onArchiveClick}>
                 <ArchiveOutlinedIcon className="fs-6" />
               </IconButton>
             </div>
-            <div className="col-2">
+            <div className="col-1">
               <div
                 data-bs-toggle="collapse"
                 data-bs-target="#collapsePalette"
@@ -221,9 +232,20 @@ const TakeNoteDetails = ({
                 </IconButton>
               </div>
             </div>
-            <div className="col-2">
-              <IconButton onClick={onMoreIconClick}>
-                <MoreVertOutlinedIcon className="fs-6" />
+
+            <div className="col-1">
+              <IconButton onClick={onDeleteIconClick}>
+                <DeleteOutlinedIcon className="fs-6" />
+              </IconButton>
+            </div>
+            <div className="col-1">
+              <IconButton onClick={onLabelAddIconClick}>
+                <LabelOutlinedIcon className="fs-6" />
+              </IconButton>
+            </div>
+            <div className="col-1">
+              <IconButton onClick={onCheckboxIconClick}>
+                <LibraryAddCheckOutlinedIcon className="fs-6" />
               </IconButton>
             </div>
 

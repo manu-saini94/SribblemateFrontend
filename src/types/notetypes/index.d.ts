@@ -19,9 +19,9 @@ export type CreateNoteType = {
   title: string;
   content: string;
   images: string[];
-  isTrashed: Boolean;
-  isArchived: Boolean;
-  isPinned: Boolean;
+  trashed: Boolean;
+  archived: Boolean;
+  pinned: Boolean;
   color: string;
   reminder: string;
   createdAt: string;
@@ -78,6 +78,17 @@ export type NoteInitialStateType = {
   noteUpdateError: string;
 };
 
+interface NormalizedNotes {
+  notesById: { [id: number]: UpdateNoteType };
+  allIds: number[];
+  pinnedIds: number[];
+  archiveIds: number[];
+  othersIds: number[];
+  trashIds: number[];
+  hasLabelIds: number[];
+  hasReminderIds: number[];
+}
+
 export type ByIdTransformType = {
   [id: number]: UpdateNoteType[];
 };
@@ -89,7 +100,14 @@ export type NotesPropsType = {
 export type NoteStoreInitialStateType = NoteInitialStateType & {
   labelId: number;
   createdNoteObject: UpdateNoteType;
-  pinnedAndOthersNotes: UpdateNoteType[];
+  notesById: { [id: number]: UpdateNoteType };
+  allIds: number[];
+  pinnedIds: number[];
+  archiveIds: number[];
+  othersIds: number[];
+  trashIds: number[];
+  hasLabelIds: number[];
+  hasReminderIds: number[];
   allLabelNotes: UpdateNoteType[];
   notesByLabelId: ByIdTransformType;
   currentLabelNotes: UpdateNoteType[];

@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NoteStoreInitialStateType, UpdateNoteType } from "notetypes";
+import {
+  NormalizedNotes,
+  NoteStoreInitialStateType,
+  UpdateNoteType,
+} from "notetypes";
 import { initialNoteValue } from "utility/reduxutils/noteUtils";
 import {
   createNote,
@@ -19,7 +23,14 @@ const initialLoadingStates = {
 
 const initialDataStates = {
   createdNoteObject: initialNoteValue,
-  pinnedAndOthersNotes: [],
+  notesById: {},
+  allIds: [],
+  pinnedIds: [],
+  archiveIds: [],
+  othersIds: [],
+  trashIds: [],
+  hasLabelIds: [],
+  hasReminderIds: [],
   allLabelNotes: [],
   notesByLabelId: {},
   currentLabelNotes: [],
@@ -41,12 +52,58 @@ const initialState: NoteStoreInitialStateType = {
   ...initialErrorStates,
 };
 
+const normalizeNotes = (notes: UpdateNoteType[]): NormalizedNotes => {
+  const notesById: { [id: number]: UpdateNoteType } = {};
+  const allIds: number[] = [];
+  const pinnedIds: number[] = [];
+  const archiveIds: number[] = [];
+  const othersIds: number[] = [];
+  const trashIds: number[] = [];
+  const hasLabelIds: number[] = [];
+  const hasReminderIds: number[] = [];
+
+  notes.forEach((note) => {
+    notesById[note.id] = note;
+    allIds.push(note.id);
+    if (note.pinned) pinnedIds.push(note.id);
+    if (note.archived) archiveIds.push(note.id);
+    if (note.trashed) trashIds.push(note.id);
+    if (!note.pinned && !note.archived && !note.trashed)
+      othersIds.push(note.id);
+    if (note.labelSet.length > 0) hasLabelIds.push(note.id);
+    if (note.reminder !== null && note.reminder !== undefined)
+      hasReminderIds.push(note.id);
+  });
+
+  return {
+    notesById,
+    allIds,
+    pinnedIds,
+    archiveIds,
+    othersIds,
+    trashIds,
+    hasLabelIds,
+    hasReminderIds,
+  };
+};
+
 const noteSlice = createSlice({
   name: "notes",
   initialState,
   reducers: {
     insertNewNote(state) {
-      state.pinnedAndOthersNotes.unshift(state.createdNoteObject);
+      // state.notes.unshift(state.createdNoteObject);
+      const note = state.createdNoteObject;
+      state.notesById[note.id] = note;
+      state.allIds.unshift(note.id);
+      if (note.pinned) state.pinnedIds.unshift(note.id);
+      if (note.archived) state.archiveIds.unshift(note.id);
+      if (note.trashed) state.trashIds.unshift(note.id);
+      if (!note.pinned && !note.archived && !note.trashed)
+        state.othersIds.unshift(note.id);
+      if (note?.labelSet?.length > 0) state.hasLabelIds.unshift(note.id);
+      if (note.reminder !== null && note.reminder !== undefined)
+        state.hasReminderIds.unshift(note.id);
     },
     extractFromNotesByLabelId(state, action: PayloadAction<number>) {
       state.labelId = action.payload;
@@ -54,7 +111,10 @@ const noteSlice = createSlice({
         state.currentLabelNotes = state.notesByLabelId[state.labelId] || [];
       }
     },
-    updateUserNote(state) {},
+
+    updateUserNote(state, action) {
+      // state.pinnedAndOthersNotes.splice(index);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,12 +123,29 @@ const noteSlice = createSlice({
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
         state.loading = false;
-        state.pinnedAndOthersNotes = action.payload;
+        const {
+          notesById,
+          allIds,
+          pinnedIds,
+          archiveIds,
+          othersIds,
+          trashIds,
+          hasLabelIds,
+          hasReminderIds,
+        } = normalizeNotes(action.payload);
+        state.notesById = notesById;
+        state.allIds = allIds;
+        state.pinnedIds = pinnedIds;
+        state.archiveIds = archiveIds;
+        state.othersIds = othersIds;
+        state.trashIds = trashIds;
+        state.hasLabelIds = hasLabelIds;
+        state.hasReminderIds = hasReminderIds;
         state.error = "";
       })
       .addCase(fetchNotes.rejected, (state, action) => {
         state.loading = false;
-        state.pinnedAndOthersNotes = [];
+        state.notesById = {};
         state.error = action.error.message ?? "Failed to fetch notes";
       })
 

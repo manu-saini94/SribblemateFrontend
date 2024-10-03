@@ -10,7 +10,7 @@ import reminderNoteReducer from "./reminder/reminderSlice";
 const store = configureStore({
   reducer: {
     noteColor: colorReducer,
-    notes: noteReducer,
+    allNotes: noteReducer,
     allReminderNotes: reminderNoteReducer,
     allLabels: labelReducer,
     menus: menuReducer,

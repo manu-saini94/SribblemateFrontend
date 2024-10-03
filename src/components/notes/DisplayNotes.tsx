@@ -8,7 +8,7 @@ const DisplayNotes = ({ notes }: NotesPropsType) => {
     useDisplayNoteCards();
   return (
     <div className="d-flex flex-wrap ">
-      {notes.map((noteCard) => {
+      {notes?.map((noteCard) => {
         return (
           <div className="p-2 g-col-2" key={noteCard.id}>
             <NoteCard

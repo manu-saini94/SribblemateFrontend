@@ -3,7 +3,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
-import EditLabelIcon from "components/icons/EditLabelIcon";
+import LabelledNotesMenuIcon from "components/icons/LabelledNotesMenuIcon";
 import { MenuItemType } from "sidebartypes";
 export const EMAIL_REGEX = /^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const PWD_REGEX =
@@ -64,7 +64,7 @@ export const menuList: MenuItemType[] = [
   {
     name: SidebarMenus.LabelledNotes,
     path: "labellednotes",
-    iconSrc: EditLabelIcon,
+    iconSrc: LabelledNotesMenuIcon,
   },
   {
     name: SidebarMenus.EditLabels,

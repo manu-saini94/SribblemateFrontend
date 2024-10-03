@@ -2,6 +2,7 @@ import { NoteCardPropsType, UpdateNoteType } from "notetypes";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
+import { SidebarMenus } from "utility/miscsUtils";
 import { updatePinForNote } from "../redux/asyncThunks";
 import { updateUserNote } from "../redux/notes/noteSlice";
 
@@ -19,7 +20,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const dispatchPinNote = () => {
     dispatch(updatePinForNote(noteCardValues.id)).then(() => {
-      dispatch(updateUserNote());
+      dispatch(updateUserNote(SidebarMenus.Notes));
     });
   };
 

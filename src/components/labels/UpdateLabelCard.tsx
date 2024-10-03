@@ -35,7 +35,7 @@ const UpdateLabelCard = ({ label, index }: UpdateLabelCardPropsType) => {
         <div className="align-content-center edit-label-card ">
           <div className="input-group input-group-sm mt-2" ref={wrapperRef}>
             <span
-              className="input-group-text bg-light bg-opacity-75"
+              className="input-group-text bg-white bg-opacity-75"
               id="basic-addon1"
             >
               <LabelImportantTwoToneIcon
@@ -63,7 +63,7 @@ const UpdateLabelCard = ({ label, index }: UpdateLabelCardPropsType) => {
             {isEditOn && (
               <>
                 <span
-                  className="input-group-text bg-light bg-opacity-75"
+                  className="input-group-text bg-white bg-opacity-75"
                   id="basic-addon1"
                 >
                   <Tooltip title={"Done"}>
@@ -73,7 +73,7 @@ const UpdateLabelCard = ({ label, index }: UpdateLabelCardPropsType) => {
                   </Tooltip>
                 </span>
                 <span
-                  className="input-group-text bg-light bg-opacity-75"
+                  className="input-group-text bg-white bg-opacity-75"
                   id="basic-addon1"
                 >
                   <Tooltip
@@ -97,7 +97,7 @@ const UpdateLabelCard = ({ label, index }: UpdateLabelCardPropsType) => {
                 </span>
 
                 <span
-                  className="input-group-text bg-light bg-opacity-75"
+                  className="input-group-text bg-white bg-opacity-75"
                   id="basic-addon1"
                 >
                   <Tooltip title={checkForLabelChange() ? "Reject" : "Close"}>
@@ -112,7 +112,7 @@ const UpdateLabelCard = ({ label, index }: UpdateLabelCardPropsType) => {
             )}
 
             <span
-              className="input-group-text bg-light bg-opacity-75"
+              className="input-group-text bg-white bg-opacity-75"
               id="basic-addon1"
             >
               <Tooltip
@@ -133,7 +133,7 @@ const UpdateLabelCard = ({ label, index }: UpdateLabelCardPropsType) => {
             </span>
 
             <span
-              className="input-group-text bg-light bg-opacity-75"
+              className="input-group-text bg-white bg-opacity-75"
               id="basic-addon1"
             >
               <Tooltip title={"Delete"}>
@@ -144,7 +144,7 @@ const UpdateLabelCard = ({ label, index }: UpdateLabelCardPropsType) => {
             </span>
             {!isEditOn && (
               <span
-                className="input-group-text bg-light bg-opacity-75"
+                className="input-group-text bg-white bg-opacity-75"
                 id="basic-addon1"
               >
                 <Tooltip title={"Edit"}>
