@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import NoLabelledNotesIcon from "../components/icons/NoLabelledNotesIcon";
-import DisplayNotes from "../components/notes/DisplayNotes";
+import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import withNote from "../components/notes/withNote";
 import { selectLabelledNotes } from "../redux/selectors";
 

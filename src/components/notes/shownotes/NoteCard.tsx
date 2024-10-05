@@ -10,8 +10,8 @@ import { IconButton } from "@mui/material";
 import useNoteCard from "hooks/useNoteCard";
 import { NoteCardPropsType } from "notetypes";
 import React from "react";
-import "../../scss/notecard.scss";
-import ColorPalette from "./colorpalette/ColorPalette";
+import "../../../scss/notecard.scss";
+import ColorPalette from "../colorpalette/ColorPalette";
 
 function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const {

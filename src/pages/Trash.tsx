@@ -1,7 +1,7 @@
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import React from "react";
 import { useSelector } from "react-redux";
-import DisplayNotes from "../components/notes/DisplayNotes";
+import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import { selectTrashedNotes } from "../redux/selectors";
 
 const Trash = () => {

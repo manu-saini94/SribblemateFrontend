@@ -1,7 +1,7 @@
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import React from "react";
 import { useSelector } from "react-redux";
-import DisplayNotes from "../components/notes/DisplayNotes";
+import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import withNote from "../components/notes/withNote";
 import { selectReminderNotes } from "../redux/selectors";
 

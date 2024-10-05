@@ -15,6 +15,12 @@ export const PWD_WARN =
   "Password must contain one digit from 1 to 9, one lowercase letter, one uppercase letter, one special character, no space, and it must be 8 to 16 characters long";
 export const FULLNAME_RQD = "Full Name is required";
 export const PWD_NOT_MATCH = "Passwords do not match";
+
+export enum NoteCardType {
+  COLLABORATOR,
+  NOTE,
+  LABEL,
+}
 export const colorList = [
   "#fff",
   "#faafa8",

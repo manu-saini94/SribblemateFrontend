@@ -20,8 +20,10 @@ import {
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  (loginDetails: LoginCredentialsType) => {
-    return loginAuthUser(loginDetails).then((response) => response.data);
+  async (loginDetails: LoginCredentialsType) => {
+    return await loginAuthUser(loginDetails).then(
+      (response) => response.data.object
+    );
   }
 );
 

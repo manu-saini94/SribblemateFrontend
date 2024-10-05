@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  AuthResponse,
   AuthStoreInitialStateType,
   LoginInitialStateType,
   RegisterInitialStateType,
-  UserResponseType,
 } from "authtypes";
 import { loginUser, registerUser } from "../asyncThunks";
 
 const loginInitialState: LoginInitialStateType = {
   loginLoading: false,
   token: null,
-  loggedInUserData: {} as UserResponseType,
+  loggedInUserData: {} as AuthResponse,
   loginError: null,
 };
 
@@ -41,7 +41,7 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loginLoading = false;
-      state.loggedInUserData = {} as UserResponseType;
+      state.loggedInUserData = {} as AuthResponse;
       state.loginError = action.error.message ?? "Failed to Authorize";
     });
     builder.addCase(registerUser.pending, (state) => {

@@ -1,7 +1,7 @@
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import React from "react";
 import { useSelector } from "react-redux";
-import DisplayNotes from "../components/notes/DisplayNotes";
+import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import withNote from "../components/notes/withNote";
 import { selectOthersNotes, selectPinnedNotes } from "../redux/selectors";
 

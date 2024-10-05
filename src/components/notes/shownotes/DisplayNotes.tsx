@@ -1,7 +1,7 @@
-import NoteCard from "components/notes/NoteCard";
+import NoteCard from "components/notes/shownotes/NoteCard";
 import { NotesPropsType } from "notetypes";
 import React from "react";
-import useDisplayNoteCards from "../../hooks/useDisplayNoteCards";
+import useDisplayNoteCards from "../../../hooks/useDisplayNoteCards";
 
 const DisplayNotes = ({ notes }: NotesPropsType) => {
   const { isUpdateCardActive, currentNoteCard, handleClick } =

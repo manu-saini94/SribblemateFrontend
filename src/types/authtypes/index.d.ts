@@ -45,10 +45,20 @@ export type UserDataType = {
   profilePicture: string;
 };
 
-export type UserResponseType = {
+interface UserDto {
+  fullName: string;
+  email: string;
+  status: "ACTIVE" | "INACTIVE"; // Add more statuses if applicable
+  createdAt: string; // ISO string format, you can use Date if you prefer
+  updatedAt: string; // ISO string format
+  profilePicture: string | null;
+}
+
+interface AuthResponse {
   token: string;
-  userDto: UserDataType;
-};
+  userDto: UserDto;
+  expiresIn: number;
+}
 
 export type LoginInitialStateType = {
   loginLoading: Boolean;

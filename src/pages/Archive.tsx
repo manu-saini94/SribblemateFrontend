@@ -1,7 +1,7 @@
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import React from "react";
 import { useSelector } from "react-redux";
-import DisplayNotes from "../components/notes/DisplayNotes";
+import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import withNote from "../components/notes/withNote";
 import { selectArchivedNotes } from "../redux/selectors";
 

@@ -9,130 +9,33 @@ import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { IconButton } from "@mui/material";
-import { useColor } from "hooks/useColor";
-import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
-import React, {
-  FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "redux/store";
-import {
-  hasNoteChanged,
-  initialCreateNoteValue,
-} from "utility/reduxutils/noteUtils";
-import useAutoResizeTextArea from "../../hooks/useAutoResizeTextArea";
-import { createNote } from "../../redux/asyncThunks";
-import { insertNewNote } from "../../redux/notes/noteSlice";
-import ColorPalette from "./colorpalette/ColorPalette";
+import useTakeNoteDetails from "hooks/useTakeNoteDetails";
+import { TakeNoteDetailsPropsType } from "notetypes";
+import React from "react";
+import ColorPalette from "../colorpalette/ColorPalette";
 
-const TakeNoteDetails = ({
+const TakeNoteDetailsCard = ({
   toggleTakeNoteActive,
+  changeActiveCard,
 }: TakeNoteDetailsPropsType) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const colorPaletteRef = useRef<HTMLDivElement>(null);
-  const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-  const colorContext = useColor();
-  const [noteData, setNoteData] = useState<CreateNoteType>(
-    initialCreateNoteValue
-  );
-
-  const handleChange = (event: { target: { name: any; value: any } }) => {
-    const { name, value } = event.target;
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
-
-  const onPinClick = () => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      pinned: !prevValues.pinned,
-      archived: false,
-    }));
-  };
-
-  const onArchiveClick = () => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      archived: true,
-      pinned: false,
-    }));
-    dispatchCreatedNote();
-    toggleTakeNoteActive();
-  };
-
-  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    dispatchCreatedNote();
-    toggleTakeNoteActive();
-  };
-
-  const dispatchCreatedNote = useCallback(() => {
-    if (hasNoteChanged(noteData)) {
-      dispatch(createNote(noteData)).then(() => dispatch(insertNewNote()));
-    }
-  }, [noteData, dispatch]);
-
-  const toggleColorPalette = () => {
-    colorPaletteRef.current?.classList.toggle("show");
-  };
-
-  const onCheckboxIconClick = (): void => {};
-
-  const onDeleteIconClick = (): void => {};
-
-  const onLabelAddIconClick = (): void => {};
-
-  const onReminderIconClick = (): void => {};
-
-  const onImageIconClick = (): void => {};
-
-  const onCollaboratorIconClick = (): void => {};
-
-  const { textareaRef, handleContentChange } =
-    useAutoResizeTextArea(handleChange);
-
-  useEffect(() => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      color: colorContext.color,
-    }));
-  }, [colorContext.color]);
-
-  useEffect(() => {
-    const handleClickOutsideNote = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const isClickInsideNote = takeNoteDetailsRef.current?.contains(target);
-      const isClickInsidePalette = colorPaletteRef.current?.contains(target);
-      const palette = colorPaletteRef.current;
-      if (!isClickInsideNote) {
-        if (palette?.classList.contains("show")) {
-          palette.classList.remove("show");
-        }
-        toggleTakeNoteActive();
-        dispatchCreatedNote();
-      } else if (!isClickInsidePalette) {
-        if (palette?.classList.contains("show")) {
-          palette.classList.remove("show");
-        }
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutsideNote);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideNote);
-    };
-  }, [
-    dispatch,
+  const {
+    colorPaletteRef,
     noteData,
+    handleChange,
     takeNoteDetailsRef,
-    toggleTakeNoteActive,
-    dispatchCreatedNote,
-  ]);
+    toggleColorPalette,
+    onCheckboxIconClick,
+    onDeleteIconClick,
+    onLabelAddIconClick,
+    onReminderIconClick,
+    onImageIconClick,
+    onCollaboratorIconClick,
+    onArchiveClick,
+    onPinClick,
+    handleNoteSubmit,
+    textareaRef,
+    handleContentChange,
+  } = useTakeNoteDetails({ toggleTakeNoteActive, changeActiveCard });
 
   return (
     <form onSubmit={handleNoteSubmit}>
@@ -259,4 +162,4 @@ const TakeNoteDetails = ({
   );
 };
 
-export default TakeNoteDetails;
+export default TakeNoteDetailsCard;

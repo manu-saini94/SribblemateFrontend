@@ -1,3 +1,4 @@
+import { AuthResponse } from "@types/authtypes";
 import { CreateLabelType } from "@types/labeltypes";
 import { Id, ReactNodeHOCProps } from "global";
 
@@ -6,6 +7,10 @@ export type ImageType = {
 };
 
 export type UpdateCollaboratorType = CreateCollaboratorType & Id;
+
+export type CollaboratorPropsType = {
+  loggedInUserData: AuthResponse;
+};
 
 export type CreateCollaboratorType = {
   email: string;
@@ -37,7 +42,12 @@ export type NoteCardPropsType = {
   onNoteClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
+export type TakeNoteDetailsType = {
+  toggleTakeNoteActive: () => void;
+};
+
 export type TakeNoteDetailsPropsType = {
+  changeActiveCard: (cardType: NoteCardType) => void;
   toggleTakeNoteActive: () => void;
 };
 
