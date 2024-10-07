@@ -20,10 +20,8 @@ import {
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async (loginDetails: LoginCredentialsType) => {
-    return await loginAuthUser(loginDetails).then(
-      (response) => response.data.object
-    );
+  (loginDetails: LoginCredentialsType) => {
+    return loginAuthUser(loginDetails).then((response) => response.data.object);
   }
 );
 
@@ -53,6 +51,15 @@ export const fetchNotesByLabel = createAsyncThunk(
     return getAllNotesByLabel(labelId).then((response) => response.data.object);
   }
 );
+
+// export const createCollaborator = createAsyncThunk(
+//   "note/createCollaborator",
+//   (collaborator: string) => {
+//     return addCollaboratorToNote(collaborator).then(
+//       (response) => response.data.object
+//     );
+//   }
+// );
 
 export const createNote = createAsyncThunk(
   "notes/createNote",

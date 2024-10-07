@@ -1,4 +1,3 @@
-import { AuthResponse } from "@types/authtypes";
 import { CreateLabelType } from "@types/labeltypes";
 import { Id, ReactNodeHOCProps } from "global";
 
@@ -9,15 +8,11 @@ export type ImageType = {
 export type UpdateCollaboratorType = CreateCollaboratorType & Id;
 
 export type CollaboratorPropsType = {
-  loggedInUserData: AuthResponse;
+  collaborator: CreateCollaboratorType;
 };
 
 export type CreateCollaboratorType = {
   email: string;
-};
-
-export type CollaboratorListType = {
-  collaboratorArray: CreateCollaboratorType[];
 };
 
 export type CreateNoteType = {

@@ -30,6 +30,10 @@ export const createNoteForUser = (createNoteData: CreateNoteType) => {
   return axios.post(BASE_URL_V1 + CREATE_NOTE_URL, createNoteData);
 };
 
+// export const addCollaboratorToNote = (collaborator: string) => {
+//   return axios.post(BASE_URL_V1 + CREATE_NOTE_URL, createNoteData);
+// };
+
 export const updatePinForUserNote = (noteId: number) => {
   return axios.put(BASE_URL_V1 + NOTE_UPDATE_PIN_URL, null, {
     params: { noteId },
