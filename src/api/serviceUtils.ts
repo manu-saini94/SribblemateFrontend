@@ -3,6 +3,10 @@ export const BASE_URL_V1 = BASE_URL + "/api/v1";
 export const AUTH_URL = "/auth";
 export const NOTE_URL = "/note";
 export const LABEL_URL = "/label";
+export const USER_URL = "/users";
+
+export const FETCH_ALL_USERS = USER_URL + "/get";
+export const CHECK_USER_URL = USER_URL + "/email/exist";
 
 export const REGISTER_USER_URL = AUTH_URL + "/signup";
 export const LOGIN_USER_URL = AUTH_URL + "/login";
