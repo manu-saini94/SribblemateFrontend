@@ -17,8 +17,12 @@ const TakeNoteDetails = ({ toggleTakeNoteActive }: TakeNoteDetailsType) => {
           changeActiveCard={changeActiveCard}
         />
       )}
-      {NoteCardType.COLLABORATOR === activeCard && <CollaboratorCard />}
-      {NoteCardType.LABEL === activeCard && <LabelsCard />}
+      {NoteCardType.COLLABORATOR === activeCard && (
+        <CollaboratorCard changeActiveCard={changeActiveCard} />
+      )}
+      {NoteCardType.LABEL === activeCard && (
+        <LabelsCard changeActiveCard={changeActiveCard} />
+      )}
     </>
   );
 };

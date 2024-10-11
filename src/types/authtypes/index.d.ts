@@ -1,4 +1,5 @@
 import { ReactNodeHOCProps } from "@types/global";
+import { UserDto } from "@types/userstypes";
 
 export type LoginCredentialsType = {
   email: string;
@@ -28,31 +29,6 @@ export interface AuthProps extends ReactNodeHOCProps {}
 export type WithAuthProps = {
   setToken: (token: string) => void;
 };
-
-export type UserDataType = {
-  expiresIn: number;
-
-  fullName: string;
-
-  email: string;
-
-  status: Utils.Status;
-
-  createdAt: Date;
-
-  updatedAt: Date;
-
-  profilePicture: string;
-};
-
-interface UserDto {
-  fullName: string;
-  email: string;
-  status: "ACTIVE" | "INACTIVE"; // Add more statuses if applicable
-  createdAt: string; // ISO string format, you can use Date if you prefer
-  updatedAt: string; // ISO string format
-  profilePicture: string | null;
-}
 
 interface AuthResponse {
   token: string;

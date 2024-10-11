@@ -22,6 +22,7 @@ export const getAllNotesByLabel = (labelId: number) => {
     params: labelId ? { labelId } : {},
   });
 };
+
 export const getAllReminderNotesByUser = () => {
   return axios.get(BASE_URL_V1 + NOTE_FETCH_BY_REMINDER_URL);
 };

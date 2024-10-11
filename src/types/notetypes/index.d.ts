@@ -46,6 +46,14 @@ export type TakeNoteDetailsPropsType = {
   toggleTakeNoteActive: () => void;
 };
 
+export type CollaboratorCardPropsType = {
+  changeActiveCard: (cardType: NoteCardType) => void;
+};
+
+export type LabelCardPropsType = {
+  changeActiveCard: (cardType: NoteCardType) => void;
+};
+
 interface ColorPaletteProps {
   onChangeColor?: (color: string) => void;
 }
@@ -117,20 +125,4 @@ export type NoteStoreInitialStateType = NoteInitialStateType & {
   notesByLabelId: ByIdTransformType;
   currentLabelNotes: UpdateNoteType[];
   updatedNote: UpdateNoteType;
-};
-
-export type ReminderNoteStoreInitialStateType = CommonInitialState & {
-  reminderNotes: UpdateNoteType[];
-};
-
-export type LabelNoteStoreInitialState = NoteInitialStateType & {
-  labelNotes: UpdateNoteType[];
-};
-
-export type ArchiveStoreInitialStateType = NoteInitialStateType & {
-  archiveNotes: UpdateNoteType[];
-};
-
-export type StoreInitialStateType = NoteInitialStateType & {
-  trashNotes: UpdateNoteType[];
 };

@@ -2,11 +2,12 @@ import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import { IconButton } from "@mui/material";
 import useCollaboratorCreateCard from "hooks/useCollaboratorCreateCard";
-import { CreateCollaboratorType } from "notetypes";
+import { CollaboratorCardPropsType, CreateCollaboratorType } from "notetypes";
 import React from "react";
+
 import Collaborator from "./Collaborator";
 
-const CollaboratorCard = () => {
+const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
   const {
     handleCollaboratorSubmit,
     loggedInUserData,
@@ -15,7 +16,9 @@ const CollaboratorCard = () => {
     currentCollaborator,
     collaboratorError,
     handleCollaboratorChange,
-  } = useCollaboratorCreateCard();
+    handleCancelClick,
+    newCollaboratorArray,
+  } = useCollaboratorCreateCard({ changeActiveCard });
 
   return (
     <form onSubmit={handleCollaboratorSubmit}>
@@ -31,9 +34,22 @@ const CollaboratorCard = () => {
         </div>
         <div className="card-body pb-2">
           <Collaborator collaborator={loggedInUserData} />
-          {collaboratorArray?.map((collaborator: CreateCollaboratorType) => {
-            return <Collaborator collaborator={collaborator} />;
-          })}
+          {collaboratorArray.length > 0 &&
+            collaboratorArray.map((collaborator: CreateCollaboratorType) => {
+              return (
+                <div className="mt-2" key={collaborator.email}>
+                  <Collaborator collaborator={collaborator} />
+                </div>
+              );
+            })}
+          {newCollaboratorArray.length > 0 &&
+            newCollaboratorArray.map((collaborator: CreateCollaboratorType) => {
+              return (
+                <div className="mt-2" key={collaborator.email}>
+                  <Collaborator collaborator={collaborator} />
+                </div>
+              );
+            })}
           <div className="d-flex mb-1">
             <PersonAddOutlinedIcon
               className="col-2 me-2 mt-2 fs-3"
@@ -48,24 +64,40 @@ const CollaboratorCard = () => {
                 className="form-control border-none "
                 id="label"
                 name="label"
-                value={currentCollaborator}
+                value={currentCollaborator?.email}
                 onChange={handleCollaboratorChange}
                 style={{ border: "none" }}
               />
             </div>
-            {currentCollaborator.length > 0 && (
+            {currentCollaborator?.email?.length > 0 && (
               <div className="">
-                <IconButton>
+                <IconButton onClick={handleDoneClick}>
                   <CheckOutlinedIcon
                     className="col-2 me-2 mt-1 fs-5"
                     style={{ color: "green" }}
-                    onClick={handleDoneClick}
                   />
                 </IconButton>
               </div>
             )}
           </div>
-          <div className="font text-danger"> {collaboratorError}</div>
+          <div
+            style={{ marginLeft: "43px", marginTop: "-9px" }}
+            className="fs-6 text-danger"
+          >
+            {" "}
+            {collaboratorError}
+          </div>
+        </div>
+        <div className="d-flex justify-content-end mx-2 my-2">
+          <button
+            onClick={(event) => handleCancelClick(event)}
+            className="btn btn-sm fw-medium card-button mx-2"
+          >
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-sm fw-medium card-button">
+            Save
+          </button>
         </div>
       </div>
     </form>

@@ -27,13 +27,13 @@ interface UserDto {
 
 export type UsersInitialStateType = {
   collaboratorExistLoading: Boolean;
-  collaboratorExistError: string;
+  collaboratorExistError: {};
   usersFetchLoading: Boolean;
   usersFetchError: string;
 };
 
 export type UsersStoreInitialStateType = UsersInitialStateType & {
   isExist: Boolean;
-  existCollaborator: CreateCollaboratorType;
+  collaboratorArray: CreateCollaboratorType[];
   allUsers: UserDto[];
 };

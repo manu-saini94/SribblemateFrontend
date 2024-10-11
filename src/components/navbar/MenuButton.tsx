@@ -30,7 +30,7 @@ const MenuButton = () => {
       </div>
       <Link to="/note" style={{ textDecoration: "none" }}>
         <div className="navbar-brand px-3 py-1">
-          <img height="35px" width="80px" src={Lightlogo} alt="Scribble Mate" />
+          <img height="35px" width="75px" src={Lightlogo} alt="Scribble Mate" />
         </div>
       </Link>
     </>

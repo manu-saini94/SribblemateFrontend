@@ -20,8 +20,6 @@ const TakeNoteDetailsCard = ({
 }: TakeNoteDetailsPropsType) => {
   const {
     colorPaletteRef,
-    noteData,
-    handleChange,
     takeNoteDetailsRef,
     toggleColorPalette,
     onCheckboxIconClick,
@@ -35,6 +33,7 @@ const TakeNoteDetailsCard = ({
     handleNoteSubmit,
     textareaRef,
     handleContentChange,
+    createNoteContext,
   } = useTakeNoteDetails({ toggleTakeNoteActive, changeActiveCard });
 
   return (
@@ -43,7 +42,7 @@ const TakeNoteDetailsCard = ({
         className="card "
         style={{
           height: "auto",
-          backgroundColor: `${noteData.color}`,
+          backgroundColor: `${createNoteContext.noteData?.color}`,
           width: "35rem",
         }}
         ref={takeNoteDetailsRef}
@@ -58,14 +57,16 @@ const TakeNoteDetailsCard = ({
                 placeholder="Title"
                 aria-label="Title"
                 aria-describedby="basic-addon1"
-                style={{ backgroundColor: `${noteData.color}` }}
-                value={noteData.title}
-                onChange={handleChange}
+                style={{
+                  backgroundColor: `${createNoteContext.noteData?.color}`,
+                }}
+                value={createNoteContext.noteData?.title}
+                onChange={createNoteContext.handleChange}
               />
             </div>
             <div className="">
               <IconButton onClick={onPinClick}>
-                {noteData.pinned ? (
+                {createNoteContext.noteData?.pinned ? (
                   <PushPinIcon className="fs-6 mt-n4" />
                 ) : (
                   <PushPinOutlinedIcon className="fs-6 " />
@@ -82,12 +83,12 @@ const TakeNoteDetailsCard = ({
               aria-label="Take a note..."
               aria-describedby="basic-addon1"
               style={{
-                backgroundColor: `${noteData.color}`,
+                backgroundColor: `${createNoteContext.noteData?.color}`,
                 resize: "none",
                 overflow: "hidden",
                 minHeight: "auto",
               }}
-              value={noteData.content}
+              value={createNoteContext.noteData?.content}
               onChange={handleContentChange}
               id="content"
               ref={textareaRef}

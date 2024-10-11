@@ -5,15 +5,15 @@ import menuReducer from "./global/globalSlice";
 import labelReducer from "./labels/labelSlice";
 import colorReducer from "./notes/color/colorSlice";
 import noteReducer from "./notes/noteSlice";
-import reminderNoteReducer from "./reminder/reminderSlice";
+import userReducer from "./users/usersSlice";
 
 const store = configureStore({
   reducer: {
     noteColor: colorReducer,
     allNotes: noteReducer,
-    allReminderNotes: reminderNoteReducer,
     allLabels: labelReducer,
     menus: menuReducer,
+    users: userReducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>

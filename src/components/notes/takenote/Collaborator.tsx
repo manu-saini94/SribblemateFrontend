@@ -17,7 +17,7 @@ const Collaborator = ({ collaborator }: CollaboratorPropsType) => {
             {/* Manu Saini (owner) */}
           </div>
           <div className="col" style={{ fontSize: "12px", marginTop: "-2px" }}>
-            manu.saini94@gmail.com (owner)
+            {/* manu.saini94@gmail.com (owner) */}
             {collaborator?.email}
           </div>
         </div>

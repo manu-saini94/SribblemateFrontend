@@ -1,3 +1,5 @@
+import { CreateNoteType } from "@types/notetypes";
+
 export type Id = {
   id: number;
 };
@@ -17,9 +19,22 @@ export interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-export interface ColorContextType {
-  color: string;
+export interface NoteContextType {
+  noteData: CreateNoteType;
+  handleChange: (event: {
+    target: {
+      name: any;
+      value: any;
+    };
+  }) => void;
   changeColorClick: (color: string) => void;
+  onArchiveClick: () => void;
+  onCheckboxClick: () => void;
+  onDeleteClick: () => void;
+  onImageClick: () => void;
+  onLabelAddClick: () => void;
+  onPinClick: () => void;
+  onReminderClick: () => void;
 }
 export interface ColorContextProps extends ReactNodeHOCProps {}
 

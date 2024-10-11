@@ -7,7 +7,7 @@ import {
 } from "api/requests/LabelRequests";
 import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
 import { CreateLabelType, UpdateLabelType } from "labeltypes";
-import { CreateNoteType } from "notetypes";
+import { CreateCollaboratorType, CreateNoteType } from "notetypes";
 import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
 import {
   createNoteForUser,
@@ -17,6 +17,7 @@ import {
   getAllReminderNotesByUser,
   updatePinForUserNote,
 } from "../api/requests/NoteRequests";
+import { checkUserExist, fetchUsers } from "../api/requests/UserRequests";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -49,6 +50,23 @@ export const fetchNotesByLabel = createAsyncThunk(
   "notes/fetchNotesByLabel",
   (labelId: number) => {
     return getAllNotesByLabel(labelId).then((response) => response.data.object);
+  }
+);
+
+export const fetchAllUsers = createAsyncThunk("users/fetchAllUsers", () => {
+  return fetchUsers().then((response) => response.data.object);
+});
+
+export const checkCollaboratorExist = createAsyncThunk(
+  "users/checkCollaboratorExist",
+  (email: CreateCollaboratorType) => {
+    return checkUserExist(email)
+      .then((response) => response.data.object)
+      .catch((error) => {
+        console.log("ER:", error);
+
+        throw error.response.data;
+      });
   }
 );
 

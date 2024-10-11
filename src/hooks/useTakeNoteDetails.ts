@@ -1,16 +1,13 @@
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
-import {
-  hasNoteChanged,
-  initialCreateNoteValue,
-} from "utility/reduxutils/noteUtils";
+import { hasNoteChanged } from "utility/reduxutils/noteUtils";
 import { createNote } from "../redux/asyncThunks";
 import { insertNewNote } from "../redux/notes/noteSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
-import { useColor } from "./useColor";
+import { useCreateNote } from "./useCreateNote";
 
 const useTakeNoteDetails = ({
   toggleTakeNoteActive,
@@ -19,45 +16,26 @@ const useTakeNoteDetails = ({
   const dispatch = useDispatch<AppDispatch>();
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-  const colorContext = useColor();
+  const createNoteContext = useCreateNote();
 
-  const [noteData, setNoteData] = useState<CreateNoteType>(
-    initialCreateNoteValue
+  const { textareaRef, handleContentChange } = useAutoResizeTextArea(
+    createNoteContext.handleChange
   );
 
-  const handleChange = (event: { target: { name: any; value: any } }) => {
-    const { name, value } = event.target;
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
-  const { textareaRef, handleContentChange } =
-    useAutoResizeTextArea(handleChange);
-
   const onPinClick = () => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      pinned: !prevValues.pinned,
-      archived: false,
-    }));
+    createNoteContext.onPinClick();
   };
 
   const onArchiveClick = () => {
-    const updatedNote: CreateNoteType = {
-      ...noteData,
-      archived: true,
-      pinned: false,
-    };
-    setNoteData(updatedNote);
-    dispatchCreatedNote(updatedNote);
+    createNoteContext.onArchiveClick();
+    dispatchCreatedNote(createNoteContext.noteData);
     toggleTakeNoteActive();
   };
 
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const updatedNote: CreateNoteType = {
-      ...noteData,
+      ...createNoteContext.noteData,
     };
     dispatchCreatedNote(updatedNote);
     toggleTakeNoteActive();
@@ -76,26 +54,36 @@ const useTakeNoteDetails = ({
     colorPaletteRef.current?.classList.toggle("show");
   };
 
-  const onCheckboxIconClick = (): void => {};
+  const onCheckboxIconClick = (): void => {
+    createNoteContext.onCheckboxClick();
+  };
 
-  const onDeleteIconClick = (): void => {};
+  const onDeleteIconClick = (): void => {
+    createNoteContext.onDeleteClick();
+  };
 
-  const onLabelAddIconClick = (): void => {};
+  const onLabelAddIconClick = (): void => {
+    createNoteContext.onLabelAddClick();
+  };
 
-  const onReminderIconClick = (): void => {};
+  const onReminderIconClick = (): void => {
+    createNoteContext.onReminderClick();
+  };
 
-  const onImageIconClick = (): void => {};
+  const onImageIconClick = (): void => {
+    createNoteContext.onImageClick();
+  };
 
   const onCollaboratorIconClick = (): void => {
     changeActiveCard(NoteCardType.COLLABORATOR);
   };
 
-  useEffect(() => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      color: colorContext.color,
-    }));
-  }, [colorContext.color]);
+  // useEffect(() => {
+  //   setNoteData((prevValues) => ({
+  //     ...prevValues,
+  //     color: colorContext.color,
+  //   }));
+  // }, [colorContext.color]);
 
   useEffect(() => {
     const handleClickOutsideNote = (event: MouseEvent) => {
@@ -108,7 +96,7 @@ const useTakeNoteDetails = ({
           palette.classList.remove("show");
         }
 
-        dispatchCreatedNote(noteData);
+        dispatchCreatedNote(createNoteContext.noteData);
         toggleTakeNoteActive();
       } else if (!isClickInsidePalette) {
         if (palette?.classList.contains("show")) {
@@ -122,15 +110,13 @@ const useTakeNoteDetails = ({
     };
   }, [
     dispatch,
-    noteData,
+    createNoteContext.noteData,
     takeNoteDetailsRef,
     toggleTakeNoteActive,
     dispatchCreatedNote,
   ]);
   return {
     dispatch,
-    handleChange,
-    noteData,
     takeNoteDetailsRef,
     toggleTakeNoteActive,
     dispatchCreatedNote,
@@ -147,6 +133,7 @@ const useTakeNoteDetails = ({
     textareaRef,
     handleContentChange,
     colorPaletteRef,
+    createNoteContext,
   };
 };
 

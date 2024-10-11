@@ -1,6 +1,7 @@
+import { LabelCardPropsType } from "notetypes";
 import React from "react";
 
-const LabelsCard = () => {
+const LabelsCard = ({ changeActiveCard }: LabelCardPropsType) => {
   return <div></div>;
 };
 

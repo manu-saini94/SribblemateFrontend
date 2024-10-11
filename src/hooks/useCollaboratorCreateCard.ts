@@ -1,30 +1,43 @@
-import { CreateCollaboratorType } from "notetypes";
-import { useEffect, useState } from "react";
+import { CollaboratorCardPropsType, CreateCollaboratorType } from "notetypes";
+import { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
+import { NoteCardType } from "utility/miscsUtils";
 import { validateEmail } from "utility/validationutils/authValidationUtils";
 
-const useCollaboratorCreateCard = () => {
+const useCollaboratorCreateCard = ({
+  changeActiveCard,
+}: CollaboratorCardPropsType) => {
   const loggedInUserData = useSelector(
     (state: RootState) => state.auth.loggedInUserData
   );
+  const isExist = useSelector((state: RootState) => state.users.isExist);
+
   const dispatch = useDispatch<AppDispatch>();
-  const [currentCollaborator, setCurrentCollaborator] = useState<string>("");
-  const [collaboratorArray, setCollaboratorArray] = useState<
+  const [currentCollaborator, setCurrentCollaborator] =
+    useState<CreateCollaboratorType>({ email: "" });
+
+  const collaboratorArray = useSelector(
+    (state: RootState) => state.users.collaboratorArray
+  );
+
+  const [newCollaboratorArray, setNewCollaboratorArray] = useState<
     CreateCollaboratorType[]
   >([]);
+
   const [collaboratorError, setCollaboratorError] = useState<string>("");
 
   useEffect(() => {
-    console.log("data => ", loggedInUserData);
-  }, [loggedInUserData]);
+    setNewCollaboratorArray([]);
+  }, []);
 
   const validateForm = (): string => {
-    const error = validateEmail(currentCollaborator);
+    const error = validateEmail(currentCollaborator.email);
     return error;
   };
 
-  const handleCollaboratorSubmit = () => {
+  const handleCollaboratorSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     dispatchCreateCollaborator();
   };
 
@@ -32,20 +45,35 @@ const useCollaboratorCreateCard = () => {
     // dispatch(createCollaborator());
   };
 
+  const handleCancelClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    changeActiveCard(NoteCardType.NOTE);
+  };
+
   const handleDoneClick = () => {
     const error = validateForm();
-    if (error !== null || error !== undefined || error !== "") {
+    if (error) {
       setCollaboratorError(error);
       return;
     }
-    setCollaboratorArray((prevValues) => ({
+    // dispatch(checkCollaboratorExist(currentCollaborator)).then(() =>
+    //   dispatch(insertCurrentCollaborator(currentCollaborator))
+    // );
+    setNewCollaboratorArray((prevValues) => [
       ...prevValues,
       currentCollaborator,
-    }));
+    ]);
   };
+
   const handleCollaboratorChange = (event: { target: { value: any } }) => {
     const { value } = event.target;
-    setCurrentCollaborator(value);
+    const collaborator: CreateCollaboratorType = { email: value };
+    setCurrentCollaborator(collaborator);
+    if (value.trim() !== "") {
+      setCollaboratorError("");
+    }
   };
 
   return {
@@ -56,6 +84,8 @@ const useCollaboratorCreateCard = () => {
     currentCollaborator,
     handleDoneClick,
     collaboratorError,
+    handleCancelClick,
+    newCollaboratorArray,
   };
 };
 
