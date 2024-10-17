@@ -1,23 +1,30 @@
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { Divider } from "@mui/material";
-import { CollaboratorPropsType } from "notetypes";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/store";
+import { CreateCollaboratorPropsType } from "../../../types/notetypes";
 
-const Collaborator = ({ collaborator }: CollaboratorPropsType) => {
+const Collaborator = ({ collaborator }: CreateCollaboratorPropsType) => {
+  const loggedInUserData = useSelector(
+    (state: RootState) => state.auth.loggedInUserData
+  );
+
   return (
     <>
       <div className="d-flex mb-1">
         <AccountCircleRoundedIcon
-          className="col-2 me-2 fs-3"
+          className="col-2 me-2 fs-3 mt-1"
           style={{ color: "gray" }}
         />
         <div className="d-flex flex-column">
-          <div className="col" style={{ fontSize: "12px", marginTop: "2px" }}>
-            {/* {collaborator?.name} */}
-            {/* Manu Saini (owner) */}
+          <div className="col" style={{ fontSize: "12px", marginTop: "1px" }}>
+            {collaborator?.name}
+            {loggedInUserData?.userDto?.email === collaborator?.email
+              ? " (owner)"
+              : ""}
           </div>
-          <div className="col" style={{ fontSize: "12px", marginTop: "-2px" }}>
-            {/* manu.saini94@gmail.com (owner) */}
+          <div className="col" style={{ fontSize: "12px", marginTop: "-3px" }}>
             {collaborator?.email}
           </div>
         </div>

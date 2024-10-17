@@ -120,7 +120,7 @@ const TakeNoteDetailsCard = ({
               </IconButton>
             </div>
             <div className="col-1">
-              <IconButton onClick={onArchiveClick}>
+              <IconButton onClick={(event) => onArchiveClick(event)}>
                 <ArchiveOutlinedIcon className="fs-6" />
               </IconButton>
             </div>

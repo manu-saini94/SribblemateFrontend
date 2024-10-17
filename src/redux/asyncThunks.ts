@@ -15,6 +15,7 @@ import {
   getAllNotesByLabel,
   getAllNotesByUser,
   getAllReminderNotesByUser,
+  refreshTokenForUser,
   updatePinForUserNote,
 } from "../api/requests/NoteRequests";
 import { checkUserExist, fetchUsers } from "../api/requests/UserRequests";
@@ -38,6 +39,13 @@ export const registerUser = createAsyncThunk(
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
   return getAllNotesByUser().then((response) => response.data.object);
 });
+
+export const refreshAccessToken = createAsyncThunk(
+  "auth/refreshAccessToken",
+  async () => {
+    return refreshTokenForUser().then((response) => response.data.object);
+  }
+);
 
 export const fetchAllLabelNotes = createAsyncThunk(
   "notes/fetchAllLabelNotes",

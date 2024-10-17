@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import {
   AuthResponse,
   AuthStoreInitialStateType,
   LoginInitialStateType,
+  RefreshTokenInitialStateType,
   RegisterInitialStateType,
 } from "authtypes";
-import { loginUser, registerUser } from "../asyncThunks";
+import { loginUser, refreshAccessToken, registerUser } from "../asyncThunks";
 
 const loginInitialState: LoginInitialStateType = {
   loginLoading: false,
@@ -20,9 +22,15 @@ const registerInitialState: RegisterInitialStateType = {
   registerError: null,
 };
 
+const refreshTokenInitialState: RefreshTokenInitialStateType = {
+  refreshTokenError: null,
+  refreshTokenLoading: false,
+};
+
 const initialState: AuthStoreInitialStateType = {
   ...loginInitialState,
   ...registerInitialState,
+  ...refreshTokenInitialState,
 };
 
 const authSlice = createSlice({
@@ -56,6 +64,19 @@ const authSlice = createSlice({
       state.registerLoading = false;
       state.registerSuccess = false;
       state.registerError = action.error.message ?? "Failed to Register";
+    });
+    builder.addCase(refreshAccessToken.pending, (state) => {
+      state.refreshTokenLoading = true;
+    });
+    builder.addCase(refreshAccessToken.fulfilled, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = action.payload;
+      state.refreshTokenError = "";
+    });
+    builder.addCase(refreshAccessToken.rejected, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = {} as AuthResponse;
+      state.refreshTokenError = action.error.message ?? "Failed to Register";
     });
   },
 });

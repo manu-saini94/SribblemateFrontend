@@ -20,14 +20,6 @@ const CreateNoteProvider = ({ children }: ColorContextProps): ReactNode => {
     []
   );
 
-  const onArchiveClick = useCallback(() => {
-    setNoteData((prevValues) => ({
-      ...prevValues,
-      pinned: false,
-      archived: true,
-    }));
-  }, []);
-
   const onPinClick = useCallback(() => {
     setNoteData((prevValues) => ({
       ...prevValues,
@@ -58,7 +50,6 @@ const CreateNoteProvider = ({ children }: ColorContextProps): ReactNode => {
       noteData,
       changeColorClick,
       handleChange,
-      onArchiveClick,
       onPinClick,
       onCheckboxClick,
       onDeleteClick,
@@ -69,7 +60,6 @@ const CreateNoteProvider = ({ children }: ColorContextProps): ReactNode => {
     [
       handleChange,
       noteData,
-      onArchiveClick,
       onCheckboxClick,
       onDeleteClick,
       onImageClick,

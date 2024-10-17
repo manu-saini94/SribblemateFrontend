@@ -47,5 +47,12 @@ export type RegisterInitialStateType = {
   registerSuccess: Boolean;
   registerError: string | null;
 };
+
+export type RefreshTokenInitialStateType = {
+  refreshTokenLoading: Boolean;
+  refreshTokenError: string | null;
+};
+
 export type AuthStoreInitialStateType = LoginInitialStateType &
-  RegisterInitialStateType;
+  RegisterInitialStateType &
+  RefreshTokenInitialStateType;

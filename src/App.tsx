@@ -1,14 +1,14 @@
 import AllLabelledNotes from "pages/AllLabelledNotes";
 import EditLabels from "pages/EditLabels";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-import { AppDispatch } from "redux/store";
+import { AppDispatch, RootState } from "redux/store";
 import NavBar from "./components/navbar/NavBar";
 import SideBar from "./components/sidebar/SideBar";
 import Archive from "./pages/Archive";
@@ -22,25 +22,20 @@ import { fetchLabels, fetchNotes } from "./redux/asyncThunks";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const loggedInUserData = useSelector(
+    (state: RootState) => state.auth.loggedInUserData
+  );
 
   useEffect(() => {
-    const handleStorageChange = () => {
-      setToken(localStorage.getItem("token"));
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  });
-
-  useEffect(() => {
-    if (token) {
+    if (Object.keys(loggedInUserData).length !== 0) {
       dispatch(fetchNotes());
       dispatch(fetchLabels());
     }
-  }, [dispatch, token]);
+  }, [dispatch, loggedInUserData]);
+
+  // useEffect(() => {
+  //   dispatch(refreshAccessToken());
+  // }, [dispatch]);
 
   return (
     <Router>
@@ -48,7 +43,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
-        {token ? (
+        {Object.keys(loggedInUserData).length !== 0 ? (
           <Route path="/*" element={<MainLayout />} />
         ) : (
           <Route path="/*" element={<Navigate to="/login" />} />

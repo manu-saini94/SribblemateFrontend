@@ -6,10 +6,11 @@ export const checkUserExist = async (
   collaboratorObject: CreateCollaboratorType
 ) => {
   return await axios.get(
-    BASE_URL_V1 + CHECK_USER_URL + "/" + collaboratorObject.email
+    BASE_URL_V1 + CHECK_USER_URL + "/" + collaboratorObject.email,
+    { withCredentials: true }
   );
 };
 
 export const fetchUsers = () => {
-  return axios.get(BASE_URL_V1 + FETCH_ALL_USERS);
+  return axios.get(BASE_URL_V1 + FETCH_ALL_USERS, { withCredentials: true });
 };

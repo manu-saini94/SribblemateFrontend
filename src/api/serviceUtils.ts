@@ -10,6 +10,7 @@ export const CHECK_USER_URL = USER_URL + "/email/exist";
 
 export const REGISTER_USER_URL = AUTH_URL + "/signup";
 export const LOGIN_USER_URL = AUTH_URL + "/login";
+export const REFRESH_TOKEN_URL = AUTH_URL + "/refresh-token";
 
 export const NOTE_FETCH_URL = NOTE_URL + "/get";
 export const CREATE_NOTE_URL = NOTE_URL + "/create";

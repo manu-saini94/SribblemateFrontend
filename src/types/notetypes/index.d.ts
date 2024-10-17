@@ -7,11 +7,16 @@ export type ImageType = {
 
 export type UpdateCollaboratorType = CreateCollaboratorType & Id;
 
-export type CollaboratorPropsType = {
+export type CreateCollaboratorPropsType = {
   collaborator: CreateCollaboratorType;
 };
 
+export type UpdateCollaboratorPropsType = {
+  collaborator: UpdateCollaboratorType;
+};
+
 export type CreateCollaboratorType = {
+  name: string;
   email: string;
 };
 

@@ -9,6 +9,7 @@ import Collaborator from "./Collaborator";
 
 const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
   const {
+    owner,
     handleCollaboratorSubmit,
     loggedInUserData,
     collaboratorArray,
@@ -33,7 +34,7 @@ const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
           Collaborators
         </div>
         <div className="card-body pb-2">
-          <Collaborator collaborator={loggedInUserData} />
+          <Collaborator collaborator={owner} />
           {collaboratorArray.length > 0 &&
             collaboratorArray.map((collaborator: CreateCollaboratorType) => {
               return (

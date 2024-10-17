@@ -28,7 +28,6 @@ export interface NoteContextType {
     };
   }) => void;
   changeColorClick: (color: string) => void;
-  onArchiveClick: () => void;
   onCheckboxClick: () => void;
   onDeleteClick: () => void;
   onImageClick: () => void;

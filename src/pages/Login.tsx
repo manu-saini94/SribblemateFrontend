@@ -52,7 +52,7 @@ const Login = () => {
     }));
   };
 
-  const navigateToLogin = () => {
+  const navigateToHomepage = () => {
     navigate("/note");
   };
 
@@ -67,7 +67,7 @@ const Login = () => {
       dispatch(loginUser(loginDetails))
         .unwrap()
         .then(() => {
-          navigateToLogin();
+          navigateToHomepage();
         })
         .catch((error) => {
           console.error("Login failed: ", error);

@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authMiddleware } from "./auth/authMiddleware";
 import authReducer from "./auth/authSlice";
 import menuReducer from "./global/globalSlice";
 import labelReducer from "./labels/labelSlice";
@@ -16,9 +15,9 @@ const store = configureStore({
     users: userReducer,
     auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authMiddleware),
-  devTools: process.env.NODE_ENV !== "production",
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat(authMiddleware),
+  // devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;

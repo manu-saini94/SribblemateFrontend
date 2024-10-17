@@ -26,9 +26,15 @@ const useTakeNoteDetails = ({
     createNoteContext.onPinClick();
   };
 
-  const onArchiveClick = () => {
-    createNoteContext.onArchiveClick();
-    dispatchCreatedNote(createNoteContext.noteData);
+  const onArchiveClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const updatedNote: CreateNoteType = {
+      ...createNoteContext.noteData,
+      archived: true,
+    };
+    dispatchCreatedNote(updatedNote);
     toggleTakeNoteActive();
   };
 
