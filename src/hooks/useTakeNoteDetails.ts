@@ -1,11 +1,12 @@
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
 import { FormEvent, useCallback, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
 import { hasNoteChanged } from "utility/reduxutils/noteUtils";
 import { createNote } from "../redux/asyncThunks";
 import { insertNewNote } from "../redux/notes/noteSlice";
+import { resetCollaboratorArray } from "../redux/users/usersSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
 import { useCreateNote } from "./useCreateNote";
 
@@ -17,6 +18,9 @@ const useTakeNoteDetails = ({
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const createNoteContext = useCreateNote();
+  const collaboratorArray = useSelector(
+    (state: RootState) => state.users.collaboratorArray
+  );
 
   const { textareaRef, handleContentChange } = useAutoResizeTextArea(
     createNoteContext.handleChange
@@ -42,6 +46,7 @@ const useTakeNoteDetails = ({
     event.preventDefault();
     const updatedNote: CreateNoteType = {
       ...createNoteContext.noteData,
+      collaboratorList: collaboratorArray,
     };
     dispatchCreatedNote(updatedNote);
     toggleTakeNoteActive();
@@ -52,6 +57,7 @@ const useTakeNoteDetails = ({
       if (hasNoteChanged(updatedNote)) {
         dispatch(createNote(updatedNote)).then(() => dispatch(insertNewNote()));
       }
+      dispatch(resetCollaboratorArray());
     },
     [dispatch]
   );
@@ -101,8 +107,11 @@ const useTakeNoteDetails = ({
         if (palette?.classList.contains("show")) {
           palette.classList.remove("show");
         }
-
-        dispatchCreatedNote(createNoteContext.noteData);
+        const updatedNote: CreateNoteType = {
+          ...createNoteContext.noteData,
+          collaboratorList: collaboratorArray,
+        };
+        dispatchCreatedNote(updatedNote);
         toggleTakeNoteActive();
       } else if (!isClickInsidePalette) {
         if (palette?.classList.contains("show")) {
@@ -140,6 +149,7 @@ const useTakeNoteDetails = ({
     handleContentChange,
     colorPaletteRef,
     createNoteContext,
+    collaboratorArray,
   };
 };
 

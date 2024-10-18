@@ -73,7 +73,7 @@ export const checkCollaboratorExist = createAsyncThunk(
       .catch((error) => {
         console.log("ER:", error);
 
-        throw error.response.data;
+        throw error.response.data.object;
       });
   }
 );

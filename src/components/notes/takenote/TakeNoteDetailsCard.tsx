@@ -1,3 +1,4 @@
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
@@ -8,7 +9,7 @@ import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import useTakeNoteDetails from "hooks/useTakeNoteDetails";
 import { TakeNoteDetailsPropsType } from "notetypes";
 import React from "react";
@@ -34,6 +35,7 @@ const TakeNoteDetailsCard = ({
     textareaRef,
     handleContentChange,
     createNoteContext,
+    collaboratorArray,
   } = useTakeNoteDetails({ toggleTakeNoteActive, changeActiveCard });
 
   return (
@@ -93,6 +95,31 @@ const TakeNoteDetailsCard = ({
               id="content"
               ref={textareaRef}
             />
+          </div>
+          <div className="d-flex">
+            {collaboratorArray?.map((collaborator) => {
+              return (
+                <Tooltip
+                  title={
+                    <span>
+                      {collaborator?.name}
+                      <br />
+                      {collaborator?.email}
+                    </span>
+                  }
+                >
+                  <IconButton
+                    onClick={onCollaboratorIconClick}
+                    key={collaborator.email}
+                  >
+                    <AccountCircleRoundedIcon
+                      className="col-2 fs-1 "
+                      style={{ color: "gray" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              );
+            })}
           </div>
 
           <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>

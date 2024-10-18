@@ -5,6 +5,12 @@ import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
 import { validateEmail } from "utility/validationutils/authValidationUtils";
 import { checkCollaboratorExist } from "../redux/asyncThunks";
+import {
+  addCollaborators,
+  setCollaboratorError,
+  setCurrentCollaborator,
+  setNewCollaboratorArray,
+} from "../redux/users/usersSlice";
 
 const useCollaboratorCreateCard = ({
   changeActiveCard,
@@ -12,11 +18,15 @@ const useCollaboratorCreateCard = ({
   const loggedInUserData = useSelector(
     (state: RootState) => state.auth.loggedInUserData
   );
-  const isExist = useSelector((state: RootState) => state.users.isExist);
+  const collaboratorExistError = useSelector(
+    (state: RootState) => state.users.collaboratorExistError
+  );
 
   const dispatch = useDispatch<AppDispatch>();
-  const [currentCollaborator, setCurrentCollaborator] =
-    useState<CreateCollaboratorType>({} as CreateCollaboratorType);
+
+  const currentCollaborator = useSelector(
+    (state: RootState) => state.users.currentCollaborator
+  );
 
   const [owner, setOwner] = useState<CreateCollaboratorType>(
     {} as CreateCollaboratorType
@@ -26,20 +36,22 @@ const useCollaboratorCreateCard = ({
     (state: RootState) => state.users.collaboratorArray
   );
 
-  const [newCollaboratorArray, setNewCollaboratorArray] = useState<
-    CreateCollaboratorType[]
-  >([]);
-
-  const [collaboratorError, setCollaboratorError] = useState<string>("");
+  const newCollaboratorArray = useSelector(
+    (state: RootState) => state.users.newCollaboratorArray
+  );
 
   useEffect(() => {
-    setNewCollaboratorArray([]);
+    dispatch(setNewCollaboratorArray([]));
     const ownerObject: CreateCollaboratorType = {
       name: loggedInUserData.userDto.fullName,
       email: loggedInUserData.userDto.email,
     };
     setOwner(ownerObject);
-  }, [loggedInUserData.userDto.email, loggedInUserData.userDto.fullName]);
+  }, [
+    dispatch,
+    loggedInUserData.userDto.email,
+    loggedInUserData.userDto.fullName,
+  ]);
 
   const validateForm = (): string => {
     const error = validateEmail(currentCollaborator.email);
@@ -52,64 +64,69 @@ const useCollaboratorCreateCard = ({
   };
 
   const dispatchCreateCollaborator = () => {
-    // dispatch(createCollaborator());
+    if (newCollaboratorArray.length > 0) {
+      dispatch(addCollaborators(newCollaboratorArray));
+      changeActiveCard(NoteCardType.NOTE);
+    }
   };
 
   const handleCancelClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
+    dispatch(setNewCollaboratorArray([]));
+    dispatch(setCurrentCollaborator({} as CreateCollaboratorType));
+    dispatch(setCollaboratorError(""));
     changeActiveCard(NoteCardType.NOTE);
+  };
+
+  const handleCloseClick = () => {
+    dispatch(setCurrentCollaborator({ email: "", name: "" }));
   };
 
   const handleDoneClick = async () => {
     const error = validateForm();
-
     if (error) {
-      setCollaboratorError(error);
+      dispatch(setCollaboratorError(error));
       return;
-    }
+    } else if (checkAlreadyExist()) {
+      dispatch(setCollaboratorError("This email already exists"));
+    } else dispatch(checkCollaboratorExist(currentCollaborator));
+  };
 
-    try {
-      const response = await dispatch(
-        checkCollaboratorExist(currentCollaborator)
-      ); // Await the async operation
-      if (response) {
-        console.log("res", response);
+  const checkExistence = (collabArray: CreateCollaboratorType[]) => {
+    return collabArray.some(
+      (collaborator) => collaborator.email === currentCollaborator.email
+    );
+  };
 
-        // Only update the collaborator array if the collaborator exists and no error occurred
-        setNewCollaboratorArray((prevValues) => [
-          ...prevValues,
-          currentCollaborator,
-        ]);
-      }
-    } catch (error) {
-      console.error("Error checking collaborator:", error);
-      setCollaboratorError(JSON.stringify(error));
-      // You can set an error state if needed here
-    }
+  const checkAlreadyExist = () => {
+    return (
+      checkExistence(collaboratorArray) || checkExistence(newCollaboratorArray)
+    );
   };
 
   const handleCollaboratorChange = (event: { target: { value: any } }) => {
     const { value } = event.target;
     const collaborator: CreateCollaboratorType = { email: value, name: "" };
-    setCurrentCollaborator(collaborator);
+    dispatch(setCurrentCollaborator(collaborator));
     if (value.trim() !== "") {
-      setCollaboratorError("");
+      dispatch(setCollaboratorError(""));
     }
   };
 
   return {
     owner,
+    collaboratorExistError,
     handleCollaboratorSubmit,
     loggedInUserData,
     collaboratorArray,
     handleCollaboratorChange,
     currentCollaborator,
     handleDoneClick,
-    collaboratorError,
     handleCancelClick,
     newCollaboratorArray,
+    handleCloseClick,
   };
 };
 

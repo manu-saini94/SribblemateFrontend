@@ -1,6 +1,8 @@
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
-import { IconButton } from "@mui/material";
+import { Divider, IconButton, Tooltip } from "@mui/material";
+
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import useCollaboratorCreateCard from "hooks/useCollaboratorCreateCard";
 import { CollaboratorCardPropsType, CreateCollaboratorType } from "notetypes";
 import React from "react";
@@ -11,14 +13,14 @@ const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
   const {
     owner,
     handleCollaboratorSubmit,
-    loggedInUserData,
     collaboratorArray,
     handleDoneClick,
     currentCollaborator,
-    collaboratorError,
+    collaboratorExistError,
     handleCollaboratorChange,
     handleCancelClick,
     newCollaboratorArray,
+    handleCloseClick,
   } = useCollaboratorCreateCard({ changeActiveCard });
 
   return (
@@ -53,7 +55,7 @@ const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
             })}
           <div className="d-flex mb-1">
             <PersonAddOutlinedIcon
-              className="col-2 me-2 mt-2 fs-3"
+              className="col-2 me-2 mt-2 fs-2"
               style={{ color: "gray" }}
             />
             <div className="input-group input-group-sm mt-2">
@@ -71,22 +73,40 @@ const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
               />
             </div>
             {currentCollaborator?.email?.length > 0 && (
-              <div className="">
-                <IconButton onClick={handleDoneClick}>
-                  <CheckOutlinedIcon
-                    className="col-2 me-2 mt-1 fs-5"
-                    style={{ color: "green" }}
-                  />
-                </IconButton>
+              <div className="d-flex mt-1">
+                <Tooltip title={"Done"}>
+                  <IconButton onClick={handleDoneClick}>
+                    <CheckOutlinedIcon
+                      className="col-2 fs-5"
+                      style={{ color: "green" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={"Cancel"}>
+                  <IconButton onClick={handleCloseClick}>
+                    <CloseOutlinedIcon
+                      className="col-2 fs-5"
+                      style={{
+                        color: "red",
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
               </div>
             )}
           </div>
+          <Divider
+            orientation="horizontal"
+            variant="middle"
+            textAlign="left"
+            sx={{ opacity: 1, borderColor: "lightgray" }}
+          />
           <div
-            style={{ marginLeft: "43px", marginTop: "-9px" }}
-            className="fs-6 text-danger"
+            style={{ marginLeft: "43px", marginTop: "-1px", fontSize: "13px" }}
+            className="text-danger"
           >
             {" "}
-            {collaboratorError}
+            {collaboratorExistError}
           </div>
         </div>
         <div className="d-flex justify-content-end mx-2 my-2">

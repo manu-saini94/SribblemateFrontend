@@ -14,17 +14,17 @@ const Collaborator = ({ collaborator }: CreateCollaboratorPropsType) => {
     <>
       <div className="d-flex mb-1">
         <AccountCircleRoundedIcon
-          className="col-2 me-2 fs-3 mt-1"
+          className="col-2 me-2 fs-1 mt-1"
           style={{ color: "gray" }}
         />
         <div className="d-flex flex-column">
-          <div className="col" style={{ fontSize: "12px", marginTop: "1px" }}>
+          <div className="col" style={{ fontSize: "12px", marginTop: "7px" }}>
             {collaborator?.name}
             {loggedInUserData?.userDto?.email === collaborator?.email
               ? " (owner)"
               : ""}
           </div>
-          <div className="col" style={{ fontSize: "12px", marginTop: "-3px" }}>
+          <div className="col" style={{ fontSize: "12px", marginTop: "-1px" }}>
             {collaborator?.email}
           </div>
         </div>

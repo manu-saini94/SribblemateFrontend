@@ -9,13 +9,15 @@ const initialLoadingStates = {
 };
 
 const initialDataStates = {
-  isExist: false,
+  existingCollaborator: {} as CreateCollaboratorType,
   collaboratorArray: [] as CreateCollaboratorType[],
+  newCollaboratorArray: [] as CreateCollaboratorType[],
+  currentCollaborator: {} as CreateCollaboratorType,
   allUsers: [],
 };
 
 const initialErrorStates = {
-  collaboratorExistError: {},
+  collaboratorExistError: "",
   usersFetchError: "",
 };
 
@@ -29,17 +31,30 @@ const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    insertCurrentCollaborator(
+    addCollaborators(state, action: PayloadAction<CreateCollaboratorType[]>) {
+      state.collaboratorArray = [...action.payload, ...state.collaboratorArray];
+      state.existingCollaborator = { email: "", name: "" };
+    },
+    setNewCollaboratorArray(
+      state,
+      action: PayloadAction<CreateCollaboratorType[]>
+    ) {
+      state.newCollaboratorArray = action.payload;
+    },
+    setCurrentCollaborator(
       state,
       action: PayloadAction<CreateCollaboratorType>
     ) {
-      if (state.isExist) {
-        state.collaboratorArray.unshift(action.payload);
-        state.isExist = false;
-      }
+      state.currentCollaborator = action.payload;
     },
-    setIsExistFalse(state) {
-      state.isExist = false;
+    setCollaboratorError(state, action: PayloadAction<string>) {
+      state.collaboratorExistError = action.payload;
+    },
+    resetExistingCollaborator(state) {
+      state.existingCollaborator = { email: "", name: "" };
+    },
+    resetCollaboratorArray(state) {
+      state.collaboratorArray = [];
     },
   },
   extraReducers: (builder) => {
@@ -47,18 +62,27 @@ const usersSlice = createSlice({
       .addCase(checkCollaboratorExist.pending, (state) => {
         state.collaboratorExistLoading = true;
         state.collaboratorExistError = "";
-        state.isExist = false;
+        state.existingCollaborator = { email: "", name: "" };
       })
       .addCase(checkCollaboratorExist.fulfilled, (state, action) => {
         state.collaboratorExistLoading = false;
-        state.isExist = action.payload;
+        state.existingCollaborator = action.payload;
+        const newArray: CreateCollaboratorType[] = [
+          ...state.newCollaboratorArray,
+          state.existingCollaborator,
+        ];
+        state.newCollaboratorArray = newArray;
+        state.currentCollaborator = {
+          email: "",
+          name: "",
+        } as CreateCollaboratorType;
         state.collaboratorExistError = "";
       })
       .addCase(checkCollaboratorExist.rejected, (state, action) => {
         state.collaboratorExistLoading = false;
         state.collaboratorExistError =
           action.error.message ?? "Some problem occured";
-        state.isExist = false;
+        state.existingCollaborator = { email: "", name: "" };
       })
 
       .addCase(fetchAllUsers.pending, (state) => {
@@ -80,6 +104,12 @@ const usersSlice = createSlice({
   },
 });
 
-export const { insertCurrentCollaborator, setIsExistFalse } =
-  usersSlice.actions;
+export const {
+  addCollaborators,
+  resetExistingCollaborator,
+  setNewCollaboratorArray,
+  setCurrentCollaborator,
+  setCollaboratorError,
+  resetCollaboratorArray,
+} = usersSlice.actions;
 export default usersSlice.reducer;
