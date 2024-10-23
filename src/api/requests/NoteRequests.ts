@@ -1,5 +1,6 @@
 import {
   BASE_URL_V1,
+  CHECK_USER_AUTH_URL,
   CREATE_NOTE_URL,
   LABEL_URL,
   NOTE_FETCH_BY_REMINDER_URL,
@@ -41,6 +42,12 @@ export const getAllReminderNotesByUser = () => {
 
 export const createNoteForUser = (createNoteData: CreateNoteType) => {
   return axios.post(BASE_URL_V1 + CREATE_NOTE_URL, createNoteData, {
+    withCredentials: true,
+  });
+};
+
+export const checkUserAuthorization = () => {
+  return axios.get(BASE_URL_V1 + CHECK_USER_AUTH_URL, {
     withCredentials: true,
   });
 };
