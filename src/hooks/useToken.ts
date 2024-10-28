@@ -1,9 +1,6 @@
-import { useSelector } from "react-redux";
-import { RootState } from "redux/store";
-
-export const useToken = (): {} => {
-  const token = useSelector((state: RootState) => state.auth.token);
-  return {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+export const useToken = () => {
+  // const token = useSelector((state: RootState) => state.auth.token);
+  // return {
+  //   headers: { Authorization: `Bearer ${token}` },
+  // };
 };

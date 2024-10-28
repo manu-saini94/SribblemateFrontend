@@ -8,7 +8,6 @@ const defaultNoteContext: NoteContextType = {
   onPinClick: () => {},
   onCheckboxClick: () => {},
   onDeleteClick: () => {},
-  onLabelAddClick: () => {},
   onReminderClick: () => {},
   onImageClick: () => {},
   changeColorClick: () => {},

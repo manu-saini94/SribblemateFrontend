@@ -142,11 +142,13 @@ const noteSlice = createSlice({
         state.hasLabelIds = hasLabelIds;
         state.hasReminderIds = hasReminderIds;
         state.error = "";
+        console.log("Sol note");
       })
       .addCase(fetchNotes.rejected, (state, action) => {
         state.loading = false;
         state.notesById = {};
         state.error = action.error.message ?? "Failed to fetch notes";
+        console.log("Rejected note");
       })
 
       .addCase(createNote.pending, (state) => {

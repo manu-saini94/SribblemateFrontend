@@ -10,7 +10,7 @@ const Notes = () => {
   const othersNotes = useSelector(selectOthersNotes);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       {pinnedNotes?.length > 0 && (
         <>
           <h6 className="pin-heading">PINNED</h6>

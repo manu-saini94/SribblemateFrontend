@@ -43,14 +43,14 @@ const useCollaboratorCreateCard = ({
   useEffect(() => {
     dispatch(setNewCollaboratorArray([]));
     const ownerObject: CreateCollaboratorType = {
-      name: loggedInUserData.userDto.fullName,
-      email: loggedInUserData.userDto.email,
+      name: loggedInUserData?.userDto?.fullName,
+      email: loggedInUserData?.userDto?.email,
     };
     setOwner(ownerObject);
   }, [
     dispatch,
-    loggedInUserData.userDto.email,
-    loggedInUserData.userDto.fullName,
+    loggedInUserData?.userDto?.email,
+    loggedInUserData?.userDto?.fullName,
   ]);
 
   const validateForm = (): string => {
@@ -88,7 +88,6 @@ const useCollaboratorCreateCard = ({
     const error = validateForm();
     if (error) {
       dispatch(setCollaboratorError(error));
-      return;
     } else if (checkAlreadyExist()) {
       dispatch(setCollaboratorError("This email already exists"));
     } else dispatch(checkCollaboratorExist(currentCollaborator));

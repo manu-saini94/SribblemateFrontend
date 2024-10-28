@@ -39,8 +39,6 @@ const CreateNoteProvider = ({ children }: ColorContextProps): ReactNode => {
 
   const onDeleteClick = useCallback((): void => {}, []);
 
-  const onLabelAddClick = useCallback((): void => {}, []);
-
   const onReminderClick = useCallback((): void => {}, []);
 
   const onImageClick = useCallback((): void => {}, []);
@@ -53,7 +51,6 @@ const CreateNoteProvider = ({ children }: ColorContextProps): ReactNode => {
       onPinClick,
       onCheckboxClick,
       onDeleteClick,
-      onLabelAddClick,
       onReminderClick,
       onImageClick,
     }),
@@ -63,7 +60,6 @@ const CreateNoteProvider = ({ children }: ColorContextProps): ReactNode => {
       onCheckboxClick,
       onDeleteClick,
       onImageClick,
-      onLabelAddClick,
       onPinClick,
       onReminderClick,
       changeColorClick,

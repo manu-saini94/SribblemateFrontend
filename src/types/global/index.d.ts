@@ -31,7 +31,6 @@ export interface NoteContextType {
   onCheckboxClick: () => void;
   onDeleteClick: () => void;
   onImageClick: () => void;
-  onLabelAddClick: () => void;
   onPinClick: () => void;
   onReminderClick: () => void;
 }

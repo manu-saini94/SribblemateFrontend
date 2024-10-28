@@ -8,11 +8,12 @@ export const USER_URL = "/users";
 export const FETCH_ALL_USERS = USER_URL + "/get";
 export const CHECK_USER_URL = USER_URL + "/email/exist";
 
+export const CHECK_USER_AUTH_URL = AUTH_URL + "/validate";
 export const REGISTER_USER_URL = AUTH_URL + "/signup";
 export const LOGIN_USER_URL = AUTH_URL + "/login";
 export const REFRESH_TOKEN_URL = AUTH_URL + "/refresh-token";
 
-export const NOTE_FETCH_URL = NOTE_URL + "/get";
+export const NOTE_FETCH_URL = NOTE_URL + "/all";
 export const CREATE_NOTE_URL = NOTE_URL + "/create";
 export const NOTE_UPDATE_URL = NOTE_URL + "/update";
 export const NOTE_FETCH_BY_REMINDER_URL = NOTE_FETCH_URL + "/reminder";

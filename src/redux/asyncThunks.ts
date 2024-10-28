@@ -10,6 +10,7 @@ import { CreateLabelType, UpdateLabelType } from "labeltypes";
 import { CreateCollaboratorType, CreateNoteType } from "notetypes";
 import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
 import {
+  checkUserAuthorization,
   createNoteForUser,
   getAllLabelNotesByUser,
   getAllNotesByLabel,
@@ -39,6 +40,13 @@ export const registerUser = createAsyncThunk(
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
   return getAllNotesByUser().then((response) => response.data.object);
 });
+
+export const checkAuthorizedUser = createAsyncThunk(
+  "auth/checkAuthorizedUser",
+  () => {
+    return checkUserAuthorization().then((response) => response.data.object);
+  }
+);
 
 export const refreshAccessToken = createAsyncThunk(
   "auth/refreshAccessToken",

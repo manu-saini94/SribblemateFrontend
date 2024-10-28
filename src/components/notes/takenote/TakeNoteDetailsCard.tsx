@@ -107,11 +107,9 @@ const TakeNoteDetailsCard = ({
                       {collaborator?.email}
                     </span>
                   }
+                  key={collaborator.email}
                 >
-                  <IconButton
-                    onClick={onCollaboratorIconClick}
-                    key={collaborator.email}
-                  >
+                  <IconButton onClick={onCollaboratorIconClick}>
                     <AccountCircleRoundedIcon
                       className="col-2 fs-1 "
                       style={{ color: "gray" }}

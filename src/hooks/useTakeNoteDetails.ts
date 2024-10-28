@@ -75,7 +75,7 @@ const useTakeNoteDetails = ({
   };
 
   const onLabelAddIconClick = (): void => {
-    createNoteContext.onLabelAddClick();
+    changeActiveCard(NoteCardType.LABEL);
   };
 
   const onReminderIconClick = (): void => {
@@ -129,6 +129,7 @@ const useTakeNoteDetails = ({
     takeNoteDetailsRef,
     toggleTakeNoteActive,
     dispatchCreatedNote,
+    collaboratorArray,
   ]);
   return {
     dispatch,

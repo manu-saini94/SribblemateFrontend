@@ -7,11 +7,15 @@ import {
   RefreshTokenInitialStateType,
   RegisterInitialStateType,
 } from "authtypes";
-import { loginUser, refreshAccessToken, registerUser } from "../asyncThunks";
+import {
+  checkAuthorizedUser,
+  loginUser,
+  refreshAccessToken,
+  registerUser,
+} from "../asyncThunks";
 
 const loginInitialState: LoginInitialStateType = {
   loginLoading: false,
-  token: null,
   loggedInUserData: {} as AuthResponse,
   loginError: null,
 };
@@ -52,6 +56,7 @@ const authSlice = createSlice({
       state.loggedInUserData = {} as AuthResponse;
       state.loginError = action.error.message ?? "Failed to Authorize";
     });
+
     builder.addCase(registerUser.pending, (state) => {
       state.registerLoading = true;
     });
@@ -65,6 +70,7 @@ const authSlice = createSlice({
       state.registerSuccess = false;
       state.registerError = action.error.message ?? "Failed to Register";
     });
+
     builder.addCase(refreshAccessToken.pending, (state) => {
       state.refreshTokenLoading = true;
     });
@@ -74,6 +80,20 @@ const authSlice = createSlice({
       state.refreshTokenError = "";
     });
     builder.addCase(refreshAccessToken.rejected, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = {} as AuthResponse;
+      state.refreshTokenError = action.error.message ?? "Failed to Register";
+    });
+
+    builder.addCase(checkAuthorizedUser.pending, (state) => {
+      state.refreshTokenLoading = true;
+    });
+    builder.addCase(checkAuthorizedUser.fulfilled, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = action.payload;
+      state.refreshTokenError = "";
+    });
+    builder.addCase(checkAuthorizedUser.rejected, (state, action) => {
       state.refreshTokenLoading = false;
       state.loggedInUserData = {} as AuthResponse;
       state.refreshTokenError = action.error.message ?? "Failed to Register";

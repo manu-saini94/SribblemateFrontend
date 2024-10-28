@@ -31,14 +31,12 @@ export type WithAuthProps = {
 };
 
 interface AuthResponse {
-  token: string;
   userDto: UserDto;
   expiresIn: number;
 }
 
 export type LoginInitialStateType = {
   loginLoading: Boolean;
-  token: string | null;
   loggedInUserData: UserResponseType;
   loginError: string | null;
 };
