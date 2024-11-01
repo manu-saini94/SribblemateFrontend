@@ -23,7 +23,6 @@ const initialDataStates = {
   updateLabelObject: initialLabelValue,
   labelArray: [] as CreateLabelType[],
   newLabelArray: [] as CreateLabelType[],
-
   labels: [],
   isDeleted: false,
 };
@@ -52,6 +51,14 @@ const labelSlice = createSlice({
     },
     deleteCurrentLabel(state, action) {
       state.labels.splice(action.payload, 1);
+    },
+    insertNewLabelInNote(state, action) {
+      state.labelArray.unshift(action.payload);
+    },
+    deleteLabelInNote(state, action) {
+      state.labelArray = state.labelArray.filter(
+        (label) => label.labelName !== action.payload
+      );
     },
   },
   extraReducers: (builder) => {
@@ -114,6 +121,11 @@ const labelSlice = createSlice({
   },
 });
 
-export const { insertNewLabel, updateCurrentLabel, deleteCurrentLabel } =
-  labelSlice.actions;
+export const {
+  insertNewLabel,
+  updateCurrentLabel,
+  deleteCurrentLabel,
+  insertNewLabelInNote,
+  deleteLabelInNote,
+} = labelSlice.actions;
 export default labelSlice.reducer;

@@ -1,6 +1,7 @@
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
 import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
@@ -9,7 +10,7 @@ import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
-import { IconButton, Tooltip } from "@mui/material";
+import { Chip, IconButton, Tooltip } from "@mui/material";
 import useTakeNoteDetails from "hooks/useTakeNoteDetails";
 import { TakeNoteDetailsPropsType } from "notetypes";
 import React from "react";
@@ -20,6 +21,7 @@ const TakeNoteDetailsCard = ({
   changeActiveCard,
 }: TakeNoteDetailsPropsType) => {
   const {
+    labelArray,
     colorPaletteRef,
     takeNoteDetailsRef,
     toggleColorPalette,
@@ -116,6 +118,27 @@ const TakeNoteDetailsCard = ({
                     />
                   </IconButton>
                 </Tooltip>
+              );
+            })}
+          </div>
+          <div className="d-flex column flex-wrap">
+            {labelArray.map((label) => {
+              return (
+                <Chip
+                  icon={
+                    <LabelImportantTwoToneIcon
+                      style={{
+                        color: label.important ? "#ffc61a" : "",
+                      }}
+                      fontSize="small"
+                    />
+                  }
+                  label={label.labelName}
+                  sx={{
+                    marginLeft: "4px",
+                    marginBottom: "4px",
+                  }}
+                />
               );
             })}
           </div>

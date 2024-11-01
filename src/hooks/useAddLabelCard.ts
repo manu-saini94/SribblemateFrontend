@@ -1,8 +1,12 @@
+import { CreateLabelType } from "labeltypes";
 import { LabelCardPropsType } from "notetypes";
-import { FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
+import {
+  deleteLabelInNote,
+  insertNewLabelInNote,
+} from "../redux/labels/labelSlice";
 
 const useAddLabelCard = ({ changeActiveCard }: LabelCardPropsType) => {
   const labels = useSelector((state: RootState) => state.allLabels.labels);
@@ -17,23 +21,25 @@ const useAddLabelCard = ({ changeActiveCard }: LabelCardPropsType) => {
     (state: RootState) => state.allLabels.newLabelArray
   );
 
-  const handleCancelClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.preventDefault();
+  const handleExcludeLabelClick = (label: CreateLabelType) => {
+    dispatch(deleteLabelInNote(label.labelName));
   };
 
-  const handleLabelSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleIncludeLabelClick = (label: CreateLabelType) => {
+    dispatch(insertNewLabelInNote(label));
+  };
+
+  const handleCloseClick = () => {
     changeActiveCard(NoteCardType.NOTE);
   };
 
   return {
-    handleLabelSubmit,
-    handleCancelClick,
+    handleCloseClick,
     labels,
     labelArray,
     newLabelArray,
+    handleIncludeLabelClick,
+    handleExcludeLabelClick,
   };
 };
 

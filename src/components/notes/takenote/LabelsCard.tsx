@@ -1,16 +1,23 @@
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import { IconButton } from "@mui/material";
 import useAddLabelCard from "hooks/useAddLabelCard";
 import { LabelCardPropsType } from "notetypes";
 import React from "react";
 
 const LabelsCard = ({ changeActiveCard }: LabelCardPropsType) => {
-  const { handleLabelSubmit, handleCancelClick, labelArray, labels } =
-    useAddLabelCard({
-      changeActiveCard,
-    });
+  const {
+    handleCloseClick,
+    labelArray,
+    labels,
+    handleIncludeLabelClick,
+    handleExcludeLabelClick,
+  } = useAddLabelCard({
+    changeActiveCard,
+  });
 
   return (
-    <form onSubmit={handleLabelSubmit}>
+    <form>
       <div
         className="card "
         style={{
@@ -21,29 +28,48 @@ const LabelsCard = ({ changeActiveCard }: LabelCardPropsType) => {
         <div className="card-header " style={{ fontWeight: "2px" }}>
           Add Labels
         </div>
-        <div className="overflow-y-h-auto">
-          {labels.map((label) => {
-            return (
-              <div key={label.labelName} className="d-flex mt-1">
-                <div className="" style={{ color: "gray" }}>
-                  <CheckBoxOutlineBlankOutlinedIcon />
+        <div className="scroll-overflow my-1">
+          <div
+            className="d-flex column flex-wrap mx-1"
+            style={{ width: "100%" }}
+          >
+            {labels.map((label) => {
+              return (
+                <div
+                  key={label.labelName}
+                  className="d-flex mt-1"
+                  style={{ width: "33%", justifyContent: "flex-start" }}
+                >
+                  {labelArray.find(
+                    (labelItem) => label.labelName === labelItem.labelName
+                  ) ? (
+                    <IconButton>
+                      <CheckBoxOutlinedIcon
+                        style={{ color: "green" }}
+                        onClick={() => handleExcludeLabelClick(label)}
+                      />
+                    </IconButton>
+                  ) : (
+                    <IconButton>
+                      <CheckBoxOutlineBlankOutlinedIcon
+                        onClick={() => handleIncludeLabelClick(label)}
+                      />
+                    </IconButton>
+                  )}
+                  <div style={{ marginTop: "9px", marginLeft: "1px" }}>
+                    {label.labelName}
+                  </div>
                 </div>
-                <div className="mx-1" style={{ marginTop: "1.2px" }}>
-                  {label.labelName}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
         <div className="d-flex justify-content-end mx-2 my-2">
           <button
-            onClick={(event) => handleCancelClick(event)}
+            onClick={handleCloseClick}
             className="btn btn-sm fw-medium card-button mx-2"
           >
-            Cancel
-          </button>
-          <button type="submit" className="btn btn-sm fw-medium card-button">
-            Save
+            Close
           </button>
         </div>
       </div>

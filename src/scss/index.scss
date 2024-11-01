@@ -98,3 +98,9 @@ input:-webkit-autofill:active {
   color: #202124;
   margin-left: 8px;
 }
+
+.scroll-overflow {
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
