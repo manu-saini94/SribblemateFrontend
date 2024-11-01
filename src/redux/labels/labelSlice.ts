@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LabelStoreInitialStateType, UpdateLabelType } from "labeltypes";
+import {
+  CreateLabelType,
+  LabelStoreInitialStateType,
+  UpdateLabelType,
+} from "labeltypes";
 import { initialLabelValue } from "utility/reduxutils/labelUtils";
 import {
   createLabel,
@@ -17,6 +21,9 @@ const initialLoadingStates = {
 const initialDataStates = {
   createdLabelObject: initialLabelValue,
   updateLabelObject: initialLabelValue,
+  labelArray: [] as CreateLabelType[],
+  newLabelArray: [] as CreateLabelType[],
+
   labels: [],
   isDeleted: false,
 };
