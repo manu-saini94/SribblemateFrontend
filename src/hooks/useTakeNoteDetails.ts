@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
 import { hasNoteChanged } from "utility/reduxutils/noteUtils";
 import { createNote } from "../redux/asyncThunks";
+import { resetLabelArray } from "../redux/labels/labelSlice";
 import { insertNewNote } from "../redux/notes/noteSlice";
 import { resetCollaboratorArray } from "../redux/users/usersSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
@@ -51,6 +52,7 @@ const useTakeNoteDetails = ({
     const updatedNote: CreateNoteType = {
       ...createNoteContext.noteData,
       collaboratorList: collaboratorArray,
+      labelSet: labelArray,
     };
     dispatchCreatedNote(updatedNote);
     toggleTakeNoteActive();
@@ -59,7 +61,9 @@ const useTakeNoteDetails = ({
   const dispatchCreatedNote = useCallback(
     (updatedNote: CreateNoteType) => {
       if (hasNoteChanged(updatedNote)) {
-        dispatch(createNote(updatedNote)).then(() => dispatch(insertNewNote()));
+        dispatch(createNote(updatedNote))
+          .then(() => dispatch(insertNewNote()))
+          .then(() => dispatch(resetLabelArray()));
       }
       dispatch(resetCollaboratorArray());
     },

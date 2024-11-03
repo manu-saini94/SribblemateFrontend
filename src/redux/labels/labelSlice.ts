@@ -60,6 +60,9 @@ const labelSlice = createSlice({
         (label) => label.labelName !== action.payload
       );
     },
+    resetLabelArray(state) {
+      state.labelArray = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLabels.pending, (state) => {
@@ -127,5 +130,6 @@ export const {
   deleteCurrentLabel,
   insertNewLabelInNote,
   deleteLabelInNote,
+  resetLabelArray,
 } = labelSlice.actions;
 export default labelSlice.reducer;

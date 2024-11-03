@@ -138,6 +138,7 @@ const TakeNoteDetailsCard = ({
                     marginLeft: "4px",
                     marginBottom: "4px",
                   }}
+                  key={label.labelName}
                 />
               );
             })}
