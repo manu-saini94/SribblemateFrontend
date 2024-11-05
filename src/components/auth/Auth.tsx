@@ -2,6 +2,7 @@ import { AuthProps } from "authtypes";
 import React, { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
+import Lightlogo from "../../assets/SM-logo-lgt.png";
 
 const Auth = ({ children }: AuthProps): ReactNode => {
   const registerError = useSelector(
@@ -17,9 +18,14 @@ const Auth = ({ children }: AuthProps): ReactNode => {
     >
       <div className="card" style={{ width: "45rem" }}>
         <div className="card-body">
-          <h1 className="d-flex justify-content-center mt-5 mb-5">
-            SCRIBBLE MATE
-          </h1>
+          <div className="d-flex justify-content-center mt-3 mb-3">
+            <img
+              height="115px"
+              width="220px"
+              src={Lightlogo}
+              alt="Scribble Mate"
+            />
+          </div>
           {registerError && (
             <div
               className="alert alert-warning alert-dismissible fade show"

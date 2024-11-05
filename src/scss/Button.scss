@@ -1,23 +1,4 @@
-icon-button {
-  all: unset;
-  display: inline-flex; /* Use flex to align content */
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
-  padding: 10px; /* Add padding */
-  background-color: #007bff; /* Custom background color */
-  border-radius: 4px; /* Rounded corners */
-  color: #fff; /* Text color */
-  font-size: 16px; /* Font size */
-  border: 1px solid transparent; /* Add a border if needed */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background color transition */
-}
-
-icon-button:hover {
-  background-color: #0056b3; /* Change background color on hover */
-}
-
-icon-button:focus {
-  outline: none; /* Remove default focus outline */
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Custom focus ring */
+.card-button {
+  background-image: linear-gradient(90deg, #e8e8e8, #f5f5f5);
+  border-radius: 8px;
 }

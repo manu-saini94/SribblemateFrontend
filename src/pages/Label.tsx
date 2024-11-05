@@ -1,8 +1,8 @@
-import useDisplayNoteCards from "hooks/useDisplayNoteCards";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch, RootState } from "redux/store";
+import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import { fetchAllLabelNotes, fetchNotesByLabel } from "../redux/asyncThunks";
 import { extractFromNotesByLabelId } from "../redux/notes/noteSlice";
 
@@ -10,14 +10,14 @@ const Label = () => {
   // const [labelNotes] = useAllLabelNotes();
   const { labelId } = useParams<{ labelId?: string }>();
   const currentLabelNotes = useSelector(
-    (state: RootState) => state.notes.currentLabelNotes
+    (state: RootState) => state.allNotes.currentLabelNotes
   );
   const allLabelNotes = useSelector(
-    (state: RootState) => state.notes.allLabelNotes
+    (state: RootState) => state.allNotes.allLabelNotes
   );
 
   const allNotesByLabelId = useSelector(
-    (state: RootState) => state.notes.notesByLabelId
+    (state: RootState) => state.allNotes.notesByLabelId
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -41,7 +41,7 @@ const Label = () => {
     getLabeledNotes();
   }, [getLabeledNotes]);
 
-  return useDisplayNoteCards(labelId ? currentLabelNotes : allLabelNotes);
+  return <DisplayNotes notes={labelId ? currentLabelNotes : allLabelNotes} />;
 };
 
 export default Label;

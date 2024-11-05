@@ -1,8 +1,7 @@
-import NoteCard from "components/notes/NoteCard";
 import { UpdateNoteType } from "notetypes";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
-const useDisplayNoteCards = (notes: UpdateNoteType[]) => {
+const useDisplayNoteCards = () => {
   const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
   const [currentNoteCard, setCurrentNoteCard] = useState<UpdateNoteType>(
     {} as UpdateNoteType
@@ -20,21 +19,12 @@ const useDisplayNoteCards = (notes: UpdateNoteType[]) => {
     []
   );
 
-  return (
-    <div className="d-flex flex-wrap ">
-      {notes.map((noteCard) => {
-        return (
-          <div className="p-2 g-col-2" key={noteCard.id}>
-            <NoteCard
-              key={noteCard.id}
-              noteCardValues={noteCard}
-              onNoteClick={handleClick(noteCard)}
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
+  return {
+    isUpdateCardActive,
+    currentNoteCard,
+    handleNoteCardClick,
+    handleClick,
+  };
 };
 
 export default useDisplayNoteCards;

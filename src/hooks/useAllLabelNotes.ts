@@ -9,14 +9,14 @@ import { extractFromNotesByLabelId } from "../redux/notes/noteSlice";
 const useAllLabelNotes = () => {
   const { labelId } = useParams<{ labelId?: string }>();
   const currentLabelNotes = useSelector(
-    (state: RootState) => state.notes.currentLabelNotes
+    (state: RootState) => state.allNotes.currentLabelNotes
   );
   const allLabelNotes = useSelector(
-    (state: RootState) => state.notes.allLabelNotes
+    (state: RootState) => state.allNotes.allLabelNotes
   );
 
   const allNotesByLabelId = useSelector(
-    (state: RootState) => state.notes.notesByLabelId
+    (state: RootState) => state.allNotes.notesByLabelId
   );
 
   const dispatch = useDispatch<AppDispatch>();

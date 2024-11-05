@@ -1,16 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import {
+  AuthResponse,
   AuthStoreInitialStateType,
   LoginInitialStateType,
+  RefreshTokenInitialStateType,
   RegisterInitialStateType,
-  UserResponseType,
 } from "authtypes";
-import { loginUser, registerUser } from "../asyncThunks";
+import {
+  checkAuthorizedUser,
+  loginUser,
+  refreshAccessToken,
+  registerUser,
+} from "../asyncThunks";
 
 const loginInitialState: LoginInitialStateType = {
   loginLoading: false,
-  token: null,
-  loggedInUserData: {} as UserResponseType,
+  loggedInUserData: {} as AuthResponse,
   loginError: null,
 };
 
@@ -20,9 +26,15 @@ const registerInitialState: RegisterInitialStateType = {
   registerError: null,
 };
 
+const refreshTokenInitialState: RefreshTokenInitialStateType = {
+  refreshTokenError: null,
+  refreshTokenLoading: false,
+};
+
 const initialState: AuthStoreInitialStateType = {
   ...loginInitialState,
   ...registerInitialState,
+  ...refreshTokenInitialState,
 };
 
 const authSlice = createSlice({
@@ -41,9 +53,10 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loginLoading = false;
-      state.loggedInUserData = {} as UserResponseType;
+      state.loggedInUserData = {} as AuthResponse;
       state.loginError = action.error.message ?? "Failed to Authorize";
     });
+
     builder.addCase(registerUser.pending, (state) => {
       state.registerLoading = true;
     });
@@ -56,6 +69,34 @@ const authSlice = createSlice({
       state.registerLoading = false;
       state.registerSuccess = false;
       state.registerError = action.error.message ?? "Failed to Register";
+    });
+
+    builder.addCase(refreshAccessToken.pending, (state) => {
+      state.refreshTokenLoading = true;
+    });
+    builder.addCase(refreshAccessToken.fulfilled, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = action.payload;
+      state.refreshTokenError = "";
+    });
+    builder.addCase(refreshAccessToken.rejected, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = {} as AuthResponse;
+      state.refreshTokenError = action.error.message ?? "Failed to Register";
+    });
+
+    builder.addCase(checkAuthorizedUser.pending, (state) => {
+      state.refreshTokenLoading = true;
+    });
+    builder.addCase(checkAuthorizedUser.fulfilled, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = action.payload;
+      state.refreshTokenError = "";
+    });
+    builder.addCase(checkAuthorizedUser.rejected, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = {} as AuthResponse;
+      state.refreshTokenError = action.error.message ?? "Failed to Register";
     });
   },
 });

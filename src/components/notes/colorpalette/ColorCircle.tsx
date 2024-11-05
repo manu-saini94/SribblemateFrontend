@@ -1,13 +1,12 @@
-import { useColor } from "hooks/useColor";
+import { useCreateNote } from "hooks/useCreateNote";
 import { ColorCircleProps } from "notetypes";
 import React from "react";
 
 const ColorCircle = (props: ColorCircleProps) => {
   const { colorSelectClass, colorItem } = props;
-  const colorContext = useColor();
+  const createNoteContext = useCreateNote();
   const onColorClick = (color: string, event: React.MouseEvent) => {
-    event.stopPropagation();
-    colorContext.changeColorClick(color);
+    createNoteContext.changeColorClick(color);
   };
   return (
     <div key={colorItem} className="px-1">

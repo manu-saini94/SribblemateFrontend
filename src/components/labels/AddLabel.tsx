@@ -23,7 +23,7 @@ const AddLabel = () => {
         >
           <div className="input-group input-group-sm mt-2">
             <span
-              className="input-group-text bg-light bg-opacity-75"
+              className="input-group-text bg-white bg-opacity-75"
               id="basic-addon1"
             >
               <LabelImportantTwoToneIcon
@@ -46,7 +46,7 @@ const AddLabel = () => {
               onChange={handleChange}
             />
             <span
-              className="input-group-text bg-light bg-opacity-75"
+              className="input-group-text bg-white bg-opacity-75"
               id="basic-addon1"
             >
               <Tooltip title={" Create"}>
@@ -61,7 +61,7 @@ const AddLabel = () => {
               </Tooltip>
             </span>
             <span
-              className="input-group-text bg-light bg-opacity-75"
+              className="input-group-text bg-white bg-opacity-75"
               id="basic-addon1"
             >
               <Tooltip
@@ -81,7 +81,7 @@ const AddLabel = () => {
             </span>
 
             <span
-              className="input-group-text bg-light bg-opacity-75"
+              className="input-group-text bg-white bg-opacity-75"
               id="basic-addon1"
             >
               {" "}

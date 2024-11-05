@@ -52,7 +52,11 @@ const Login = () => {
     }));
   };
 
-  const handleLoginSubmit = async (event: { preventDefault: () => void }) => {
+  const navigateToHomepage = () => {
+    navigate("/note");
+  };
+
+  const handleLoginSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
@@ -60,11 +64,10 @@ const Login = () => {
     } else {
       const { email, password } = formValues;
       const loginDetails: LoginCredentialsType = { email, password };
-      await dispatch(loginUser(loginDetails))
+      dispatch(loginUser(loginDetails))
         .unwrap()
         .then(() => {
-          console.log("Login Successful!");
-          navigate("/note");
+          navigateToHomepage();
         })
         .catch((error) => {
           console.error("Login failed: ", error);

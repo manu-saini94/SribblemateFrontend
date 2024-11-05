@@ -1,10 +1,10 @@
-import { useColor } from "hooks/useColor";
+import { useCreateNote } from "hooks/useCreateNote";
 import React from "react";
 import { colorList } from "utility/miscsUtils";
 import ColorCircle from "./ColorCircle";
 
 const ColorPalette = () => {
-  const colorContext = useColor();
+  const createNoteContext = useCreateNote();
 
   return (
     <div className="d-flex flex-row mx-1 px-1">
@@ -13,7 +13,9 @@ const ColorPalette = () => {
           <ColorCircle
             key={colorItem}
             colorSelectClass={
-              colorContext.color === colorItem ? "button-click" : ""
+              createNoteContext.noteData?.color === colorItem
+                ? "button-click"
+                : ""
             }
             colorItem={colorItem}
           />

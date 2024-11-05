@@ -7,21 +7,26 @@ export type ImageType = {
 
 export type UpdateCollaboratorType = CreateCollaboratorType & Id;
 
-export type CreateCollaboratorType = {
-  email: string;
+export type CreateCollaboratorPropsType = {
+  collaborator: CreateCollaboratorType;
 };
 
-export type CollaboratorListType = {
-  collaboratorArray: CreateCollaboratorType[];
+export type UpdateCollaboratorPropsType = {
+  collaborator: UpdateCollaboratorType;
+};
+
+export type CreateCollaboratorType = {
+  name: string;
+  email: string;
 };
 
 export type CreateNoteType = {
   title: string;
   content: string;
   images: string[];
-  isTrashed: Boolean;
-  isArchived: Boolean;
-  isPinned: Boolean;
+  trashed: Boolean;
+  archived: Boolean;
+  pinned: Boolean;
   color: string;
   reminder: string;
   createdAt: string;
@@ -37,8 +42,21 @@ export type NoteCardPropsType = {
   onNoteClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
-export type TakeNoteDetailsPropsType = {
+export type TakeNoteDetailsType = {
   toggleTakeNoteActive: () => void;
+};
+
+export type TakeNoteDetailsPropsType = {
+  changeActiveCard: (cardType: NoteCardType) => void;
+  toggleTakeNoteActive: () => void;
+};
+
+export type CollaboratorCardPropsType = {
+  changeActiveCard: (cardType: NoteCardType) => void;
+};
+
+export type LabelCardPropsType = {
+  changeActiveCard: (cardType: NoteCardType) => void;
 };
 
 interface ColorPaletteProps {
@@ -74,33 +92,42 @@ export type NoteInitialStateType = {
   allLabelNotesError: string;
   notesByLabelIdLoading: Boolean;
   notesByLabelIdError: string;
+  noteUpdateLoading: Boolean;
+  noteUpdateError: string;
 };
+
+interface NormalizedNotes {
+  notesById: { [id: number]: UpdateNoteType };
+  allIds: number[];
+  pinnedIds: number[];
+  archiveIds: number[];
+  othersIds: number[];
+  trashIds: number[];
+  hasLabelIds: number[];
+  hasReminderIds: number[];
+}
 
 export type ByIdTransformType = {
   [id: number]: UpdateNoteType[];
 };
 
+export type NotesPropsType = {
+  notes: UpdateNoteType[];
+};
+
 export type NoteStoreInitialStateType = NoteInitialStateType & {
   labelId: number;
   createdNoteObject: UpdateNoteType;
-  pinnedAndOthersNotes: UpdateNoteType[];
+  notesById: { [id: number]: UpdateNoteType };
+  allIds: number[];
+  pinnedIds: number[];
+  archiveIds: number[];
+  othersIds: number[];
+  trashIds: number[];
+  hasLabelIds: number[];
+  hasReminderIds: number[];
   allLabelNotes: UpdateNoteType[];
   notesByLabelId: ByIdTransformType;
   currentLabelNotes: UpdateNoteType[];
-};
-
-export type ReminderNoteStoreInitialStateType = CommonInitialState & {
-  reminderNotes: UpdateNoteType[];
-};
-
-export type LabelNoteStoreInitialState = NoteInitialStateType & {
-  labelNotes: UpdateNoteType[];
-};
-
-export type ArchiveStoreInitialStateType = NoteInitialStateType & {
-  archiveNotes: UpdateNoteType[];
-};
-
-export type StoreInitialStateType = NoteInitialStateType & {
-  trashNotes: UpdateNoteType[];
+  updatedNote: UpdateNoteType;
 };

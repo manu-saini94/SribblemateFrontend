@@ -93,3 +93,14 @@ input:-webkit-autofill:active {
   flex-direction: column;
   height: 100%;
 }
+
+.pin-heading {
+  color: #202124;
+  margin-left: 8px;
+}
+
+.scroll-overflow {
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

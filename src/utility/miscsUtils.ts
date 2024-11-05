@@ -3,7 +3,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
-import EditLabelIcon from "components/icons/EditLabelIcon";
+import LabelledNotesMenuIcon from "components/icons/LabelledNotesMenuIcon";
 import { MenuItemType } from "sidebartypes";
 export const EMAIL_REGEX = /^[a-zA-Z0-9_.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const PWD_REGEX =
@@ -15,6 +15,12 @@ export const PWD_WARN =
   "Password must contain one digit from 1 to 9, one lowercase letter, one uppercase letter, one special character, no space, and it must be 8 to 16 characters long";
 export const FULLNAME_RQD = "Full Name is required";
 export const PWD_NOT_MATCH = "Passwords do not match";
+
+export enum NoteCardType {
+  COLLABORATOR,
+  NOTE,
+  LABEL,
+}
 export const colorList = [
   "#fff",
   "#faafa8",
@@ -30,35 +36,44 @@ export const colorList = [
   "#efeff1",
 ];
 
+export enum SidebarMenus {
+  Notes = "Notes",
+  Reminders = "Reminders",
+  Archive = "Archive",
+  Trash = "Trash",
+  EditLabels = "Edit Labels",
+  LabelledNotes = "Labelled Notes",
+}
+
 export const menuList: MenuItemType[] = [
   {
-    name: "Notes",
+    name: SidebarMenus.Notes,
     path: "note",
     iconSrc: EditNoteOutlinedIcon,
   },
   {
-    name: "Reminders",
+    name: SidebarMenus.Reminders,
     path: "reminder",
     iconSrc: NotificationsActiveOutlinedIcon,
   },
 
   {
-    name: "Archive",
+    name: SidebarMenus.Archive,
     path: "archive",
     iconSrc: ArchiveOutlinedIcon,
   },
   {
-    name: "Trash",
+    name: SidebarMenus.Trash,
     path: "trash",
     iconSrc: DeleteOutlinedIcon,
   },
   {
-    name: "Labelled Notes",
+    name: SidebarMenus.LabelledNotes,
     path: "labellednotes",
-    iconSrc: EditLabelIcon,
+    iconSrc: LabelledNotesMenuIcon,
   },
   {
-    name: "Edit Labels",
+    name: SidebarMenus.EditLabels,
     path: "editlabels",
     iconSrc: EditOutlinedIcon,
   },

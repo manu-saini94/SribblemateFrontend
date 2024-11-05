@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LabelStoreInitialStateType, UpdateLabelType } from "labeltypes";
+import {
+  CreateLabelType,
+  LabelStoreInitialStateType,
+  UpdateLabelType,
+} from "labeltypes";
 import { initialLabelValue } from "utility/reduxutils/labelUtils";
 import {
   createLabel,
@@ -17,6 +21,8 @@ const initialLoadingStates = {
 const initialDataStates = {
   createdLabelObject: initialLabelValue,
   updateLabelObject: initialLabelValue,
+  labelArray: [] as CreateLabelType[],
+  newLabelArray: [] as CreateLabelType[],
   labels: [],
   isDeleted: false,
 };
@@ -46,6 +52,17 @@ const labelSlice = createSlice({
     deleteCurrentLabel(state, action) {
       state.labels.splice(action.payload, 1);
     },
+    insertNewLabelInNote(state, action) {
+      state.labelArray.unshift(action.payload);
+    },
+    deleteLabelInNote(state, action) {
+      state.labelArray = state.labelArray.filter(
+        (label) => label.labelName !== action.payload
+      );
+    },
+    resetLabelArray(state) {
+      state.labelArray = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchLabels.pending, (state) => {
@@ -61,6 +78,7 @@ const labelSlice = createSlice({
       state.labels = [];
       state.error = action.error.message ?? "Failed to fetch labels";
     });
+
     builder.addCase(createLabel.pending, (state) => {
       state.createdLabelLoading = true;
     });
@@ -75,6 +93,7 @@ const labelSlice = createSlice({
       state.createdLabelError =
         action.error.message ?? "Failed to create label";
     });
+
     builder.addCase(updateLabel.pending, (state) => {
       state.updateLabelLoading = true;
     });
@@ -88,6 +107,7 @@ const labelSlice = createSlice({
       state.updateLabelObject = {} as UpdateLabelType;
       state.updateLabelError = action.error.message ?? "Failed to update label";
     });
+
     builder.addCase(deleteLabel.pending, (state) => {
       state.updateLabelLoading = true;
     });
@@ -104,6 +124,12 @@ const labelSlice = createSlice({
   },
 });
 
-export const { insertNewLabel, updateCurrentLabel, deleteCurrentLabel } =
-  labelSlice.actions;
+export const {
+  insertNewLabel,
+  updateCurrentLabel,
+  deleteCurrentLabel,
+  insertNewLabelInNote,
+  deleteLabelInNote,
+  resetLabelArray,
+} = labelSlice.actions;
 export default labelSlice.reducer;

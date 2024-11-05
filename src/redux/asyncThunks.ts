@@ -7,20 +7,24 @@ import {
 } from "api/requests/LabelRequests";
 import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
 import { CreateLabelType, UpdateLabelType } from "labeltypes";
-import { CreateNoteType } from "notetypes";
+import { CreateCollaboratorType, CreateNoteType } from "notetypes";
 import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
 import {
+  checkUserAuthorization,
   createNoteForUser,
   getAllLabelNotesByUser,
   getAllNotesByLabel,
   getAllNotesByUser,
   getAllReminderNotesByUser,
+  refreshTokenForUser,
+  updatePinForUserNote,
 } from "../api/requests/NoteRequests";
+import { checkUserExist, fetchUsers } from "../api/requests/UserRequests";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   (loginDetails: LoginCredentialsType) => {
-    return loginAuthUser(loginDetails).then((response) => response.data);
+    return loginAuthUser(loginDetails).then((response) => response.data.object);
   }
 );
 
@@ -37,6 +41,20 @@ export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
   return getAllNotesByUser().then((response) => response.data.object);
 });
 
+export const checkAuthorizedUser = createAsyncThunk(
+  "auth/checkAuthorizedUser",
+  () => {
+    return checkUserAuthorization().then((response) => response.data.object);
+  }
+);
+
+export const refreshAccessToken = createAsyncThunk(
+  "auth/refreshAccessToken",
+  async () => {
+    return refreshTokenForUser().then((response) => response.data.object);
+  }
+);
+
 export const fetchAllLabelNotes = createAsyncThunk(
   "notes/fetchAllLabelNotes",
   () => {
@@ -51,10 +69,45 @@ export const fetchNotesByLabel = createAsyncThunk(
   }
 );
 
+export const fetchAllUsers = createAsyncThunk("users/fetchAllUsers", () => {
+  return fetchUsers().then((response) => response.data.object);
+});
+
+export const checkCollaboratorExist = createAsyncThunk(
+  "users/checkCollaboratorExist",
+  (email: CreateCollaboratorType) => {
+    return checkUserExist(email)
+      .then((response) => response.data.object)
+      .catch((error) => {
+        console.log("ER:", error);
+
+        throw error.response.data.object;
+      });
+  }
+);
+
+// export const createCollaborator = createAsyncThunk(
+//   "note/createCollaborator",
+//   (collaborator: string) => {
+//     return addCollaboratorToNote(collaborator).then(
+//       (response) => response.data.object
+//     );
+//   }
+// );
+
 export const createNote = createAsyncThunk(
   "notes/createNote",
   (noteData: CreateNoteType) => {
     return createNoteForUser(noteData).then((response) => response.data.object);
+  }
+);
+
+export const updatePinForNote = createAsyncThunk(
+  "notes/updatePin",
+  (noteId: number) => {
+    return updatePinForUserNote(noteId).then(
+      (response) => response.data.object
+    );
   }
 );
 

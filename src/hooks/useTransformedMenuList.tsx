@@ -18,7 +18,7 @@ const useTransformedMenuList = (): MenuItemType[] => {
         path: `/label/${label.id}`,
         iconSrc: () => (
           <LabelImportantTwoToneIcon
-            style={{ color: label.important ? "#ffc61a" : "" }} // Yellow if important, default otherwise
+            style={{ color: label.important ? "#ffc61a" : "" }}
           />
         ),
       };

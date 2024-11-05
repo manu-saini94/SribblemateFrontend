@@ -4,9 +4,9 @@ export const initialCreateNoteValue: CreateNoteType = {
   title: "",
   content: "",
   images: [],
-  isTrashed: false,
-  isArchived: false,
-  isPinned: false,
+  trashed: false,
+  archived: false,
+  pinned: false,
   color: "#fff",
   reminder: "",
   createdAt: "",
@@ -24,14 +24,7 @@ export const hasNoteChanged = (newNoteValues: CreateNoteType): boolean => {
   // Check non-array fields
   if (
     newNoteValues.title !== initialCreateNoteValue.title ||
-    newNoteValues.content !== initialCreateNoteValue.content ||
-    newNoteValues.isTrashed !== initialCreateNoteValue.isTrashed ||
-    newNoteValues.isArchived !== initialCreateNoteValue.isArchived ||
-    newNoteValues.isPinned !== initialCreateNoteValue.isPinned ||
-    newNoteValues.color !== initialCreateNoteValue.color ||
-    newNoteValues.reminder !== initialCreateNoteValue.reminder ||
-    newNoteValues.createdAt !== initialCreateNoteValue.createdAt ||
-    newNoteValues.updatedAt !== initialCreateNoteValue.updatedAt
+    newNoteValues.content !== initialCreateNoteValue.content
   ) {
     return true; // Return true immediately if any non-array field has changed
   }

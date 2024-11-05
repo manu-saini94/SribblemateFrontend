@@ -9,9 +9,13 @@ import axios from "axios";
 export const registerAuthUser = (
   registrationDetails: RegistrationDetailsType
 ) => {
-  return axios.post(BASE_URL_V1 + REGISTER_USER_URL, registrationDetails);
+  return axios.post(BASE_URL_V1 + REGISTER_USER_URL, registrationDetails, {
+    withCredentials: true,
+  });
 };
 
 export const loginAuthUser = async (loginDetails: LoginCredentialsType) => {
-  return axios.post(BASE_URL_V1 + LOGIN_USER_URL, loginDetails);
+  return axios.post(BASE_URL_V1 + LOGIN_USER_URL, loginDetails, {
+    withCredentials: true,
+  });
 };

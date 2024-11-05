@@ -1,6 +1,6 @@
-import TakeNote from "components/notes/TakeNote";
-import TakeNoteDetails from "components/notes/TakeNoteDetails";
-import ColorProvider from "contexts/providers/ColorProvider";
+import TakeNote from "components/notes/takenote/TakeNote";
+import TakeNoteDetails from "components/notes/takenote/TakeNoteDetails";
+import ColorProvider from "contexts/providers/CreateNoteProvider";
 import { useTakeNoteActive } from "hooks/useTakeNoteActive";
 
 import { CommonNoteProps } from "notetypes";
