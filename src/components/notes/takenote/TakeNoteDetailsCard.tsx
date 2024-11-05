@@ -2,7 +2,6 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
-import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
 import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
@@ -11,6 +10,7 @@ import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { Chip, IconButton, Tooltip } from "@mui/material";
+import AddLabelIcon from "components/icons/AddLabelIcon";
 import useTakeNoteDetails from "hooks/useTakeNoteDetails";
 import { TakeNoteDetailsPropsType } from "notetypes";
 import React from "react";
@@ -154,24 +154,32 @@ const TakeNoteDetailsCard = ({
 
           <div className="d-flex flex-row justify-content-between mt-1">
             <div className="col-1">
-              <IconButton onClick={onReminderIconClick}>
-                <NotificationAddOutlinedIcon className="fs-6 " />
-              </IconButton>
+              <Tooltip title="Add Reminder">
+                <IconButton onClick={onReminderIconClick}>
+                  <NotificationAddOutlinedIcon className="fs-6 " />
+                </IconButton>
+              </Tooltip>
             </div>
             <div className="col-1">
-              <IconButton onClick={onImageIconClick}>
-                <PermMediaOutlinedIcon className="fs-6" />
-              </IconButton>
+              <Tooltip title="Add Images">
+                <IconButton onClick={onImageIconClick}>
+                  <PermMediaOutlinedIcon className="fs-6" />
+                </IconButton>
+              </Tooltip>
             </div>
             <div className="col-1">
-              <IconButton onClick={onCollaboratorIconClick}>
-                <PersonAddOutlinedIcon className="fs-6" />
-              </IconButton>
+              <Tooltip title="Add Collaborators">
+                <IconButton onClick={onCollaboratorIconClick}>
+                  <PersonAddOutlinedIcon className="fs-6" />
+                </IconButton>
+              </Tooltip>
             </div>
             <div className="col-1">
-              <IconButton onClick={(event) => onArchiveClick(event)}>
-                <ArchiveOutlinedIcon className="fs-6" />
-              </IconButton>
+              <Tooltip title="Archive note">
+                <IconButton onClick={(event) => onArchiveClick(event)}>
+                  <ArchiveOutlinedIcon className="fs-6" />
+                </IconButton>
+              </Tooltip>
             </div>
             <div className="col-1">
               <div
@@ -180,31 +188,40 @@ const TakeNoteDetailsCard = ({
                 aria-expanded="false"
                 aria-controls="collapsePalette"
               >
-                <IconButton onClick={toggleColorPalette}>
-                  <PaletteOutlinedIcon className="fs-6" />
-                </IconButton>
+                <Tooltip title="Change color">
+                  <IconButton onClick={toggleColorPalette}>
+                    <PaletteOutlinedIcon className="fs-6" />
+                  </IconButton>
+                </Tooltip>
               </div>
             </div>
 
             <div className="col-1">
-              <IconButton onClick={onDeleteIconClick}>
-                <DeleteOutlinedIcon className="fs-6" />
-              </IconButton>
+              <Tooltip title="Delete note">
+                <IconButton onClick={onDeleteIconClick}>
+                  <DeleteOutlinedIcon className="fs-6" />
+                </IconButton>
+              </Tooltip>
             </div>
             <div className="col-1">
-              <IconButton onClick={onLabelAddIconClick}>
-                <LabelOutlinedIcon className="fs-6" />
-              </IconButton>
+              <Tooltip title="Add labels">
+                <IconButton onClick={onLabelAddIconClick}>
+                  <AddLabelIcon />
+                </IconButton>
+              </Tooltip>
             </div>
             <div className="col-1">
-              <IconButton onClick={onCheckboxIconClick}>
-                <LibraryAddCheckOutlinedIcon className="fs-6" />
-              </IconButton>
+              <Tooltip title="Add List">
+                <IconButton onClick={onCheckboxIconClick}>
+                  <LibraryAddCheckOutlinedIcon className="fs-6" />
+                </IconButton>
+              </Tooltip>
             </div>
-
-            <button type="submit" className="btn btn-sm fw-medium">
-              Save
-            </button>
+            <Tooltip title="Save note">
+              <button type="submit" className="btn btn-sm fw-medium">
+                Save
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>

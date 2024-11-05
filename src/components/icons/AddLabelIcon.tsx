@@ -1,5 +1,6 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import LabelOutlinedIcon from "@mui/icons-material/LabelOutlined";
+import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
+
 import { Stack } from "@mui/material";
 import React from "react";
 
@@ -14,21 +15,22 @@ const AddLabelIcon = () => {
       }}
     >
       {/* Label Icon */}
-      <LabelOutlinedIcon
+      <LabelImportantTwoToneIcon
         sx={{
-          fontSize: "16px", // Adjust size as needed
-          color: "black",
+          fontSize: "18px", // Adjust size as needed
+          color: "#404040",
           position: "absolute",
+          left: "3%",
         }}
       />
       {/* Add Icon */}
       <AddOutlinedIcon
         sx={{
           position: "absolute",
-          top: "40%",
-          left: "90%",
+          top: "12%",
+          left: "84%",
           transform: "translate(-50%, -50%)",
-          fontSize: "8px", // Adjust size as needed
+          fontSize: "10px", // Adjust size as needed
           color: "black",
         }}
       />
