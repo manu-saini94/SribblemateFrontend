@@ -1,14 +1,22 @@
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { IconButton } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { AppDispatch, RootState } from "redux/store";
 import Lightlogo from "../../assets/SM-logo-lgt.png";
+import { setSideBarCollapse } from "../../redux/global/globalSlice";
 
 const MenuButton = () => {
-  const [isCollapse, setIsCollapse] = useState<Boolean>(false);
+  const isSideBarCollapsed = useSelector(
+    (state: RootState) => state.menus.isSideBarCollapsed
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
   const onMenuIconClick = () => {
-    setIsCollapse((prev) => !prev);
+    dispatch(setSideBarCollapse());
   };
   return (
     <>
@@ -18,7 +26,7 @@ const MenuButton = () => {
         aria-expanded="false"
         aria-controls="collapseSideBar"
       >
-        {isCollapse ? (
+        {isSideBarCollapsed ? (
           <IconButton onClick={onMenuIconClick}>
             <ArrowForwardIosOutlinedIcon />
           </IconButton>

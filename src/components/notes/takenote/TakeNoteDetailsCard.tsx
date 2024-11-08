@@ -15,12 +15,14 @@ import useTakeNoteDetails from "hooks/useTakeNoteDetails";
 import { TakeNoteDetailsPropsType } from "notetypes";
 import React from "react";
 import ColorPalette from "../colorpalette/ColorPalette";
+import ListItemContent from "./ListItemContent";
 
 const TakeNoteDetailsCard = ({
   toggleTakeNoteActive,
   changeActiveCard,
 }: TakeNoteDetailsPropsType) => {
   const {
+    isListNote,
     labelArray,
     colorPaletteRef,
     takeNoteDetailsRef,
@@ -56,7 +58,7 @@ const TakeNoteDetailsCard = ({
             <div className="input-group mb-3 ">
               <input
                 type="text"
-                className="form-control border-0 p-0 m-0"
+                className="form-control border-0 p-0 m-0 title"
                 name="title"
                 placeholder="Title"
                 aria-label="Title"
@@ -69,34 +71,42 @@ const TakeNoteDetailsCard = ({
               />
             </div>
             <div className="">
-              <IconButton onClick={onPinClick}>
-                {createNoteContext.noteData?.pinned ? (
-                  <PushPinIcon className="fs-6 mt-n4" />
-                ) : (
-                  <PushPinOutlinedIcon className="fs-6 " />
-                )}{" "}
-              </IconButton>
+              <Tooltip
+                title={createNoteContext.noteData?.pinned ? "Unpin" : "Pin"}
+              >
+                <IconButton onClick={onPinClick}>
+                  {createNoteContext.noteData?.pinned ? (
+                    <PushPinIcon className="fs-4 mt-n4" />
+                  ) : (
+                    <PushPinOutlinedIcon className="fs-4 " />
+                  )}{" "}
+                </IconButton>
+              </Tooltip>
             </div>
           </div>
 
           <div className="input-group mb-3">
-            <textarea
-              className="form-control border-0 p-0 m-0"
-              name="content"
-              placeholder="Take a note..."
-              aria-label="Take a note..."
-              aria-describedby="basic-addon1"
-              style={{
-                backgroundColor: `${createNoteContext.noteData?.color}`,
-                resize: "none",
-                overflow: "hidden",
-                minHeight: "auto",
-              }}
-              value={createNoteContext.noteData?.content}
-              onChange={handleContentChange}
-              id="content"
-              ref={textareaRef}
-            />
+            {!isListNote ? (
+              <textarea
+                className="form-control border-0 p-0 m-0 content"
+                name="content"
+                placeholder="Take a note..."
+                aria-label="Take a note..."
+                aria-describedby="basic-addon1"
+                style={{
+                  backgroundColor: `${createNoteContext.noteData?.color}`,
+                  resize: "none",
+                  overflow: "hidden",
+                  minHeight: "auto",
+                }}
+                value={createNoteContext.noteData?.content}
+                onChange={handleContentChange}
+                id="content"
+                ref={textareaRef}
+              />
+            ) : (
+              <ListItemContent />
+            )}
           </div>
           <div className="d-flex">
             {collaboratorArray?.map((collaborator) => {
