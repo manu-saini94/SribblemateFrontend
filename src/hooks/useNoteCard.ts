@@ -12,6 +12,25 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [openPalette, setOpenPalette] = useState(false);
+  const [isOpenColorTooltip, setIsOpenColorTooltip] = useState(false);
+
+  const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
+
+  const handleColorTooltipClose = () => {
+    setIsOpenColorTooltip(false);
+  };
+
+  const handleColorTooltipOpen = () => {
+    setIsOpenColorTooltip(true);
+  };
+
+  const handleMoreTooltipClose = () => {
+    setIsOpenMoreTooltip(false);
+  };
+
+  const handleMoreTooltipOpen = () => {
+    setIsOpenMoreTooltip(true);
+  };
 
   const onPinClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     // setPin(!pin);
@@ -44,12 +63,15 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     // setArchive(true);
   };
 
-  const onMoreClick = () => {};
+  const onMoreClick = () => {
+    handleMoreTooltipClose();
+  };
 
   const onImageClick = () => {};
 
   const toggleColorPalette = () => {
     colorPaletteRef.current?.classList.toggle("show");
+    handleColorTooltipClose();
   };
 
   useEffect(() => {});
@@ -102,6 +124,12 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     onMoreClick,
     onImageClick,
     toggleColorPalette,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
+    handleMoreTooltipClose,
+    handleMoreTooltipOpen,
+    isOpenColorTooltip,
+    isOpenMoreTooltip,
   };
 };
 

@@ -155,7 +155,16 @@ const TakeNoteDetailsCard = ({
           </div>
 
           <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>
-            <div className="card border-light">
+            <div
+              className="card border-light z-1 position-absolute"
+              style={{
+                width: "190px",
+                top: "95%", // Positions below the icon
+                left: "30%", // Aligns with the left of the icon
+                zIndex: "10", // Ensures it appears on top
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+              }}
+            >
               <div className="card-body align-items-center">
                 <ColorPalette />
               </div>
@@ -197,6 +206,7 @@ const TakeNoteDetailsCard = ({
                 data-bs-target="#collapsePalette"
                 aria-expanded="false"
                 aria-controls="collapsePalette"
+                className="col-2 position-relative"
               >
                 <Tooltip title="Change color">
                   <IconButton onClick={toggleColorPalette}>
@@ -216,7 +226,14 @@ const TakeNoteDetailsCard = ({
             <div className="col-1">
               <Tooltip title="Add labels">
                 <IconButton onClick={onLabelAddIconClick}>
-                  <AddLabelIcon />
+                  <AddLabelIcon
+                    style={{
+                      position: "relative",
+                      display: "inline-block",
+                      width: "20px",
+                      height: "20px",
+                    }}
+                  />
                 </IconButton>
               </Tooltip>
             </div>

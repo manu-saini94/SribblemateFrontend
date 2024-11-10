@@ -53,6 +53,10 @@ export type GlobalStoreInitialStateType = GlobalInitialStateType & {
   isMenuBarCollapsed: Boolean;
 };
 
+type AddLabelIconProps = {
+  style?: React.CSSProperties;
+};
+
 // type LabelEnum = {
 //   [key: string]: string;  // Simulating an Enum structure for labels
 // };

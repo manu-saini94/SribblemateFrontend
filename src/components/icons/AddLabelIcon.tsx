@@ -1,19 +1,12 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
+import { AddLabelIconProps } from "global";
 
-import { Stack } from "@mui/material";
 import React from "react";
 
-const AddLabelIcon = () => {
+const AddLabelIcon = ({ style }: AddLabelIconProps) => {
   return (
-    <Stack
-      sx={{
-        position: "relative",
-        display: "inline-block",
-        width: "20px", // Adjust based on icon size
-        height: "20px",
-      }}
-    >
+    <div style={style}>
       {/* Label Icon */}
       <LabelImportantTwoToneIcon
         sx={{
@@ -34,7 +27,7 @@ const AddLabelIcon = () => {
           color: "black",
         }}
       />
-    </Stack>
+    </div>
   );
 };
 

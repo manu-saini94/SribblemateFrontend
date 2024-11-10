@@ -1,4 +1,7 @@
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
@@ -6,7 +9,15 @@ import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
-import { Button, IconButton, Tooltip } from "@mui/material";
+import {
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Tooltip,
+} from "@mui/material";
+import AddLabelIcon from "components/icons/AddLabelIcon";
 import useNoteCard from "hooks/useNoteCard";
 import { NoteCardPropsType } from "notetypes";
 import React from "react";
@@ -30,6 +41,12 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
     onMoreClick,
     onImageClick,
     toggleColorPalette,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
+    handleMoreTooltipClose,
+    handleMoreTooltipOpen,
+    isOpenColorTooltip,
+    isOpenMoreTooltip,
   } = useNoteCard({ noteCardValues, onNoteClick });
 
   return (
@@ -97,9 +114,11 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
           <div
             className="card border-light z-1 position-absolute"
             style={{
-              top: "100%", // Positions below the icon
-              left: "0", // Aligns with the left of the icon
+              width: "190px",
+              top: "95%", // Positions below the icon
+              left: "20%", // Aligns with the left of the icon
               zIndex: "10", // Ensures it appears on top
+              boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
             }}
           >
             <div className="card-body align-items-center">
@@ -137,15 +156,25 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             </Tooltip>
           </div>
           <div className="col-2 position-relative">
-            <Tooltip title="Change color">
+            <Tooltip
+              open={isOpenColorTooltip}
+              onClose={handleColorTooltipClose}
+              onOpen={handleColorTooltipOpen}
+              title="Change color"
+            >
               <IconButton onClick={toggleColorPalette}>
                 <PaletteOutlinedIcon className="fs-6" />
               </IconButton>
             </Tooltip>
           </div>
           <div className="col-2">
-            <Tooltip title="More">
-              <div className="dropdown">
+            <div className="dropdown">
+              <Tooltip
+                open={isOpenMoreTooltip}
+                onClose={handleMoreTooltipClose}
+                onOpen={handleMoreTooltipOpen}
+                title="More"
+              >
                 <IconButton
                   onClick={onMoreClick}
                   data-bs-toggle="dropdown"
@@ -153,15 +182,44 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
                 >
                   <MoreVertOutlinedIcon className="fs-6" />
                 </IconButton>
-                <ul className="dropdown-menu">
-                  <li className="dropdown-item">
-                    <Button>Delete Note</Button>
-                  </li>
-                  <li className="dropdown-item">Delete Note</li>
-                  <li className="dropdown-item">Delete Note</li>
-                </ul>
-              </div>
-            </Tooltip>
+              </Tooltip>
+              <MenuList className="dropdown-menu">
+                <MenuItem>
+                  <ListItemIcon>
+                    <DeleteOutlinedIcon className="fs-6" />
+                  </ListItemIcon>
+                  <ListItemText>Delete</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <AddLabelIcon
+                      style={{
+                        position: "relative",
+                        display: "inline-block",
+                        width: "20px",
+                        height: "20px",
+                        marginLeft: "-2px",
+                        marginTop: "2px",
+                      }}
+                    />
+                  </ListItemIcon>
+
+                  <ListItemText>Add Labels</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <LibraryAddCheckOutlinedIcon className="fs-6" />
+                  </ListItemIcon>
+                  <ListItemText>Add List</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCopyIcon className="fs-6" />
+                  </ListItemIcon>
+                  <ListItemText>Clone Note</ListItemText>
+                </MenuItem>
+              </MenuList>
+            </div>
           </div>
         </div>
       </div>
