@@ -34,7 +34,7 @@ export interface NoteContextType {
   onPinClick: () => void;
   onReminderClick: () => void;
 }
-export interface ColorContextProps extends ReactNodeHOCProps {}
+export interface NoteContextProps extends ReactNodeHOCProps {}
 
 export interface ThemeContextProps extends ReactNodeHOCProps {}
 
@@ -49,6 +49,12 @@ export type GlobalInitialStateType = {
 
 export type GlobalStoreInitialStateType = GlobalInitialStateType & {
   activeMenu: string;
+  isSideBarCollapsed: Boolean;
+  isMenuBarCollapsed: Boolean;
+};
+
+type AddLabelIconProps = {
+  style?: React.CSSProperties;
 };
 
 // type LabelEnum = {

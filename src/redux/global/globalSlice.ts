@@ -7,6 +7,8 @@ const initialLoadingStates = {
 };
 
 const initialDataStates = {
+  isSideBarCollapsed: false,
+  isMenuBarCollapsed: false,
   activeMenu: SidebarMenus.Notes,
 };
 
@@ -27,9 +29,16 @@ const globalSlice = createSlice({
     setCurrentActiveMenu(state, action) {
       state.activeMenu = action.payload;
     },
+    setMenuBarCollapse(state) {
+      state.isMenuBarCollapsed = !state.isMenuBarCollapsed;
+    },
+    setSideBarCollapse(state) {
+      state.isSideBarCollapsed = !state.isSideBarCollapsed;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setCurrentActiveMenu } = globalSlice.actions;
+export const { setCurrentActiveMenu, setMenuBarCollapse, setSideBarCollapse } =
+  globalSlice.actions;
 export default globalSlice.reducer;

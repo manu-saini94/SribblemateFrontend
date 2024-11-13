@@ -9,6 +9,12 @@ const MenuItem = (props: MenuItemPropsType) => {
       <button
         className={`list-group-item list-group-item-action border-0 rounded-5 ${active} `}
         onClick={onMenuItemClick}
+        style={{
+          background:
+            active !== "custom-hover-bg"
+              ? "linear-gradient(90deg, #FFCCE5, #D9D1FF)"
+              : "",
+        }}
       >
         <div className="container text-center">
           <div className="row d-flex">

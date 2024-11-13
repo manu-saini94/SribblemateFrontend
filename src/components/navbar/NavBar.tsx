@@ -5,7 +5,7 @@ import ViewSettingsAvatar from "./ViewSettingsAvatar";
 
 const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-lg border-bottom">
+    <nav className="navbar fixed-top border-bottom bg-white z-1">
       <div className="container-fluid row d-flex">
         <div className="col-sm-8 d-flex justify-content-start">
           {" "}

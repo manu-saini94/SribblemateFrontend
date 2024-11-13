@@ -1,10 +1,10 @@
 import CreateNoteContext from "contexts/CreateNoteContext";
-import { ColorContextProps } from "global";
+import { NoteContextProps } from "global";
 import { CreateNoteType } from "notetypes";
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import { initialCreateNoteValue } from "utility/reduxutils/noteUtils";
 
-const CreateNoteProvider = ({ children }: ColorContextProps): ReactNode => {
+const CreateNoteProvider = ({ children }: NoteContextProps): ReactNode => {
   const [noteData, setNoteData] = useState<CreateNoteType>(
     initialCreateNoteValue
   );

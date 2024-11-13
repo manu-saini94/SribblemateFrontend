@@ -20,6 +20,14 @@ export type CreateCollaboratorType = {
   email: string;
 };
 
+export type ListItemType = {
+  content: string;
+  done: Boolean;
+  orderIndex: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type CreateNoteType = {
   title: string;
   content: string;
@@ -31,6 +39,7 @@ export type CreateNoteType = {
   reminder: string;
   createdAt: string;
   updatedAt: string;
+  listItems: ListItemType[];
   labelSet: CreateLabelType[];
   collaboratorList: CreateCollaboratorType[];
 };

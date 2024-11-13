@@ -28,7 +28,7 @@ const LabelsCard = ({ changeActiveCard }: LabelCardPropsType) => {
         <div className="card-header " style={{ fontWeight: "2px" }}>
           Add Labels
         </div>
-        <div className="scroll-overflow my-1">
+        <div className="scroll-overflow my-1 custom-scrollbar">
           <div
             className="d-flex column flex-wrap mx-1"
             style={{ width: "100%" }}

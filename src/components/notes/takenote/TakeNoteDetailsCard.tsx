@@ -15,12 +15,14 @@ import useTakeNoteDetails from "hooks/useTakeNoteDetails";
 import { TakeNoteDetailsPropsType } from "notetypes";
 import React from "react";
 import ColorPalette from "../colorpalette/ColorPalette";
+import ListItemContent from "./ListItemContent";
 
 const TakeNoteDetailsCard = ({
   toggleTakeNoteActive,
   changeActiveCard,
 }: TakeNoteDetailsPropsType) => {
   const {
+    isListNote,
     labelArray,
     colorPaletteRef,
     takeNoteDetailsRef,
@@ -38,6 +40,9 @@ const TakeNoteDetailsCard = ({
     handleContentChange,
     createNoteContext,
     collaboratorArray,
+    isOpenColorTooltip,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
   } = useTakeNoteDetails({ toggleTakeNoteActive, changeActiveCard });
 
   return (
@@ -56,7 +61,7 @@ const TakeNoteDetailsCard = ({
             <div className="input-group mb-3 ">
               <input
                 type="text"
-                className="form-control border-0 p-0 m-0"
+                className="form-control border-0 p-0 m-0 title"
                 name="title"
                 placeholder="Title"
                 aria-label="Title"
@@ -69,34 +74,42 @@ const TakeNoteDetailsCard = ({
               />
             </div>
             <div className="">
-              <IconButton onClick={onPinClick}>
-                {createNoteContext.noteData?.pinned ? (
-                  <PushPinIcon className="fs-6 mt-n4" />
-                ) : (
-                  <PushPinOutlinedIcon className="fs-6 " />
-                )}{" "}
-              </IconButton>
+              <Tooltip
+                title={createNoteContext.noteData?.pinned ? "Unpin" : "Pin"}
+              >
+                <IconButton onClick={onPinClick}>
+                  {createNoteContext.noteData?.pinned ? (
+                    <PushPinIcon className="fs-4 mt-n4" />
+                  ) : (
+                    <PushPinOutlinedIcon className="fs-4 " />
+                  )}{" "}
+                </IconButton>
+              </Tooltip>
             </div>
           </div>
 
           <div className="input-group mb-3">
-            <textarea
-              className="form-control border-0 p-0 m-0"
-              name="content"
-              placeholder="Take a note..."
-              aria-label="Take a note..."
-              aria-describedby="basic-addon1"
-              style={{
-                backgroundColor: `${createNoteContext.noteData?.color}`,
-                resize: "none",
-                overflow: "hidden",
-                minHeight: "auto",
-              }}
-              value={createNoteContext.noteData?.content}
-              onChange={handleContentChange}
-              id="content"
-              ref={textareaRef}
-            />
+            {!isListNote ? (
+              <textarea
+                className="form-control border-0 p-0 m-0 content"
+                name="content"
+                placeholder="Take a note..."
+                aria-label="Take a note..."
+                aria-describedby="basic-addon1"
+                style={{
+                  backgroundColor: `${createNoteContext.noteData?.color}`,
+                  resize: "none",
+                  overflow: "hidden",
+                  minHeight: "auto",
+                }}
+                value={createNoteContext.noteData?.content}
+                onChange={handleContentChange}
+                id="content"
+                ref={textareaRef}
+              />
+            ) : (
+              <ListItemContent />
+            )}
           </div>
           <div className="d-flex">
             {collaboratorArray?.map((collaborator) => {
@@ -145,7 +158,16 @@ const TakeNoteDetailsCard = ({
           </div>
 
           <div className="collapse" id="collapsePalette" ref={colorPaletteRef}>
-            <div className="card border-light">
+            <div
+              className="card border-light z-1 position-absolute"
+              style={{
+                width: "190px",
+                top: "95%",
+                left: "30%",
+                zIndex: "10",
+                boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
+              }}
+            >
               <div className="card-body align-items-center">
                 <ColorPalette />
               </div>
@@ -187,8 +209,14 @@ const TakeNoteDetailsCard = ({
                 data-bs-target="#collapsePalette"
                 aria-expanded="false"
                 aria-controls="collapsePalette"
+                className="col-2 position-relative"
               >
-                <Tooltip title="Change color">
+                <Tooltip
+                  open={isOpenColorTooltip}
+                  onClose={handleColorTooltipClose}
+                  onOpen={handleColorTooltipOpen}
+                  title="Change color"
+                >
                   <IconButton onClick={toggleColorPalette}>
                     <PaletteOutlinedIcon className="fs-6" />
                   </IconButton>
@@ -206,7 +234,14 @@ const TakeNoteDetailsCard = ({
             <div className="col-1">
               <Tooltip title="Add labels">
                 <IconButton onClick={onLabelAddIconClick}>
-                  <AddLabelIcon />
+                  <AddLabelIcon
+                    style={{
+                      position: "relative",
+                      display: "inline-block",
+                      width: "20px",
+                      height: "20px",
+                    }}
+                  />
                 </IconButton>
               </Tooltip>
             </div>

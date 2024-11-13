@@ -1,5 +1,5 @@
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
-import { FormEvent, useCallback, useEffect, useRef } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
@@ -9,6 +9,7 @@ import { resetLabelArray } from "../redux/labels/labelSlice";
 import { insertNewNote } from "../redux/notes/noteSlice";
 import { resetCollaboratorArray } from "../redux/users/usersSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
+import useColor from "./useColor";
 import { useCreateNote } from "./useCreateNote";
 
 const useTakeNoteDetails = ({
@@ -19,6 +20,12 @@ const useTakeNoteDetails = ({
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const createNoteContext = useCreateNote();
+  const [isListNote, setIsListNote] = useState<Boolean>(false);
+  const {
+    isOpenColorTooltip,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
+  } = useColor();
   const collaboratorArray = useSelector(
     (state: RootState) => state.users.collaboratorArray
   );
@@ -66,12 +73,14 @@ const useTakeNoteDetails = ({
           .then(() => dispatch(resetLabelArray()));
       }
       dispatch(resetCollaboratorArray());
+      dispatch(resetLabelArray());
     },
     [dispatch]
   );
 
   const toggleColorPalette = () => {
     colorPaletteRef.current?.classList.toggle("show");
+    handleColorTooltipClose();
   };
 
   const onCheckboxIconClick = (): void => {
@@ -140,6 +149,7 @@ const useTakeNoteDetails = ({
     collaboratorArray,
   ]);
   return {
+    isListNote,
     labelArray,
     dispatch,
     takeNoteDetailsRef,
@@ -160,6 +170,9 @@ const useTakeNoteDetails = ({
     colorPaletteRef,
     createNoteContext,
     collaboratorArray,
+    isOpenColorTooltip,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
   };
 };
 

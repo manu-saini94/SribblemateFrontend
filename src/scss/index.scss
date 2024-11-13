@@ -29,11 +29,7 @@
 }
 
 .button-click {
-  border: 3px solid magenta;
-}
-
-.button:hover {
-  border: 2px solid black;
+  border: 1px solid magenta;
 }
 
 .para {
@@ -103,4 +99,22 @@ input:-webkit-autofill:active {
   max-height: 200px;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Background color of track */
+  border-radius: 10px; /* Rounded borders for the track */
+}
+
+/* Target the scrollbar thumb (the draggable part) */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #c8c8c8; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for thumb */
+  border: 3px solid #f1f1f1; /* Adds padding effect by showing the track color as the border */
+}
+
+/* Customize the width of the scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px; /* Scrollbar width */
+  height: 5px; /* Scrollbar height for horizontal scrollbars */
 }

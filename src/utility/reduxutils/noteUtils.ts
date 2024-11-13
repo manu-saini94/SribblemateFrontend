@@ -12,6 +12,7 @@ export const initialCreateNoteValue: CreateNoteType = {
   createdAt: "",
   updatedAt: "",
   labelSet: [],
+  listItems: [],
   collaboratorList: [],
 };
 
