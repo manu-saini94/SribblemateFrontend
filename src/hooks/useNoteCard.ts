@@ -5,6 +5,7 @@ import { AppDispatch } from "redux/store";
 import { SidebarMenus } from "utility/miscsUtils";
 import { updatePinForNote } from "../redux/asyncThunks";
 import { updateUserNote } from "../redux/notes/noteSlice";
+import useColor from "./useColor";
 
 const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,17 +13,14 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [openPalette, setOpenPalette] = useState(false);
-  const [isOpenColorTooltip, setIsOpenColorTooltip] = useState(false);
 
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
 
-  const handleColorTooltipClose = () => {
-    setIsOpenColorTooltip(false);
-  };
-
-  const handleColorTooltipOpen = () => {
-    setIsOpenColorTooltip(true);
-  };
+  const {
+    isOpenColorTooltip,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
+  } = useColor();
 
   const handleMoreTooltipClose = () => {
     setIsOpenMoreTooltip(false);

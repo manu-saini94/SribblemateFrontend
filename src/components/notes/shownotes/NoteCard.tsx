@@ -115,9 +115,9 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             className="card border-light z-1 position-absolute"
             style={{
               width: "190px",
-              top: "95%", // Positions below the icon
-              left: "20%", // Aligns with the left of the icon
-              zIndex: "10", // Ensures it appears on top
+              top: "95%",
+              left: "20%",
+              zIndex: "10",
               boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)",
             }}
           >

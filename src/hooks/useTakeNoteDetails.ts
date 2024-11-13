@@ -9,6 +9,7 @@ import { resetLabelArray } from "../redux/labels/labelSlice";
 import { insertNewNote } from "../redux/notes/noteSlice";
 import { resetCollaboratorArray } from "../redux/users/usersSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
+import useColor from "./useColor";
 import { useCreateNote } from "./useCreateNote";
 
 const useTakeNoteDetails = ({
@@ -20,7 +21,11 @@ const useTakeNoteDetails = ({
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const createNoteContext = useCreateNote();
   const [isListNote, setIsListNote] = useState<Boolean>(false);
-
+  const {
+    isOpenColorTooltip,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
+  } = useColor();
   const collaboratorArray = useSelector(
     (state: RootState) => state.users.collaboratorArray
   );
@@ -75,6 +80,7 @@ const useTakeNoteDetails = ({
 
   const toggleColorPalette = () => {
     colorPaletteRef.current?.classList.toggle("show");
+    handleColorTooltipClose();
   };
 
   const onCheckboxIconClick = (): void => {
@@ -164,6 +170,9 @@ const useTakeNoteDetails = ({
     colorPaletteRef,
     createNoteContext,
     collaboratorArray,
+    isOpenColorTooltip,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
   };
 };
 
