@@ -2,7 +2,12 @@ import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
-import { updateColorForNote, updatePinForNote } from "../redux/asyncThunks";
+import {
+  updateArchiveForNote,
+  updateColorForNote,
+  updatePinForNote,
+  updateTrashForNote,
+} from "../redux/asyncThunks";
 import { updateUserNote } from "../redux/notes/noteSlice";
 import useColor from "./useColor";
 
@@ -13,7 +18,6 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   );
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
 
   useEffect(() => {
@@ -57,7 +61,15 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const onReminderClick = () => {};
 
   const onArchiveClick = () => {
-    // setArchive(true);
+    dispatch(updateArchiveForNote(noteCardValues.id)).then(() => {
+      dispatch(updateUserNote());
+    });
+  };
+
+  const onDeleteClick = () => {
+    dispatch(updateTrashForNote(noteCardValues.id)).then(() => {
+      dispatch(updateUserNote());
+    });
   };
 
   const onMoreClick = () => {
@@ -120,6 +132,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   return {
     updateNote,
     changeColorClick,
+    onDeleteClick,
     setUpdateNote,
     colorPaletteRef,
     takeNoteDetailsRef,

@@ -21,8 +21,10 @@ import {
   getAllNotesByUser,
   getAllReminderNotesByUser,
   refreshTokenForUser,
+  updateArchiveForUserNote,
   updateColorForUserNote,
   updatePinForUserNote,
+  updateTrashForUserNote,
 } from "../api/requests/NoteRequests";
 import { checkUserExist, fetchUsers } from "../api/requests/UserRequests";
 
@@ -111,6 +113,24 @@ export const updatePinForNote = createAsyncThunk(
   "notes/updatePin",
   (noteId: number) => {
     return updatePinForUserNote(noteId).then(
+      (response) => response.data.object
+    );
+  }
+);
+
+export const updateArchiveForNote = createAsyncThunk(
+  "notes/updateArchive",
+  (noteId: number) => {
+    return updateArchiveForUserNote(noteId).then(
+      (response) => response.data.object
+    );
+  }
+);
+
+export const updateTrashForNote = createAsyncThunk(
+  "notes/updateTrash",
+  (noteId: number) => {
+    return updateTrashForUserNote(noteId).then(
       (response) => response.data.object
     );
   }

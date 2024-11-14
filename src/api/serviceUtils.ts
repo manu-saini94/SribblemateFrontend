@@ -18,6 +18,8 @@ export const CREATE_NOTE_URL = NOTE_URL + "/create";
 export const NOTE_UPDATE_URL = NOTE_URL + "/update";
 export const NOTE_FETCH_BY_REMINDER_URL = NOTE_FETCH_URL + "/reminder";
 export const NOTE_UPDATE_PIN_URL = NOTE_UPDATE_URL + "/pin";
+export const NOTE_UPDATE_ARCHIVE_URL = NOTE_UPDATE_URL + "/archive";
+export const NOTE_UPDATE_TRASH_URL = NOTE_UPDATE_URL + "/trash";
 export const NOTE_UPDATE_COLOR_URL = NOTE_UPDATE_URL + "/color";
 
 export const LABEL_FETCH_URL = LABEL_URL + "/get";

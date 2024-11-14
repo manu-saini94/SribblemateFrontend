@@ -31,6 +31,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
     changeColorClick,
     colorPaletteRef,
     onPinClick,
+    onDeleteClick,
     handleTitleClick,
     handleContentClick,
     onCollaboratorClick,
@@ -185,7 +186,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
                 </IconButton>
               </Tooltip>
               <MenuList className="dropdown-menu">
-                <MenuItem>
+                <MenuItem onClick={onDeleteClick}>
                   <ListItemIcon>
                     <DeleteOutlinedIcon className="fs-6" />
                   </ListItemIcon>

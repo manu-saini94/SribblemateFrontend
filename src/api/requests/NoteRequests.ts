@@ -5,8 +5,10 @@ import {
   LABEL_URL,
   NOTE_FETCH_BY_REMINDER_URL,
   NOTE_FETCH_URL,
+  NOTE_UPDATE_ARCHIVE_URL,
   NOTE_UPDATE_COLOR_URL,
   NOTE_UPDATE_PIN_URL,
+  NOTE_UPDATE_TRASH_URL,
   REFRESH_TOKEN_URL,
 } from "api/serviceUtils";
 import axios from "axios";
@@ -66,6 +68,20 @@ export const updatePinForUserNote = (noteId: number) => {
 
 export const updateColorForUserNote = (colorDetails: UpdateColorType) => {
   return axios.put(BASE_URL_V1 + NOTE_UPDATE_COLOR_URL, colorDetails, {
+    withCredentials: true,
+  });
+};
+
+export const updateArchiveForUserNote = (noteId: number) => {
+  return axios.put(BASE_URL_V1 + NOTE_UPDATE_ARCHIVE_URL, null, {
+    params: { noteId },
+    withCredentials: true,
+  });
+};
+
+export const updateTrashForUserNote = (noteId: number) => {
+  return axios.put(BASE_URL_V1 + NOTE_UPDATE_TRASH_URL, null, {
+    params: { noteId },
     withCredentials: true,
   });
 };
