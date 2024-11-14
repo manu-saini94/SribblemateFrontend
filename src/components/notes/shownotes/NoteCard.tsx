@@ -27,10 +27,8 @@ import ColorPalette from "../colorpalette/ColorPalette";
 function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
   const {
     updateNote,
-    setUpdateNote,
     takeNoteDetailsRef,
-    openPalette,
-    setOpenPalette,
+    changeColorClick,
     colorPaletteRef,
     onPinClick,
     handleTitleClick,
@@ -122,7 +120,10 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             }}
           >
             <div className="card-body align-items-center">
-              <ColorPalette />
+              <ColorPalette
+                color={updateNote?.color}
+                onChangeColor={changeColorClick}
+              />
             </div>
           </div>
         </div>

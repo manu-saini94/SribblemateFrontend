@@ -7,7 +7,11 @@ import {
 } from "api/requests/LabelRequests";
 import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
 import { CreateLabelType, UpdateLabelType } from "labeltypes";
-import { CreateCollaboratorType, CreateNoteType } from "notetypes";
+import {
+  CreateCollaboratorType,
+  CreateNoteType,
+  UpdateColorType,
+} from "notetypes";
 import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
 import {
   checkUserAuthorization,
@@ -17,6 +21,7 @@ import {
   getAllNotesByUser,
   getAllReminderNotesByUser,
   refreshTokenForUser,
+  updateColorForUserNote,
   updatePinForUserNote,
 } from "../api/requests/NoteRequests";
 import { checkUserExist, fetchUsers } from "../api/requests/UserRequests";
@@ -106,6 +111,15 @@ export const updatePinForNote = createAsyncThunk(
   "notes/updatePin",
   (noteId: number) => {
     return updatePinForUserNote(noteId).then(
+      (response) => response.data.object
+    );
+  }
+);
+
+export const updateColorForNote = createAsyncThunk(
+  "notes/updateColor",
+  (colorDetails: UpdateColorType) => {
+    return updateColorForUserNote(colorDetails).then(
       (response) => response.data.object
     );
   }

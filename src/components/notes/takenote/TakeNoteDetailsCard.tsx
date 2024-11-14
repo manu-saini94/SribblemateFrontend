@@ -169,7 +169,10 @@ const TakeNoteDetailsCard = ({
               }}
             >
               <div className="card-body align-items-center">
-                <ColorPalette />
+                <ColorPalette
+                  color={createNoteContext.noteData?.color}
+                  onChangeColor={createNoteContext.changeColorClick}
+                />
               </div>
             </div>
           </div>

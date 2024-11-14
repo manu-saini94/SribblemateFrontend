@@ -1,20 +1,24 @@
-import { NoteCardPropsType, UpdateNoteType } from "notetypes";
-import React, { useEffect, useRef, useState } from "react";
+import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
-import { SidebarMenus } from "utility/miscsUtils";
-import { updatePinForNote } from "../redux/asyncThunks";
+import { updateColorForNote, updatePinForNote } from "../redux/asyncThunks";
 import { updateUserNote } from "../redux/notes/noteSlice";
 import useColor from "./useColor";
 
 const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
+  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(
+    {} as UpdateNoteType
+  );
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-  const [openPalette, setOpenPalette] = useState(false);
 
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
+
+  useEffect(() => {
+    setUpdateNote(noteCardValues);
+  }, [noteCardValues]);
 
   const {
     isOpenColorTooltip,
@@ -31,13 +35,8 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   };
 
   const onPinClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // setPin(!pin);
-    dispatchPinNote();
-  };
-
-  const dispatchPinNote = () => {
     dispatch(updatePinForNote(noteCardValues.id)).then(() => {
-      dispatch(updateUserNote(SidebarMenus.Notes));
+      dispatch(updateUserNote());
     });
   };
 
@@ -67,21 +66,33 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const onImageClick = () => {};
 
+  const changeColorClick = useCallback(
+    (color: string) => {
+      const colorDetails: UpdateColorType = {
+        noteId: updateNote.id,
+        color: color,
+      };
+      dispatch(updateColorForNote(colorDetails)).then(() => {
+        dispatch(updateUserNote());
+      });
+    },
+    [dispatch, updateNote.id]
+  );
+
   const toggleColorPalette = () => {
     colorPaletteRef.current?.classList.toggle("show");
     handleColorTooltipClose();
   };
 
-  useEffect(() => {});
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
-      if (
-        colorPaletteRef.current &&
-        !colorPaletteRef.current.contains(target)
-      ) {
-        setOpenPalette(false);
+      const isClickInsidePalette = colorPaletteRef.current?.contains(target);
+      const palette = colorPaletteRef.current;
+      if (!isClickInsidePalette) {
+        if (palette?.classList.contains("show")) {
+          palette.classList.remove("show");
+        }
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -108,11 +119,10 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   return {
     updateNote,
+    changeColorClick,
     setUpdateNote,
     colorPaletteRef,
     takeNoteDetailsRef,
-    openPalette,
-    setOpenPalette,
     onPinClick,
     handleTitleClick,
     handleContentClick,

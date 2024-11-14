@@ -68,13 +68,20 @@ export type LabelCardPropsType = {
   changeActiveCard: (cardType: NoteCardType) => void;
 };
 
+export type UpdateColorType = {
+  noteId: number;
+  color: string;
+};
+
 interface ColorPaletteProps {
-  onChangeColor?: (color: string) => void;
+  color: string;
+  onChangeColor: (color: string) => void;
 }
 
 type ColorCircleProps = {
   colorItem: string;
   colorSelectClass: string;
+  onChangeColor: (color: string) => void;
 };
 
 export type TakeNotePropsType = {

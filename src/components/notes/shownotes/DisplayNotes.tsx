@@ -6,6 +6,7 @@ import useDisplayNoteCards from "../../../hooks/useDisplayNoteCards";
 const DisplayNotes = ({ notes }: NotesPropsType) => {
   const { isUpdateCardActive, currentNoteCard, handleClick } =
     useDisplayNoteCards();
+
   return (
     <div className="d-flex flex-wrap ">
       {notes?.map((noteCard) => {

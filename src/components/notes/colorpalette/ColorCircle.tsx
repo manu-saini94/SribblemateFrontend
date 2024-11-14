@@ -1,14 +1,13 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useCreateNote } from "hooks/useCreateNote";
 import { ColorCircleProps } from "notetypes";
 import React, { useState } from "react";
 
 const ColorCircle = (props: ColorCircleProps) => {
-  const { colorSelectClass, colorItem } = props;
+  const { colorSelectClass, colorItem, onChangeColor } = props;
   const [isOverColor, setIsOverColor] = useState<Boolean>(false);
-  const createNoteContext = useCreateNote();
+
   const onColorClick = (color: string, event: React.MouseEvent) => {
-    createNoteContext.changeColorClick(color);
+    onChangeColor(color);
   };
 
   const handleColorHover = () => {
