@@ -12,11 +12,7 @@ const DisplayNotes = ({ notes }: NotesPropsType) => {
       {notes?.map((noteCard) => {
         return (
           <div className="p-2 g-col-2" key={noteCard.id}>
-            <NoteCard
-              key={noteCard.id}
-              noteCardValues={noteCard}
-              onNoteClick={handleClick(noteCard)}
-            />
+            <NoteCard key={noteCard.id} noteCardValues={noteCard} />
           </div>
         );
       })}

@@ -79,7 +79,7 @@ const TakeNoteDetailsCard = ({
               >
                 <IconButton onClick={onPinClick}>
                   {createNoteContext.noteData?.pinned ? (
-                    <PushPinIcon className="fs-4 mt-n4" />
+                    <PushPinIcon className="fs-4 " />
                   ) : (
                     <PushPinOutlinedIcon className="fs-4 " />
                   )}{" "}

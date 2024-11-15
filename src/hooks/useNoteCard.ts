@@ -1,7 +1,7 @@
 import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "redux/store";
 import {
   updateArchiveForNote,
   updateColorForNote,
@@ -13,12 +13,14 @@ import useColor from "./useColor";
 
 const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
   const [updateNote, setUpdateNote] = useState<UpdateNoteType>(
     {} as UpdateNoteType
   );
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
+  const activeMenu = useSelector((state: RootState) => state.menus.activeMenu);
 
   useEffect(() => {
     setUpdateNote(noteCardValues);
@@ -29,6 +31,14 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     handleColorTooltipClose,
     handleColorTooltipOpen,
   } = useColor();
+
+  const handleNoteCardClick = useCallback(() => {
+    setIsUpdateCardActive(true);
+  }, []);
+
+  const handleNoteCardClose = useCallback(() => {
+    setIsUpdateCardActive(false);
+  }, []);
 
   const handleMoreTooltipClose = () => {
     setIsOpenMoreTooltip(false);
@@ -42,18 +52,6 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     dispatch(updatePinForNote(noteCardValues.id)).then(() => {
       dispatch(updateUserNote());
     });
-  };
-
-  const handleTitleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    // event.preventDefault();
-  };
-
-  const handleContentClick = (event: React.MouseEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    // event.preventDefault();
   };
 
   const onCollaboratorClick = () => {};
@@ -131,14 +129,16 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   return {
     updateNote,
+    isUpdateCardActive,
+    handleNoteCardClose,
+    handleNoteCardClick,
+    activeMenu,
     changeColorClick,
     onDeleteClick,
     setUpdateNote,
     colorPaletteRef,
     takeNoteDetailsRef,
     onPinClick,
-    handleTitleClick,
-    handleContentClick,
     onCollaboratorClick,
     onReminderClick,
     onArchiveClick,

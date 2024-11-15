@@ -242,17 +242,29 @@ const noteSlice = createSlice({
       .addCase(updateArchiveForNote.fulfilled, (state, action) => {
         state.noteUpdateLoading = false;
         state.updatedNote = action.payload;
-        state.archiveIds.unshift(action.payload.id);
-        state.pinnedIds = state.pinnedIds.filter(
-          (id) => id !== action.payload.id
-        );
-        state.othersIds = state.othersIds.filter(
-          (id) => id !== action.payload.id
-        );
-        state.trashIds = state.trashIds.filter(
-          (id) => id !== action.payload.id
-        );
-
+        if (action.payload.archived) {
+          state.archiveIds.unshift(action.payload.id);
+          state.pinnedIds = state.pinnedIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.othersIds = state.othersIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.trashIds = state.trashIds.filter(
+            (id) => id !== action.payload.id
+          );
+        } else {
+          state.othersIds.unshift(action.payload.id);
+          state.pinnedIds = state.pinnedIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.trashIds = state.trashIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.archiveIds = state.archiveIds.filter(
+            (id) => id !== action.payload.id
+          );
+        }
         state.noteUpdateError = "";
       })
       .addCase(updateArchiveForNote.rejected, (state, action) => {

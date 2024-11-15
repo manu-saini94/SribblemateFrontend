@@ -48,7 +48,12 @@ export type UpdateNoteType = CreateNoteType & Id;
 
 export type NoteCardPropsType = {
   noteCardValues: UpdateNoteType;
-  onNoteClick: (event: React.MouseEvent<HTMLElement>) => void;
+};
+
+export type ModalNotePropsType = {
+  noteCardValues: UpdateNoteType;
+  isUpdateCardActive: Boolean;
+  handleNoteCardClose: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
 export type TakeNoteDetailsType = {

@@ -9,6 +9,7 @@ import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
+import UnarchiveOutlinedIcon from "@mui/icons-material/UnarchiveOutlined";
 import {
   IconButton,
   ListItemIcon,
@@ -21,19 +22,23 @@ import AddLabelIcon from "components/icons/AddLabelIcon";
 import useNoteCard from "hooks/useNoteCard";
 import { NoteCardPropsType } from "notetypes";
 import React from "react";
+import { SidebarMenus } from "utility/miscsUtils";
 import "../../../scss/notecard.scss";
 import ColorPalette from "../colorpalette/ColorPalette";
+import ModalNoteCard from "./ModalNoteCard";
 
-function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
+function NoteCard({ noteCardValues }: NoteCardPropsType) {
   const {
     updateNote,
+    isUpdateCardActive,
+    handleNoteCardClose,
+    handleNoteCardClick,
+    activeMenu,
     takeNoteDetailsRef,
     changeColorClick,
     colorPaletteRef,
     onPinClick,
     onDeleteClick,
-    handleTitleClick,
-    handleContentClick,
     onCollaboratorClick,
     onReminderClick,
     onArchiveClick,
@@ -46,7 +51,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
     handleMoreTooltipOpen,
     isOpenColorTooltip,
     isOpenMoreTooltip,
-  } = useNoteCard({ noteCardValues, onNoteClick });
+  } = useNoteCard({ noteCardValues });
 
   return (
     <div
@@ -58,6 +63,13 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
       }}
       ref={takeNoteDetailsRef}
     >
+      <div>
+        <ModalNoteCard
+          noteCardValues={updateNote}
+          isUpdateCardActive={isUpdateCardActive}
+          handleNoteCardClose={handleNoteCardClose}
+        />
+      </div>
       <div className="card-body pb-2">
         <div className="d-flex flex-row ">
           <div className="input-group mb-3">
@@ -69,7 +81,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
               aria-describedby="basic-addon1"
               style={{ backgroundColor: `${updateNote.color}` }}
               value={updateNote.title}
-              onClick={onNoteClick}
+              onClick={handleNoteCardClick}
             />
           </div>
           <div>
@@ -79,9 +91,9 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
                 style={{ marginTop: "-14px", marginRight: "-14px" }}
               >
                 {updateNote.pinned ? (
-                  <PushPinIcon className="fs-6 " />
+                  <PushPinIcon className="fs-4" />
                 ) : (
-                  <PushPinOutlinedIcon className="fs-6 " />
+                  <PushPinOutlinedIcon className="fs-4" />
                 )}
               </IconButton>
             </Tooltip>
@@ -102,7 +114,7 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
               minHeight: "auto",
             }}
             value={updateNote.content}
-            onClick={onNoteClick}
+            onClick={handleNoteCardClick}
           />
         </div>
         <div
@@ -151,9 +163,19 @@ function NoteCard({ noteCardValues, onNoteClick }: NoteCardPropsType) {
             </Tooltip>
           </div>
           <div className="col-2">
-            <Tooltip title="Archive note">
+            <Tooltip
+              title={
+                activeMenu === SidebarMenus.Archive
+                  ? "Unarchive note"
+                  : "Archive note"
+              }
+            >
               <IconButton onClick={onArchiveClick}>
-                <ArchiveOutlinedIcon className="fs-6" />
+                {activeMenu === SidebarMenus.Archive ? (
+                  <UnarchiveOutlinedIcon className="fs-6" />
+                ) : (
+                  <ArchiveOutlinedIcon className="fs-6" />
+                )}
               </IconButton>
             </Tooltip>
           </div>
