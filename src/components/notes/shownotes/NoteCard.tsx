@@ -29,7 +29,7 @@ import ModalNoteCard from "./ModalNoteCard";
 
 function NoteCard({ noteCardValues }: NoteCardPropsType) {
   const {
-    updateNote,
+    noteData,
     isUpdateCardActive,
     handleNoteCardClose,
     handleNoteCardClick,
@@ -58,14 +58,14 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
       className="card "
       style={{
         maxHeight: "53rem",
-        backgroundColor: `${updateNote.color}`,
+        backgroundColor: `${noteData.color}`,
         width: "15.625rem",
       }}
       ref={takeNoteDetailsRef}
     >
       <div>
         <ModalNoteCard
-          noteCardValues={updateNote}
+          noteCardValues={noteData}
           isUpdateCardActive={isUpdateCardActive}
           handleNoteCardClose={handleNoteCardClose}
         />
@@ -79,18 +79,18 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
               className="form-control border-0 p-0 m-0 title"
               aria-label="Title"
               aria-describedby="basic-addon1"
-              style={{ backgroundColor: `${updateNote.color}` }}
-              value={updateNote.title}
+              style={{ backgroundColor: `${noteData.color}` }}
+              value={noteData.title}
               onClick={handleNoteCardClick}
             />
           </div>
           <div>
-            <Tooltip title={updateNote.pinned ? "Unpin" : "Pin"}>
+            <Tooltip title={noteData.pinned ? "Unpin" : "Pin"}>
               <IconButton
                 onClick={onPinClick}
                 style={{ marginTop: "-14px", marginRight: "-14px" }}
               >
-                {updateNote.pinned ? (
+                {noteData.pinned ? (
                   <PushPinIcon className="fs-4" />
                 ) : (
                   <PushPinOutlinedIcon className="fs-4" />
@@ -108,12 +108,12 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
             aria-label="Take a note..."
             aria-describedby="basic-addon1"
             style={{
-              backgroundColor: `${updateNote.color}`,
+              backgroundColor: `${noteData.color}`,
               resize: "none",
               overflow: "hidden",
               minHeight: "auto",
             }}
-            value={updateNote.content}
+            value={noteData.content}
             onClick={handleNoteCardClick}
           />
         </div>
@@ -134,7 +134,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           >
             <div className="card-body align-items-center">
               <ColorPalette
-                color={updateNote?.color}
+                color={noteData?.color}
                 onChangeColor={changeColorClick}
               />
             </div>

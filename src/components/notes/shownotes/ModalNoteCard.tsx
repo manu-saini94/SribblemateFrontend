@@ -11,13 +11,40 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { Chip, IconButton, Modal, Tooltip } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
-import { ModalNotePropsType } from "notetypes";
+import useNoteCard from "hooks/useNoteCard";
+import { NoteCardPropsType } from "notetypes";
 import React from "react";
 import ColorPalette from "../colorpalette/ColorPalette";
 import ListItemContent from "../takenote/ListItemContent";
 
-const ModalNoteCard = (props: ModalNotePropsType) => {
-  const { noteCardValues, isUpdateCardActive, handleNoteCardClose } = props;
+const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
+  const {
+    noteData,
+    isListNote,
+    handleChange,
+    handleNoteSubmit,
+    isUpdateCardActive,
+    handleNoteCardClose,
+    activeMenu,
+    changeColorClick,
+    onDeleteClick,
+    setNoteData,
+    colorPaletteRef,
+    takeNoteDetailsRef,
+    onPinClick,
+    onCollaboratorClick,
+    onReminderClick,
+    onArchiveClick,
+    onMoreClick,
+    onImageClick,
+    toggleColorPalette,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
+    handleMoreTooltipClose,
+    handleMoreTooltipOpen,
+    isOpenColorTooltip,
+    isOpenMoreTooltip,
+  } = useNoteCard({ noteCardValues });
 
   return (
     <Modal
@@ -34,7 +61,6 @@ const ModalNoteCard = (props: ModalNotePropsType) => {
             backgroundColor: `${noteCardValues?.color}`,
             width: "35rem",
           }}
-          ref={takeNoteDetailsRef}
         >
           <div className="card-body pb-2">
             <div className="d-flex flex-row">
@@ -50,7 +76,7 @@ const ModalNoteCard = (props: ModalNotePropsType) => {
                     backgroundColor: `${noteCardValues?.color}`,
                   }}
                   value={noteCardValues?.title}
-                  onChange={createNoteContext.handleChange}
+                  onChange={handleChange}
                 />
               </div>
               <div className="">
@@ -81,9 +107,8 @@ const ModalNoteCard = (props: ModalNotePropsType) => {
                     minHeight: "auto",
                   }}
                   value={noteCardValues?.content}
-                  onChange={handleContentChange}
+                  onChange={handleChange}
                   id="content"
-                  ref={textareaRef}
                 />
               ) : (
                 <ListItemContent />
@@ -153,7 +178,7 @@ const ModalNoteCard = (props: ModalNotePropsType) => {
                 <div className="card-body align-items-center">
                   <ColorPalette
                     color={noteCardValues?.color}
-                    onChangeColor={createNoteContext.changeColorClick}
+                    onChangeColor={changeColorClick}
                   />
                 </div>
               </div>

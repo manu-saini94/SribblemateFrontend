@@ -13,8 +13,9 @@ import useColor from "./useColor";
 
 const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isListNote, setIsListNote] = useState<Boolean>(false);
   const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
-  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(
+  const [noteData, setNoteData] = useState<UpdateNoteType>(
     {} as UpdateNoteType
   );
   const colorPaletteRef = useRef<HTMLDivElement>(null);
@@ -23,7 +24,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const activeMenu = useSelector((state: RootState) => state.menus.activeMenu);
 
   useEffect(() => {
-    setUpdateNote(noteCardValues);
+    setNoteData(noteCardValues);
   }, [noteCardValues]);
 
   const {
@@ -31,6 +32,19 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     handleColorTooltipClose,
     handleColorTooltipOpen,
   } = useColor();
+
+  const handleNoteSubmit = () => {};
+
+  const handleChange = useCallback(
+    (event: { target: { name: any; value: any } }) => {
+      const { name, value } = event.target;
+      setNoteData((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    },
+    []
+  );
 
   const handleNoteCardClick = useCallback(() => {
     setIsUpdateCardActive(true);
@@ -79,14 +93,14 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const changeColorClick = useCallback(
     (color: string) => {
       const colorDetails: UpdateColorType = {
-        noteId: updateNote.id,
+        noteId: noteData.id,
         color: color,
       };
       dispatch(updateColorForNote(colorDetails)).then(() => {
         dispatch(updateUserNote());
       });
     },
-    [dispatch, updateNote.id]
+    [dispatch, noteData.id]
   );
 
   const toggleColorPalette = () => {
@@ -128,14 +142,17 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   // }, [takeNoteDetailsRef, setIsTakeNoteActive]);
 
   return {
-    updateNote,
+    noteData,
+    isListNote,
+    handleChange,
+    handleNoteSubmit,
     isUpdateCardActive,
     handleNoteCardClose,
     handleNoteCardClick,
     activeMenu,
     changeColorClick,
     onDeleteClick,
-    setUpdateNote,
+    setNoteData,
     colorPaletteRef,
     takeNoteDetailsRef,
     onPinClick,
