@@ -10,7 +10,10 @@ import {
   fetchAllLabelNotes,
   fetchNotes,
   fetchNotesByLabel,
+  updateArchiveForNote,
+  updateColorForNote,
   updatePinForNote,
+  updateTrashForNote,
 } from "../asyncThunks";
 
 const initialLoadingStates = {
@@ -112,8 +115,13 @@ const noteSlice = createSlice({
       }
     },
 
-    updateUserNote(state, action) {
-      // state.pinnedAndOthersNotes.splice(index);
+    updateUserNote(state) {
+      const note = state.updatedNote;
+      state.notesById[note.id] = {
+        ...state.notesById[note.id],
+        ...note,
+      };
+      state.updatedNote = initialNoteValue;
     },
   },
   extraReducers: (builder) => {
@@ -201,9 +209,104 @@ const noteSlice = createSlice({
       .addCase(updatePinForNote.fulfilled, (state, action) => {
         state.noteUpdateLoading = false;
         state.updatedNote = action.payload;
+        if (action.payload.pinned) {
+          state.pinnedIds.unshift(action.payload.id);
+          state.archiveIds = state.archiveIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.othersIds = state.othersIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.trashIds = state.trashIds.filter(
+            (id) => id !== action.payload.id
+          );
+        } else {
+          state.othersIds.unshift(action.payload.id);
+          state.pinnedIds = state.pinnedIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.trashIds = state.trashIds.filter(
+            (id) => id !== action.payload.id
+          );
+        }
         state.noteUpdateError = "";
       })
       .addCase(updatePinForNote.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Failed to update Note";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+      .addCase(updateArchiveForNote.pending, (state) => {
+        state.noteUpdateLoading = true;
+      })
+      .addCase(updateArchiveForNote.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        if (action.payload.archived) {
+          state.archiveIds.unshift(action.payload.id);
+          state.pinnedIds = state.pinnedIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.othersIds = state.othersIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.trashIds = state.trashIds.filter(
+            (id) => id !== action.payload.id
+          );
+        } else {
+          state.othersIds.unshift(action.payload.id);
+          state.pinnedIds = state.pinnedIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.trashIds = state.trashIds.filter(
+            (id) => id !== action.payload.id
+          );
+          state.archiveIds = state.archiveIds.filter(
+            (id) => id !== action.payload.id
+          );
+        }
+        state.noteUpdateError = "";
+      })
+      .addCase(updateArchiveForNote.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Failed to update Note";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+
+      .addCase(updateTrashForNote.pending, (state) => {
+        state.noteUpdateLoading = true;
+      })
+      .addCase(updateTrashForNote.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.trashIds.unshift(action.payload.id);
+        state.pinnedIds = state.pinnedIds.filter(
+          (id) => id !== action.payload.id
+        );
+        state.othersIds = state.othersIds.filter(
+          (id) => id !== action.payload.id
+        );
+        state.archiveIds = state.trashIds.filter(
+          (id) => id !== action.payload.id
+        );
+
+        state.noteUpdateError = "";
+      })
+      .addCase(updateTrashForNote.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Failed to update Note";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+
+      .addCase(updateColorForNote.pending, (state) => {
+        state.noteUpdateLoading = true;
+      })
+      .addCase(updateColorForNote.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.noteUpdateError = "";
+      })
+      .addCase(updateColorForNote.rejected, (state, action) => {
         state.noteUpdateLoading = false;
         state.noteUpdateError = action.error.message ?? "Failed to update Note";
         state.updatedNote = {} as UpdateNoteType;

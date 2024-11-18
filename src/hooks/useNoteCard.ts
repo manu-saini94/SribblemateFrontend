@@ -1,26 +1,69 @@
-import { NoteCardPropsType, UpdateNoteType } from "notetypes";
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "redux/store";
-import { SidebarMenus } from "utility/miscsUtils";
-import { updatePinForNote } from "../redux/asyncThunks";
+import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "redux/store";
+import {
+  updateArchiveForNote,
+  updateColorForNote,
+  updatePinForNote,
+  updateTrashForNote,
+} from "../redux/asyncThunks";
 import { updateUserNote } from "../redux/notes/noteSlice";
 import useColor from "./useColor";
 
 const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [updateNote, setUpdateNote] = useState<UpdateNoteType>(noteCardValues);
+  const [isListNote, setIsListNote] = useState<Boolean>(false);
+  const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
+  const [noteData, setNoteData] = useState<UpdateNoteType>(
+    {} as UpdateNoteType
+  );
   const colorPaletteRef = useRef<HTMLDivElement>(null);
-  const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
-  const [openPalette, setOpenPalette] = useState(false);
+  const noteRef = useRef<HTMLDivElement>(null);
+  const iconsRef = useRef<HTMLDivElement>(null);
+  const pinIconRef = useRef<HTMLDivElement>(null);
 
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
+  const activeMenu = useSelector((state: RootState) => state.menus.activeMenu);
+
+  useEffect(() => {
+    setNoteData(noteCardValues);
+  }, [noteCardValues]);
 
   const {
     isOpenColorTooltip,
     handleColorTooltipClose,
     handleColorTooltipOpen,
   } = useColor();
+
+  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
+  const handleChange = useCallback(
+    (event: { target: { name: any; value: any } }) => {
+      const { name, value } = event.target;
+      setNoteData((prevValues) => ({
+        ...prevValues,
+        [name]: value,
+      }));
+    },
+    []
+  );
+
+  const handleNoteCardClick = useCallback(() => {
+    setIsUpdateCardActive(true);
+  }, []);
+
+  const handleNoteCardClose = useCallback(() => {
+    setIsUpdateCardActive(false);
+  }, []);
 
   const handleMoreTooltipClose = () => {
     setIsOpenMoreTooltip(false);
@@ -31,26 +74,9 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   };
 
   const onPinClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // setPin(!pin);
-    dispatchPinNote();
-  };
-
-  const dispatchPinNote = () => {
     dispatch(updatePinForNote(noteCardValues.id)).then(() => {
-      dispatch(updateUserNote(SidebarMenus.Notes));
+      dispatch(updateUserNote());
     });
-  };
-
-  const handleTitleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    // event.preventDefault();
-  };
-
-  const handleContentClick = (event: React.MouseEvent<HTMLTextAreaElement>) => {
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    // event.preventDefault();
   };
 
   const onCollaboratorClick = () => {};
@@ -58,7 +84,15 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const onReminderClick = () => {};
 
   const onArchiveClick = () => {
-    // setArchive(true);
+    dispatch(updateArchiveForNote(noteCardValues.id)).then(() => {
+      dispatch(updateUserNote());
+    });
+  };
+
+  const onDeleteClick = () => {
+    dispatch(updateTrashForNote(noteCardValues.id)).then(() => {
+      dispatch(updateUserNote());
+    });
   };
 
   const onMoreClick = () => {
@@ -67,21 +101,37 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const onImageClick = () => {};
 
+  const onLabelAddIconClick = () => {};
+
+  const onCheckboxIconClick = () => {};
+
+  const changeColorClick = useCallback(
+    (color: string) => {
+      const colorDetails: UpdateColorType = {
+        noteId: noteData.id,
+        color: color,
+      };
+      dispatch(updateColorForNote(colorDetails)).then(() => {
+        dispatch(updateUserNote());
+      });
+    },
+    [dispatch, noteData.id]
+  );
+
   const toggleColorPalette = () => {
     colorPaletteRef.current?.classList.toggle("show");
     handleColorTooltipClose();
   };
 
-  useEffect(() => {});
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
-      if (
-        colorPaletteRef.current &&
-        !colorPaletteRef.current.contains(target)
-      ) {
-        setOpenPalette(false);
+      const palette = colorPaletteRef.current;
+      const isClickInsidePalette = palette?.contains(target);
+      if (!isClickInsidePalette) {
+        if (palette?.classList.contains("show")) {
+          palette.classList.remove("show");
+        }
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -90,32 +140,44 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     };
   }, [colorPaletteRef]);
 
-  // useEffect(() => {
-  //   function handleClickOutsideNote(event: MouseEvent) {
-  //     const target = event.target as HTMLElement;
-  //     if (
-  //       takeNoteDetailsRef.current &&
-  //       !takeNoteDetailsRef.current.contains(target)
-  //     ) {
-  //       setIsTakeNoteActive(true);
-  //     }
-  //   }
-  //   document.addEventListener("mousedown", handleClickOutsideNote);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutsideNote);
-  //   };
-  // }, [takeNoteDetailsRef, setIsTakeNoteActive]);
+  useEffect(() => {
+    function handleClickInsideNote(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      const iconsRefCurrent = iconsRef.current;
+      const isIconsDivClicked = iconsRefCurrent?.contains(target);
+      const pinIconRefCurrent = pinIconRef.current;
+      const pinIconDivClicked = pinIconRefCurrent?.contains(target);
+      const noteRefCurrent = noteRef.current;
+      const isNoteRefDivClicked = noteRefCurrent?.contains(target);
+
+      if (!isIconsDivClicked && !pinIconDivClicked && isNoteRefDivClicked) {
+        handleNoteCardClick();
+      }
+    }
+    document.addEventListener("mousedown", handleClickInsideNote);
+    return () => {
+      document.removeEventListener("mousedown", handleClickInsideNote);
+    };
+  }, [colorPaletteRef, handleNoteCardClick]);
 
   return {
-    updateNote,
-    setUpdateNote,
+    noteRef,
+    noteData,
+    iconsRef,
+    pinIconRef,
+    onCheckboxIconClick,
+    isListNote,
+    onLabelAddIconClick,
+    handleChange,
+    handleNoteSubmit,
+    isUpdateCardActive,
+    handleNoteCardClose,
+    handleNoteCardClick,
+    activeMenu,
+    changeColorClick,
+    onDeleteClick,
     colorPaletteRef,
-    takeNoteDetailsRef,
-    openPalette,
-    setOpenPalette,
     onPinClick,
-    handleTitleClick,
-    handleContentClick,
     onCollaboratorClick,
     onReminderClick,
     onArchiveClick,

@@ -34,6 +34,7 @@ export interface NoteContextType {
   onPinClick: () => void;
   onReminderClick: () => void;
 }
+
 export interface NoteContextProps extends ReactNodeHOCProps {}
 
 export interface ThemeContextProps extends ReactNodeHOCProps {}

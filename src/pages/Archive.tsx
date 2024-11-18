@@ -2,7 +2,6 @@ import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import React from "react";
 import { useSelector } from "react-redux";
 import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
-import withNote from "../components/notes/withNote";
 import { selectArchivedNotes } from "../redux/selectors";
 
 const Archive = () => {
@@ -31,4 +30,4 @@ const Archive = () => {
   );
 };
 
-export default withNote(Archive);
+export default Archive;

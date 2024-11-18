@@ -79,7 +79,7 @@ const TakeNoteDetailsCard = ({
               >
                 <IconButton onClick={onPinClick}>
                   {createNoteContext.noteData?.pinned ? (
-                    <PushPinIcon className="fs-4 mt-n4" />
+                    <PushPinIcon className="fs-4 " />
                   ) : (
                     <PushPinOutlinedIcon className="fs-4 " />
                   )}{" "}
@@ -169,7 +169,10 @@ const TakeNoteDetailsCard = ({
               }}
             >
               <div className="card-body align-items-center">
-                <ColorPalette />
+                <ColorPalette
+                  color={createNoteContext.noteData?.color}
+                  onChangeColor={createNoteContext.changeColorClick}
+                />
               </div>
             </div>
           </div>
