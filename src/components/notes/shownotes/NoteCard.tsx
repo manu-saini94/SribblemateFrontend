@@ -30,11 +30,13 @@ import ModalNoteCard from "./ModalNoteCard";
 function NoteCard({ noteCardValues }: NoteCardPropsType) {
   const {
     noteData,
+    noteRef,
+    iconsRef,
+    pinIconRef,
     isUpdateCardActive,
     handleNoteCardClose,
     handleNoteCardClick,
     activeMenu,
-    takeNoteDetailsRef,
     changeColorClick,
     colorPaletteRef,
     onPinClick,
@@ -61,7 +63,6 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
         backgroundColor: `${noteData.color}`,
         width: "15.625rem",
       }}
-      ref={takeNoteDetailsRef}
     >
       <div>
         <ModalNoteCard
@@ -70,8 +71,8 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           handleNoteCardClose={handleNoteCardClose}
         />
       </div>
-      <div className="card-body pb-2">
-        <div className="d-flex flex-row ">
+      <div className="card-body pb-2" ref={noteRef}>
+        <div className="d-flex flex-row">
           <div className="input-group mb-3">
             <input
               type="text"
@@ -79,12 +80,14 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
               className="form-control border-0 p-0 m-0 title"
               aria-label="Title"
               aria-describedby="basic-addon1"
-              style={{ backgroundColor: `${noteData.color}` }}
+              style={{
+                backgroundColor: `${noteData.color}`,
+                cursor: "default",
+              }}
               value={noteData.title}
-              onClick={handleNoteCardClick}
             />
           </div>
-          <div>
+          <div ref={pinIconRef}>
             <Tooltip title={noteData.pinned ? "Unpin" : "Pin"}>
               <IconButton
                 onClick={onPinClick}
@@ -100,7 +103,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           </div>
         </div>
 
-        <div className="input-group mb-3">
+        <div className="input-group mb-3" ref={noteRef}>
           <textarea
             readOnly
             className="form-control border-0 p-0 m-0 content"
@@ -112,9 +115,9 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
               resize: "none",
               overflow: "hidden",
               minHeight: "auto",
+              cursor: "default",
             }}
             value={noteData.content}
-            onClick={handleNoteCardClick}
           />
         </div>
         <div
@@ -140,7 +143,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
             </div>
           </div>
         </div>
-        <div className="row note-card-icon">
+        <div className="row note-card-icon" ref={iconsRef}>
           <div className="col-2">
             <Tooltip title="Add Reminder">
               <IconButton onClick={onReminderClick}>

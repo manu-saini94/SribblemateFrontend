@@ -12,25 +12,27 @@ import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { Chip, IconButton, Modal, Tooltip } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
 import useNoteCard from "hooks/useNoteCard";
-import { NoteCardPropsType } from "notetypes";
+import { ModalNotePropsType } from "notetypes";
 import React from "react";
 import ColorPalette from "../colorpalette/ColorPalette";
 import ListItemContent from "../takenote/ListItemContent";
 
-const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
+const ModalNoteCard = ({
+  noteCardValues,
+  isUpdateCardActive,
+  handleNoteCardClose,
+}: ModalNotePropsType) => {
   const {
     noteData,
     isListNote,
     handleChange,
     handleNoteSubmit,
-    isUpdateCardActive,
-    handleNoteCardClose,
+    onLabelAddIconClick,
+    onCheckboxIconClick,
     activeMenu,
     changeColorClick,
     onDeleteClick,
-    setNoteData,
     colorPaletteRef,
-    takeNoteDetailsRef,
     onPinClick,
     onCollaboratorClick,
     onReminderClick,
@@ -52,13 +54,14 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
       onClose={handleNoteCardClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
       <form onSubmit={handleNoteSubmit}>
         <div
           className="card "
           style={{
             height: "auto",
-            backgroundColor: `${noteCardValues?.color}`,
+            backgroundColor: `${noteData.color}`,
             width: "35rem",
           }}
         >
@@ -73,16 +76,16 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
                   aria-label="Title"
                   aria-describedby="basic-addon1"
                   style={{
-                    backgroundColor: `${noteCardValues?.color}`,
+                    backgroundColor: `${noteData.color}`,
                   }}
-                  value={noteCardValues?.title}
+                  value={noteData.title}
                   onChange={handleChange}
                 />
               </div>
               <div className="">
-                <Tooltip title={noteCardValues?.pinned ? "Unpin" : "Pin"}>
+                <Tooltip title={noteData.pinned ? "Unpin" : "Pin"}>
                   <IconButton onClick={onPinClick}>
-                    {noteCardValues?.pinned ? (
+                    {noteData.pinned ? (
                       <PushPinIcon className="fs-4" />
                     ) : (
                       <PushPinOutlinedIcon className="fs-4 " />
@@ -101,12 +104,12 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
                   aria-label="Take a note..."
                   aria-describedby="basic-addon1"
                   style={{
-                    backgroundColor: `${noteCardValues?.color}`,
+                    backgroundColor: `${noteData.color}`,
                     resize: "none",
                     overflow: "hidden",
                     minHeight: "auto",
                   }}
-                  value={noteCardValues?.content}
+                  value={noteData.content}
                   onChange={handleChange}
                   id="content"
                 />
@@ -115,19 +118,19 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
               )}
             </div>
             <div className="d-flex">
-              {noteCardValues?.collaboratorList.map((collaborator) => {
+              {noteData?.collaboratorList?.map((collaborator) => {
                 return (
                   <Tooltip
                     title={
                       <span>
-                        {collaborator?.name}
+                        {collaborator.name}
                         <br />
-                        {collaborator?.email}
+                        {collaborator.email}
                       </span>
                     }
                     key={collaborator.email}
                   >
-                    <IconButton onClick={onCollaboratorIconClick}>
+                    <IconButton onClick={onCollaboratorClick}>
                       <AccountCircleRoundedIcon
                         className="col-2 fs-1 "
                         style={{ color: "gray" }}
@@ -138,7 +141,7 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
               })}
             </div>
             <div className="d-flex column flex-wrap">
-              {noteCardValues?.labelSet.map((label) => {
+              {noteData?.labelSet?.map((label) => {
                 return (
                   <Chip
                     icon={
@@ -177,7 +180,7 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
               >
                 <div className="card-body align-items-center">
                   <ColorPalette
-                    color={noteCardValues?.color}
+                    color={noteData.color}
                     onChangeColor={changeColorClick}
                   />
                 </div>
@@ -187,28 +190,28 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
             <div className="d-flex flex-row justify-content-between mt-1">
               <div className="col-1">
                 <Tooltip title="Add Reminder">
-                  <IconButton onClick={onReminderIconClick}>
+                  <IconButton onClick={onReminderClick}>
                     <NotificationAddOutlinedIcon className="fs-6 " />
                   </IconButton>
                 </Tooltip>
               </div>
               <div className="col-1">
                 <Tooltip title="Add Images">
-                  <IconButton onClick={onImageIconClick}>
+                  <IconButton onClick={onImageClick}>
                     <PermMediaOutlinedIcon className="fs-6" />
                   </IconButton>
                 </Tooltip>
               </div>
               <div className="col-1">
                 <Tooltip title="Add Collaborators">
-                  <IconButton onClick={onCollaboratorIconClick}>
+                  <IconButton onClick={onCollaboratorClick}>
                     <PersonAddOutlinedIcon className="fs-6" />
                   </IconButton>
                 </Tooltip>
               </div>
               <div className="col-1">
                 <Tooltip title="Archive note">
-                  <IconButton onClick={(event) => onArchiveClick(event)}>
+                  <IconButton onClick={onArchiveClick}>
                     <ArchiveOutlinedIcon className="fs-6" />
                   </IconButton>
                 </Tooltip>
@@ -236,7 +239,7 @@ const ModalNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
               <div className="col-1">
                 <Tooltip title="Delete note">
-                  <IconButton onClick={onDeleteIconClick}>
+                  <IconButton onClick={onDeleteClick}>
                     <DeleteOutlinedIcon className="fs-6" />
                   </IconButton>
                 </Tooltip>

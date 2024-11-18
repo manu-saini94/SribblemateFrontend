@@ -1,5 +1,11 @@
 import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import {
@@ -19,7 +25,10 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     {} as UpdateNoteType
   );
   const colorPaletteRef = useRef<HTMLDivElement>(null);
-  const takeNoteDetailsRef = useRef<HTMLDivElement>(null);
+  const noteRef = useRef<HTMLDivElement>(null);
+  const iconsRef = useRef<HTMLDivElement>(null);
+  const pinIconRef = useRef<HTMLDivElement>(null);
+
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
   const activeMenu = useSelector((state: RootState) => state.menus.activeMenu);
 
@@ -33,7 +42,9 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     handleColorTooltipOpen,
   } = useColor();
 
-  const handleNoteSubmit = () => {};
+  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
 
   const handleChange = useCallback(
     (event: { target: { name: any; value: any } }) => {
@@ -90,6 +101,10 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const onImageClick = () => {};
 
+  const onLabelAddIconClick = () => {};
+
+  const onCheckboxIconClick = () => {};
+
   const changeColorClick = useCallback(
     (color: string) => {
       const colorDetails: UpdateColorType = {
@@ -111,8 +126,8 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as HTMLElement;
-      const isClickInsidePalette = colorPaletteRef.current?.contains(target);
       const palette = colorPaletteRef.current;
+      const isClickInsidePalette = palette?.contains(target);
       if (!isClickInsidePalette) {
         if (palette?.classList.contains("show")) {
           palette.classList.remove("show");
@@ -125,25 +140,34 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     };
   }, [colorPaletteRef]);
 
-  // useEffect(() => {
-  //   function handleClickOutsideNote(event: MouseEvent) {
-  //     const target = event.target as HTMLElement;
-  //     if (
-  //       takeNoteDetailsRef.current &&
-  //       !takeNoteDetailsRef.current.contains(target)
-  //     ) {
-  //       setIsTakeNoteActive(true);
-  //     }
-  //   }
-  //   document.addEventListener("mousedown", handleClickOutsideNote);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutsideNote);
-  //   };
-  // }, [takeNoteDetailsRef, setIsTakeNoteActive]);
+  useEffect(() => {
+    function handleClickInsideNote(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      const iconsRefCurrent = iconsRef.current;
+      const isIconsDivClicked = iconsRefCurrent?.contains(target);
+      const pinIconRefCurrent = pinIconRef.current;
+      const pinIconDivClicked = pinIconRefCurrent?.contains(target);
+      const noteRefCurrent = noteRef.current;
+      const isNoteRefDivClicked = noteRefCurrent?.contains(target);
+
+      if (!isIconsDivClicked && !pinIconDivClicked && isNoteRefDivClicked) {
+        handleNoteCardClick();
+      }
+    }
+    document.addEventListener("mousedown", handleClickInsideNote);
+    return () => {
+      document.removeEventListener("mousedown", handleClickInsideNote);
+    };
+  }, [colorPaletteRef, handleNoteCardClick]);
 
   return {
+    noteRef,
     noteData,
+    iconsRef,
+    pinIconRef,
+    onCheckboxIconClick,
     isListNote,
+    onLabelAddIconClick,
     handleChange,
     handleNoteSubmit,
     isUpdateCardActive,
@@ -152,9 +176,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     activeMenu,
     changeColorClick,
     onDeleteClick,
-    setNoteData,
     colorPaletteRef,
-    takeNoteDetailsRef,
     onPinClick,
     onCollaboratorClick,
     onReminderClick,
