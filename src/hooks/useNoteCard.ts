@@ -79,6 +79,14 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     });
   };
 
+  const onModalPinClick = useCallback(() => {
+    setNoteData((prevValues) => ({
+      ...prevValues,
+      pinned: !prevValues.pinned,
+      archived: false,
+    }));
+  }, []);
+
   const onCollaboratorClick = () => {};
 
   const onReminderClick = () => {};
@@ -163,6 +171,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   return {
     noteRef,
     noteData,
+    onModalPinClick,
     iconsRef,
     pinIconRef,
     onCheckboxIconClick,

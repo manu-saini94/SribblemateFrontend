@@ -24,6 +24,7 @@ const ModalNoteCard = ({
 }: ModalNotePropsType) => {
   const {
     noteData,
+    onModalPinClick,
     isListNote,
     handleChange,
     handleNoteSubmit,
@@ -84,7 +85,7 @@ const ModalNoteCard = ({
               </div>
               <div className="">
                 <Tooltip title={noteData.pinned ? "Unpin" : "Pin"}>
-                  <IconButton onClick={onPinClick}>
+                  <IconButton onClick={onModalPinClick}>
                     {noteData.pinned ? (
                       <PushPinIcon className="fs-4" />
                     ) : (
