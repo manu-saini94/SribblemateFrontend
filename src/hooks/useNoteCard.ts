@@ -44,6 +44,14 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const { title, content, pinned } = noteCardValues;
+
+    if (
+      title !== noteData.title ||
+      content !== noteData.content ||
+      pinned !== noteData.pinned
+    ) {
+    }
   };
 
   const handleChange = useCallback(
