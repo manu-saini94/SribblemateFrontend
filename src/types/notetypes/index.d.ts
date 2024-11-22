@@ -44,7 +44,23 @@ export type CreateNoteType = {
   collaboratorList: CreateCollaboratorType[];
 };
 
-export type UpdateNoteType = CreateNoteType & Id;
+export type UpdateNoteType = {
+  title: string;
+  content: string;
+  images: string[];
+  trashed: Boolean;
+  archived: Boolean;
+  pinned: Boolean;
+  color: string;
+  reminder: string;
+  createdAt: string;
+  updatedAt: string;
+  listItems: ListItemType[];
+  labelSet: UpdateLabelType[];
+  collaboratorList: UpdateCollaboratorType[];
+} & Id;
+
+export type UpdateNote = CreateNoteType & Id;
 
 export type NoteCardPropsType = {
   noteCardValues: UpdateNoteType;

@@ -25,6 +25,8 @@ import React from "react";
 import { SidebarMenus } from "utility/miscsUtils";
 import "../../../scss/notecard.scss";
 import ColorPalette from "../colorpalette/ColorPalette";
+import DisplayCollaborators from "./DisplayCollaborators";
+import DisplayLabels from "./DisplayLabels";
 import ModalNoteCard from "./ModalNoteCard";
 
 function NoteCard({ noteCardValues }: NoteCardPropsType) {
@@ -35,6 +37,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
     pinIconRef,
     isUpdateCardActive,
     handleNoteCardClose,
+    onLabelRemoveClick,
     handleNoteCardClick,
     activeMenu,
     changeColorClick,
@@ -53,6 +56,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
     handleMoreTooltipOpen,
     isOpenColorTooltip,
     isOpenMoreTooltip,
+    loggedInUserData,
   } = useNoteCard({ noteCardValues });
 
   return (
@@ -120,6 +124,16 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
             value={noteData.content}
           />
         </div>
+
+        <DisplayCollaborators
+          collaboratorList={noteData?.collaboratorList}
+          onCollabClick={onCollaboratorClick}
+        />
+        <DisplayLabels
+          labelSet={noteData?.labelSet}
+          onLabelRemoveClick={onLabelRemoveClick}
+        />
+
         <div
           className="collapse"
           id="collapseColorPalette"

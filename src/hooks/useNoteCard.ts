@@ -28,7 +28,9 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const noteRef = useRef<HTMLDivElement>(null);
   const iconsRef = useRef<HTMLDivElement>(null);
   const pinIconRef = useRef<HTMLDivElement>(null);
-
+  const loggedInUserData = useSelector(
+    (state: RootState) => state.auth.loggedInUserData
+  );
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
   const activeMenu = useSelector((state: RootState) => state.menus.activeMenu);
 
@@ -44,6 +46,14 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const { title, content, pinned } = noteCardValues;
+
+    if (
+      title !== noteData.title ||
+      content !== noteData.content ||
+      pinned !== noteData.pinned
+    ) {
+    }
   };
 
   const handleChange = useCallback(
@@ -107,6 +117,8 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     handleMoreTooltipClose();
   };
 
+  const onLabelRemoveClick = (id: number) => {};
+
   const onImageClick = () => {};
 
   const onLabelAddIconClick = () => {};
@@ -151,6 +163,8 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   useEffect(() => {
     function handleClickInsideNote(event: MouseEvent) {
       const target = event.target as HTMLElement;
+      const palette = colorPaletteRef.current;
+      const isClickInsidePalette = palette?.contains(target);
       const iconsRefCurrent = iconsRef.current;
       const isIconsDivClicked = iconsRefCurrent?.contains(target);
       const pinIconRefCurrent = pinIconRef.current;
@@ -158,7 +172,12 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
       const noteRefCurrent = noteRef.current;
       const isNoteRefDivClicked = noteRefCurrent?.contains(target);
 
-      if (!isIconsDivClicked && !pinIconDivClicked && isNoteRefDivClicked) {
+      if (
+        !isIconsDivClicked &&
+        !pinIconDivClicked &&
+        !isClickInsidePalette &&
+        isNoteRefDivClicked
+      ) {
         handleNoteCardClick();
       }
     }
@@ -170,7 +189,9 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   return {
     noteRef,
+    onLabelRemoveClick,
     noteData,
+    loggedInUserData,
     onModalPinClick,
     iconsRef,
     pinIconRef,
