@@ -1,7 +1,5 @@
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
 import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
@@ -9,13 +7,15 @@ import PermMediaOutlinedIcon from "@mui/icons-material/PermMediaOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
-import { Chip, IconButton, Modal, Tooltip } from "@mui/material";
+import { IconButton, Modal, Tooltip } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
 import useNoteCard from "hooks/useNoteCard";
 import { ModalNotePropsType } from "notetypes";
 import React from "react";
 import ColorPalette from "../colorpalette/ColorPalette";
 import ListItemContent from "../takenote/ListItemContent";
+import DisplayCollaborators from "./DisplayCollaborators";
+import DisplayLabels from "./DisplayLabels";
 
 const ModalNoteCard = ({
   noteCardValues,
@@ -24,8 +24,10 @@ const ModalNoteCard = ({
 }: ModalNotePropsType) => {
   const {
     noteData,
+    loggedInUserData,
     onModalPinClick,
     isListNote,
+    onLabelRemoveClick,
     handleChange,
     handleNoteSubmit,
     onLabelAddIconClick,
@@ -118,52 +120,14 @@ const ModalNoteCard = ({
                 <ListItemContent />
               )}
             </div>
-            <div className="d-flex">
-              {noteData?.collaboratorList?.map((collaborator) => {
-                return (
-                  <Tooltip
-                    title={
-                      <span>
-                        {collaborator.name}
-                        <br />
-                        {collaborator.email}
-                      </span>
-                    }
-                    key={collaborator.email}
-                  >
-                    <IconButton onClick={onCollaboratorClick}>
-                      <AccountCircleRoundedIcon
-                        className="col-2 fs-1 "
-                        style={{ color: "gray" }}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                );
-              })}
-            </div>
-            <div className="d-flex column flex-wrap">
-              {noteData?.labelSet?.map((label) => {
-                return (
-                  <Chip
-                    icon={
-                      <LabelImportantTwoToneIcon
-                        style={{
-                          color: label.important ? "#ffc61a" : "",
-                        }}
-                        fontSize="small"
-                      />
-                    }
-                    label={label.labelName}
-                    sx={{
-                      marginLeft: "4px",
-                      marginBottom: "4px",
-                    }}
-                    key={label.labelName}
-                  />
-                );
-              })}
-            </div>
-
+            <DisplayCollaborators
+              collaboratorList={noteData?.collaboratorList}
+              onCollabClick={onCollaboratorClick}
+            />
+            <DisplayLabels
+              labelSet={noteData?.labelSet}
+              onLabelRemoveClick={onLabelRemoveClick}
+            />
             <div
               className="collapse"
               id="collapsePalette"
