@@ -38,6 +38,6 @@ export type UpdateLabelCardPropsType = {
 };
 
 export type DisplayLabelTypes = {
-  labelSet: UpdateCollaboratorType[];
+  label: UpdateLabelType;
   onLabelRemoveClick: (id: number) => void;
 };

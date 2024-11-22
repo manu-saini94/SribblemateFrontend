@@ -14,8 +14,8 @@ import { ModalNotePropsType } from "notetypes";
 import React from "react";
 import ColorPalette from "../colorpalette/ColorPalette";
 import ListItemContent from "../takenote/ListItemContent";
-import DisplayCollaborators from "./DisplayCollaborators";
-import DisplayLabels from "./DisplayLabels";
+import DisplayCollaborator from "./DisplayCollaborator";
+import DisplayLabel from "./DisplayLabel";
 
 const ModalNoteCard = ({
   noteCardValues,
@@ -120,14 +120,34 @@ const ModalNoteCard = ({
                 <ListItemContent />
               )}
             </div>
-            <DisplayCollaborators
-              collaboratorList={noteData?.collaboratorList}
-              onCollabClick={onCollaboratorClick}
-            />
-            <DisplayLabels
-              labelSet={noteData?.labelSet}
-              onLabelRemoveClick={onLabelRemoveClick}
-            />
+            <div
+              className="d-flex column flex-wrap"
+              style={{ marginLeft: "-10px", marginBottom: "3px" }}
+            >
+              {noteData?.collaboratorList?.map((collaborator) => {
+                return (
+                  <DisplayCollaborator
+                    key={collaborator.email}
+                    collaborator={collaborator}
+                    onCollabClick={onCollaboratorClick}
+                  />
+                );
+              })}
+            </div>
+            <div
+              className="d-flex column flex-wrap"
+              style={{ marginLeft: "-10px" }}
+            >
+              {noteData?.labelSet?.map((label) => {
+                return (
+                  <DisplayLabel
+                    key={label.labelName}
+                    label={label}
+                    onLabelRemoveClick={onLabelRemoveClick}
+                  />
+                );
+              })}
+            </div>
             <div
               className="collapse"
               id="collapsePalette"

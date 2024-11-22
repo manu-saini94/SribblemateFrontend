@@ -41,6 +41,6 @@ export type UsersStoreInitialStateType = UsersInitialStateType & {
 };
 
 export type DisplayCollaboratorTypes = {
-  collaboratorList: UpdateCollaboratorType[];
+  collaborator: UpdateCollaboratorType;
   onCollabClick: (event: React.MouseEvent<HTMLElement>) => void;
 };
