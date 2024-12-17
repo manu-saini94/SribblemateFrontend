@@ -11,6 +11,7 @@ import {
   CreateCollaboratorType,
   CreateNoteType,
   UpdateColorType,
+  UpdateNoteType,
 } from "notetypes";
 import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
 import {
@@ -23,6 +24,7 @@ import {
   refreshTokenForUser,
   updateArchiveForUserNote,
   updateColorForUserNote,
+  updateNoteForUser,
   updatePinForUserNote,
   updateTrashForUserNote,
 } from "../api/requests/NoteRequests";
@@ -115,6 +117,13 @@ export const updatePinForNote = createAsyncThunk(
     return updatePinForUserNote(noteId).then(
       (response) => response.data.object
     );
+  }
+);
+
+export const updateNote = createAsyncThunk(
+  "notes/update",
+  (noteData: UpdateNoteType) => {
+    return updateNoteForUser(noteData).then((response) => response.data.object);
   }
 );
 

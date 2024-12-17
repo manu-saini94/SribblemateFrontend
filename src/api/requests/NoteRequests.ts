@@ -9,10 +9,11 @@ import {
   NOTE_UPDATE_COLOR_URL,
   NOTE_UPDATE_PIN_URL,
   NOTE_UPDATE_TRASH_URL,
+  NOTE_UPDATE_URL,
   REFRESH_TOKEN_URL,
 } from "api/serviceUtils";
 import axios from "axios";
-import { CreateNoteType, UpdateColorType } from "notetypes";
+import { CreateNoteType, UpdateColorType, UpdateNoteType } from "notetypes";
 
 export const getAllNotesByUser = () => {
   return axios.get(BASE_URL_V1 + NOTE_FETCH_URL, { withCredentials: true });
@@ -62,6 +63,12 @@ export const checkUserAuthorization = () => {
 export const updatePinForUserNote = (noteId: number) => {
   return axios.put(BASE_URL_V1 + NOTE_UPDATE_PIN_URL, null, {
     params: { noteId },
+    withCredentials: true,
+  });
+};
+
+export const updateNoteForUser = (noteData: UpdateNoteType) => {
+  return axios.put(BASE_URL_V1 + NOTE_UPDATE_URL, noteData, {
     withCredentials: true,
   });
 };
