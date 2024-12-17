@@ -49,6 +49,7 @@ const ModalNoteCard = ({
     handleMoreTooltipOpen,
     isOpenColorTooltip,
     isOpenMoreTooltip,
+    checkForChange,
   } = useNoteCard({ noteCardValues });
 
   return (
@@ -250,9 +251,13 @@ const ModalNoteCard = ({
                   </IconButton>
                 </Tooltip>
               </div>
-              <Tooltip title="Save note">
-                <button type="submit" className="btn btn-sm fw-medium">
-                  Save
+              <Tooltip title={checkForChange() ? "Save Note" : "Close Note"}>
+                <button
+                  type={checkForChange() ? "submit" : "button"}
+                  className="btn btn-sm fw-medium"
+                  onClick={checkForChange() ? () => {} : handleNoteCardClose}
+                >
+                  {checkForChange() ? "Save" : "Close"}
                 </button>
               </Tooltip>
             </div>

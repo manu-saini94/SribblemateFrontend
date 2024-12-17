@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from "redux/store";
 import {
   updateArchiveForNote,
   updateColorForNote,
+  updateNote,
   updatePinForNote,
   updateTrashForNote,
 } from "../redux/asyncThunks";
@@ -46,15 +47,27 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { title, content, pinned } = noteCardValues;
+    if (checkForChange()) {
+      try {
+        dispatch(updateNote(noteData)).then(() => {
+          dispatch(updateUserNote());
+        });
+      } finally {
+        handleNoteCardClose();
+      }
+    } else {
+      handleNoteCardClose();
+    }
+  };
 
-    if (
+  const checkForChange = useCallback((): Boolean => {
+    const { title, content, pinned } = noteCardValues;
+    return (
       title !== noteData.title ||
       content !== noteData.content ||
       pinned !== noteData.pinned
-    ) {
-    }
-  };
+    );
+  }, [noteCardValues, noteData.content, noteData.pinned, noteData.title]);
 
   const handleChange = useCallback(
     (event: { target: { name: any; value: any } }) => {
@@ -220,6 +233,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     handleMoreTooltipOpen,
     isOpenColorTooltip,
     isOpenMoreTooltip,
+    checkForChange,
   };
 };
 

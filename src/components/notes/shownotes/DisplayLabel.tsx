@@ -1,19 +1,19 @@
 import LabelImportantTwoToneIcon from "@mui/icons-material/LabelImportantTwoTone";
 import { Chip } from "@mui/material";
 import { DisplayLabelTypes } from "labeltypes";
-import React, { useState } from "react";
+import React from "react";
 
 const DisplayLabel = (props: DisplayLabelTypes) => {
   const { label, onLabelRemoveClick } = props;
-  const [isOverChip, setIsOverChip] = useState<Boolean>(false);
+  // const [isOverChip, setIsOverChip] = useState<Boolean>(false);
 
-  const onMouseOver = () => {
-    setIsOverChip(true);
-  };
+  // const onMouseOver = () => {
+  //   setIsOverChip(true);
+  // };
 
-  const onMouseExit = () => {
-    setIsOverChip(false);
-  };
+  // const onMouseExit = () => {
+  //   setIsOverChip(false);
+  // };
 
   return (
     <Chip
@@ -25,29 +25,14 @@ const DisplayLabel = (props: DisplayLabelTypes) => {
           }}
         />
       }
-      label={
-        <span
-          style={{
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: isOverChip ? "clip" : "ellipsis", // Full label on hover
-            display: "inline-block",
-            maxWidth: isOverChip ? "auto" : "100px", // Adjust maxWidth
-            transition: "all 0.2s ease-in-out", // Smooth transition
-          }}
-        >
-          {label.labelName}
-        </span>
-      }
+      label={label.labelName}
       sx={{
         marginLeft: "4px",
         marginBottom: "4px",
       }}
       key={label.labelName}
       size="small"
-      onDelete={isOverChip && onLabelRemoveClick}
-      onMouseEnter={onMouseOver}
-      onMouseLeave={onMouseExit}
+      onDelete={onLabelRemoveClick}
     />
   );
 };

@@ -12,6 +12,7 @@ import {
   fetchNotesByLabel,
   updateArchiveForNote,
   updateColorForNote,
+  updateNote,
   updatePinForNote,
   updateTrashForNote,
 } from "../asyncThunks";
@@ -201,6 +202,20 @@ const noteSlice = createSlice({
         state.notesByLabelIdLoading = false;
         state.notesByLabelIdError =
           action.error.message ?? "Failed to fetch notes with labels";
+      })
+
+      .addCase(updateNote.pending, (state) => {
+        state.noteUpdateLoading = true;
+      })
+      .addCase(updateNote.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.noteUpdateError = "";
+      })
+      .addCase(updateNote.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Failed to update Note";
+        state.updatedNote = {} as UpdateNoteType;
       })
 
       .addCase(updatePinForNote.pending, (state) => {
