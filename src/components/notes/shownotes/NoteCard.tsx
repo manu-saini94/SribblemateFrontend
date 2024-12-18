@@ -178,22 +178,28 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
             </div>
           </div>
         </div>
-        <div className="row ">
+        <div className="row" style={{ fontSize: "10px", color: "#212529" }}>
           <div className="column">
-            <span>Updated on:</span>
+            <span>Edited:</span>
             <span>
-              {DateTime.fromISO(noteData?.updatedAt).toFormat(
-                "yyyy-MM-dd HH:mm"
-              )}
+              {(() => {
+                const updatedDate = DateTime.fromISO(noteData?.updatedAt);
+                const now = DateTime.local();
+
+                if (updatedDate.hasSame(now, "day")) {
+                  return `Today ${updatedDate.toFormat("HH:mm")}`;
+                } else if (updatedDate.hasSame(now.minus({ days: 1 }), "day")) {
+                  return `Yesterday ${updatedDate.toFormat("HH:mm")}`;
+                } else {
+                  return updatedDate.toFormat("MMM dd, HH:mm");
+                }
+              })()}
             </span>
           </div>
-          <div className="column">
+          {/* <div className="column">
             <span>by:</span>
-            <div className="column">
-              <span>{noteData?.updatedBy?.name}</span>
-              <span>{noteData?.updatedBy?.email}</span>
-            </div>
-          </div>
+            <span>{noteData?.updatedBy?.email}</span>
+          </div> */}
         </div>
         <div className="row note-card-icon" ref={iconsRef}>
           <div className="col-2">
