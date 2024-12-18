@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
 import useNoteCard from "hooks/useNoteCard";
+import { DateTime } from "luxon";
 import { NoteCardPropsType } from "notetypes";
 import React from "react";
 import { SidebarMenus } from "utility/miscsUtils";
@@ -174,6 +175,23 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
                 color={noteData?.color}
                 onChangeColor={changeColorClick}
               />
+            </div>
+          </div>
+        </div>
+        <div className="row ">
+          <div className="column">
+            <span>Updated on:</span>
+            <span>
+              {DateTime.fromISO(noteData?.updatedAt).toFormat(
+                "yyyy-MM-dd HH:mm"
+              )}
+            </span>
+          </div>
+          <div className="column">
+            <span>by:</span>
+            <div className="column">
+              <span>{noteData?.updatedBy?.name}</span>
+              <span>{noteData?.updatedBy?.email}</span>
             </div>
           </div>
         </div>

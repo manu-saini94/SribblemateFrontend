@@ -55,6 +55,8 @@ export type UpdateNoteType = {
   reminder: string;
   createdAt: string;
   updatedAt: string;
+  createdBy: UpdateCollaboratorType;
+  updatedBy: UpdateCollaboratorType;
   listItems: ListItemType[];
   labelSet: UpdateLabelType[];
   collaboratorList: UpdateCollaboratorType[];

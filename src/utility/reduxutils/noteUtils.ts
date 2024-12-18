@@ -1,4 +1,8 @@
-import { CreateNoteType, UpdateNoteType } from "notetypes";
+import {
+  CreateNoteType,
+  UpdateCollaboratorType,
+  UpdateNoteType,
+} from "notetypes";
 
 export const initialCreateNoteValue: CreateNoteType = {
   title: "",
@@ -28,6 +32,8 @@ export const initialUpdateNoteValue: UpdateNoteType = {
   reminder: "",
   createdAt: "",
   updatedAt: "",
+  createdBy: {} as UpdateCollaboratorType,
+  updatedBy: {} as UpdateCollaboratorType,
   labelSet: [],
   listItems: [],
   collaboratorList: [],
