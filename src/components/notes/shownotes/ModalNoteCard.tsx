@@ -50,6 +50,7 @@ const ModalNoteCard = ({
     isOpenColorTooltip,
     isOpenMoreTooltip,
     checkForChange,
+    getEditedDate,
   } = useNoteCard({ noteCardValues });
 
   return (
@@ -172,6 +173,22 @@ const ModalNoteCard = ({
                 </div>
               </div>
             </div>
+
+            {noteData?.updatedAt !== null && (
+              <div
+                className="d-flex justify-content-end"
+                style={{ fontSize: "10px", color: "#212529" }}
+              >
+                <div className="column">
+                  <span>Edited:</span>
+                  <span>{getEditedDate()}</span>
+                </div>
+                {/* <div className="column">
+            <span>by:</span>
+            <span>{noteData?.updatedBy?.email}</span>
+          </div> */}
+              </div>
+            )}
 
             <div className="d-flex flex-row justify-content-between mt-1">
               <div className="col-1">

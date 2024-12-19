@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
 import React, {
   FormEvent,
@@ -69,6 +70,19 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     );
   }, [noteCardValues, noteData.content, noteData.pinned, noteData.title]);
 
+  const getEditedDate = useCallback(() => {
+    const updatedDate = DateTime.fromISO(noteData?.updatedAt);
+    const now = DateTime.local();
+
+    if (updatedDate.hasSame(now, "day")) {
+      return `Today ${updatedDate.toFormat("HH:mm")}`;
+    } else if (updatedDate.hasSame(now.minus({ days: 1 }), "day")) {
+      return `Yesterday ${updatedDate.toFormat("HH:mm")}`;
+    } else {
+      return updatedDate.toFormat("MMM dd, HH:mm");
+    }
+  }, [noteData?.updatedAt]);
+
   const handleChange = useCallback(
     (event: { target: { name: any; value: any } }) => {
       const { name, value } = event.target;
@@ -107,6 +121,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
       ...prevValues,
       pinned: !prevValues.pinned,
       archived: false,
+      trashed: false,
     }));
   }, []);
 
@@ -234,6 +249,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     isOpenColorTooltip,
     isOpenMoreTooltip,
     checkForChange,
+    getEditedDate,
   };
 };
 

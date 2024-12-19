@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
 import useNoteCard from "hooks/useNoteCard";
-import { DateTime } from "luxon";
 import { NoteCardPropsType } from "notetypes";
 import React from "react";
 import { SidebarMenus } from "utility/miscsUtils";
@@ -58,6 +57,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
     isOpenColorTooltip,
     isOpenMoreTooltip,
     loggedInUserData,
+    getEditedDate,
   } = useNoteCard({ noteCardValues });
 
   return (
@@ -178,29 +178,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
             </div>
           </div>
         </div>
-        <div className="row" style={{ fontSize: "10px", color: "#212529" }}>
-          <div className="column">
-            <span>Edited:</span>
-            <span>
-              {(() => {
-                const updatedDate = DateTime.fromISO(noteData?.updatedAt);
-                const now = DateTime.local();
 
-                if (updatedDate.hasSame(now, "day")) {
-                  return `Today ${updatedDate.toFormat("HH:mm")}`;
-                } else if (updatedDate.hasSame(now.minus({ days: 1 }), "day")) {
-                  return `Yesterday ${updatedDate.toFormat("HH:mm")}`;
-                } else {
-                  return updatedDate.toFormat("MMM dd, HH:mm");
-                }
-              })()}
-            </span>
-          </div>
-          {/* <div className="column">
-            <span>by:</span>
-            <span>{noteData?.updatedBy?.email}</span>
-          </div> */}
-        </div>
         <div className="row note-card-icon" ref={iconsRef}>
           <div className="col-2">
             <Tooltip title="Add Reminder">
