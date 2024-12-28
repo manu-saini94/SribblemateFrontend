@@ -1,4 +1,5 @@
-import { CreateNoteType } from "@types/notetypes";
+import { AuthResponse } from "@types/authtypes";
+import { CreateNoteType, UpdateNoteType } from "@types/notetypes";
 
 export type Id = {
   id: number;
@@ -35,7 +36,47 @@ export interface NoteContextType {
   onReminderClick: () => void;
 }
 
+export interface UpdateNoteContextType {
+  noteData: UpdateNoteType;
+  loggedInUserData: AuthResponse;
+  onModalPinClick: () => void;
+  isListNote: Boolean;
+  onLabelRemoveClick: (id: numder) => void;
+  handleChange: (event: {
+    target: {
+      name: any;
+      value: any;
+    };
+  }) => void;
+  handleNoteSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onLabelAddIconClick: () => void;
+  onCheckboxIconClick: () => void;
+  activeMenu: string;
+  changeColorClick: (color: string) => void;
+  onDeleteClick: () => void;
+  colorPaletteRef: React.RefObject<HTMLDivElement>;
+  onPinClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onCollaboratorClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onReminderClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onArchiveClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onMoreClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onImageClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  toggleColorPalette: () => void;
+  handleColorTooltipClose: () => void;
+  handleColorTooltipOpen: () => void;
+  handleMoreTooltipClose: () => void;
+  handleMoreTooltipOpen: () => void;
+  isOpenColorTooltip: Boolean;
+  isOpenMoreTooltip: Boolean;
+  checkForChange: () => Boolean;
+  getEditedDate: () => any;
+}
+
 export interface NoteContextProps extends ReactNodeHOCProps {}
+
+export interface UpdateNoteContextProps extends ReactNodeHOCProps {
+  noteCardValues: UpdateNoteType;
+}
 
 export interface ThemeContextProps extends ReactNodeHOCProps {}
 
