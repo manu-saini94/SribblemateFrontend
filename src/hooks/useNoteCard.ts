@@ -17,6 +17,7 @@ import {
   updateTrashForNote,
 } from "../redux/asyncThunks";
 import { updateUserNote } from "../redux/notes/noteSlice";
+import useCardTypeActive from "./useCardTypeActive";
 import useColor from "./useColor";
 
 const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
@@ -35,6 +36,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   );
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
   const activeMenu = useSelector((state: RootState) => state.menus.activeMenu);
+  const { activeCard, changeActiveCard } = useCardTypeActive();
 
   useEffect(() => {
     setNoteData(noteCardValues);
@@ -216,6 +218,8 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   }, [colorPaletteRef, handleNoteCardClick]);
 
   return {
+    activeCard,
+    changeActiveCard,
     noteRef,
     onLabelRemoveClick,
     noteData,

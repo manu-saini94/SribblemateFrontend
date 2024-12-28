@@ -23,11 +23,9 @@ function App() {
       dispatch(fetchLabels());
     } else {
       dispatch(checkAuthorizedUser())
-        .unwrap() // unwrap to directly get the resolved/rejected action
+        .unwrap()
         .then(() => {
           if (Object.keys(loggedInUserData).length !== 0) {
-            // dispatch(fetchNotes());
-            // dispatch(fetchLabels());
           }
         })
         .catch((error) => {

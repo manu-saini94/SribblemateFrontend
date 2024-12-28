@@ -1,6 +1,6 @@
 import TakeNote from "components/notes/takenote/TakeNote";
 import TakeNoteDetails from "components/notes/takenote/TakeNoteDetails";
-import ColorProvider from "contexts/providers/CreateNoteProvider";
+import CreateNoteProvider from "contexts/providers/CreateNoteProvider";
 import { useTakeNoteActive } from "hooks/useTakeNoteActive";
 
 import { CommonNoteProps } from "notetypes";
@@ -18,9 +18,9 @@ const CommonNote = ({ children }: CommonNoteProps): ReactNode => {
         {isTakeNoteActive ? (
           <TakeNote onTakeNoteClick={() => toggleTakeNoteActive()} />
         ) : (
-          <ColorProvider>
+          <CreateNoteProvider>
             <TakeNoteDetails toggleTakeNoteActive={toggleTakeNoteActive} />
-          </ColorProvider>
+          </CreateNoteProvider>
         )}
       </div>
       <div className="d-flex">{children}</div>

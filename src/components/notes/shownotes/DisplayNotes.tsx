@@ -1,4 +1,5 @@
 import NoteCard from "components/notes/shownotes/NoteCard";
+import UpdateNoteProvider from "contexts/providers/UpdateNoteProvider";
 import { NotesPropsType } from "notetypes";
 import React from "react";
 import useDisplayNoteCards from "../../../hooks/useDisplayNoteCards";
@@ -12,7 +13,9 @@ const DisplayNotes = ({ notes }: NotesPropsType) => {
       {notes?.map((noteCard) => {
         return (
           <div className="p-2 g-col-2" key={noteCard.id}>
-            <NoteCard key={noteCard.id} noteCardValues={noteCard} />
+            <UpdateNoteProvider noteCardValues={noteCard}>
+              <NoteCard key={noteCard.id} />
+            </UpdateNoteProvider>
           </div>
         );
       })}
