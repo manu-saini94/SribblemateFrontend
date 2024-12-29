@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
+import { NoteCardType } from "utility/miscsUtils";
 import {
   updateArchiveForNote,
   updateColorForNote,
@@ -98,10 +99,12 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const handleNoteCardClick = useCallback(() => {
     setIsUpdateCardActive(true);
+    changeActiveCard(NoteCardType.NOTE);
   }, []);
 
   const handleNoteCardClose = useCallback(() => {
     setIsUpdateCardActive(false);
+    changeActiveCard(NoteCardType.NOTE);
   }, []);
 
   const handleMoreTooltipClose = () => {
@@ -127,7 +130,10 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     }));
   }, []);
 
-  const onCollaboratorClick = () => {};
+  const onCollaboratorClick = () => {
+    setIsUpdateCardActive(true);
+    changeActiveCard(NoteCardType.COLLABORATOR);
+  };
 
   const onReminderClick = () => {};
 
@@ -151,7 +157,10 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const onImageClick = () => {};
 
-  const onLabelAddIconClick = () => {};
+  const onLabelAddIconClick = () => {
+    setIsUpdateCardActive(true);
+    changeActiveCard(NoteCardType.LABEL);
+  };
 
   const onCheckboxIconClick = () => {};
 

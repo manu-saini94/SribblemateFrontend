@@ -16,11 +16,11 @@ import {
   ListItemText,
   MenuItem,
   MenuList,
+  Modal,
   Tooltip,
 } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
-import useNoteCard from "hooks/useNoteCard";
-import { NoteCardPropsType } from "notetypes";
+import { useUpdateNote } from "hooks/useUpdateNote";
 import React from "react";
 import { SidebarMenus } from "utility/miscsUtils";
 import "../../../scss/notecard.scss";
@@ -29,54 +29,32 @@ import DisplayCollaborator from "./DisplayCollaborator";
 import DisplayLabel from "./DisplayLabel";
 import ModalNoteCard from "./ModalNoteCard";
 
-function NoteCard({ noteCardValues }: NoteCardPropsType) {
-  const {
-    noteData,
-    noteRef,
-    iconsRef,
-    pinIconRef,
-    isUpdateCardActive,
-    handleNoteCardClose,
-    onLabelRemoveClick,
-    handleNoteCardClick,
-    activeMenu,
-    changeColorClick,
-    colorPaletteRef,
-    onPinClick,
-    onDeleteClick,
-    onCollaboratorClick,
-    onReminderClick,
-    onArchiveClick,
-    onMoreClick,
-    onImageClick,
-    toggleColorPalette,
-    handleColorTooltipClose,
-    handleColorTooltipOpen,
-    handleMoreTooltipClose,
-    handleMoreTooltipOpen,
-    isOpenColorTooltip,
-    isOpenMoreTooltip,
-    loggedInUserData,
-    getEditedDate,
-  } = useNoteCard({ noteCardValues });
+function NoteCard() {
+  const updateNoteContext = useUpdateNote();
 
   return (
     <div
       className="card "
       style={{
         maxHeight: "53rem",
-        backgroundColor: `${noteData.color}`,
+        backgroundColor: `${updateNoteContext?.noteData.color}`,
         width: "15.625rem",
       }}
     >
-      <div>
-        <ModalNoteCard
-          noteCardValues={noteData}
-          isUpdateCardActive={isUpdateCardActive}
-          handleNoteCardClose={handleNoteCardClose}
-        />
-      </div>
-      <div className="card-body pb-2" ref={noteRef}>
+      <Modal
+        open={!!updateNoteContext?.isUpdateCardActive}
+        onClose={updateNoteContext?.handleNoteCardClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ModalNoteCard />
+      </Modal>
+      <div className="card-body pb-2" ref={updateNoteContext?.noteRef}>
         <div className="d-flex flex-row">
           <div className="input-group mb-3">
             <input
@@ -86,19 +64,21 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
               aria-label="Title"
               aria-describedby="basic-addon1"
               style={{
-                backgroundColor: `${noteData.color}`,
+                backgroundColor: `${updateNoteContext?.noteData?.color}`,
                 cursor: "default",
               }}
-              value={noteData.title}
+              value={updateNoteContext?.noteData?.title}
             />
           </div>
-          <div ref={pinIconRef}>
-            <Tooltip title={noteData.pinned ? "Unpin" : "Pin"}>
+          <div ref={updateNoteContext?.pinIconRef}>
+            <Tooltip
+              title={updateNoteContext?.noteData?.pinned ? "Unpin" : "Pin"}
+            >
               <IconButton
-                onClick={onPinClick}
+                onClick={updateNoteContext?.onPinClick}
                 style={{ marginTop: "-14px", marginRight: "-14px" }}
               >
-                {noteData.pinned ? (
+                {updateNoteContext?.noteData?.pinned ? (
                   <PushPinIcon className="fs-4" />
                 ) : (
                   <PushPinOutlinedIcon className="fs-4" />
@@ -108,7 +88,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           </div>
         </div>
 
-        <div className="input-group mb-3" ref={noteRef}>
+        <div className="input-group mb-3" ref={updateNoteContext?.noteRef}>
           <textarea
             readOnly
             className="form-control border-0 p-0 m-0 content"
@@ -116,13 +96,13 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
             aria-label="Take a note..."
             aria-describedby="basic-addon1"
             style={{
-              backgroundColor: `${noteData.color}`,
+              backgroundColor: `${updateNoteContext?.noteData?.color}`,
               resize: "none",
               overflow: "hidden",
               minHeight: "auto",
               cursor: "default",
             }}
-            value={noteData.content}
+            value={updateNoteContext?.noteData?.content}
           />
         </div>
 
@@ -130,26 +110,28 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           className="d-flex column flex-wrap"
           style={{ marginLeft: "-10px", marginBottom: "3px" }}
         >
-          {noteData?.collaboratorList?.map((collaborator) => {
-            return (
-              <DisplayCollaborator
-                key={collaborator.email}
-                collaborator={collaborator}
-                onCollabClick={onCollaboratorClick}
-              />
-            );
-          })}
+          {updateNoteContext?.noteData?.collaboratorList?.map(
+            (collaborator) => {
+              return (
+                <DisplayCollaborator
+                  key={collaborator.email}
+                  collaborator={collaborator}
+                  onCollabClick={updateNoteContext?.onCollaboratorClick}
+                />
+              );
+            }
+          )}
         </div>
         <div
           className="d-flex column flex-wrap"
           style={{ marginLeft: "-10px" }}
         >
-          {noteData?.labelSet?.map((label) => {
+          {updateNoteContext?.noteData?.labelSet?.map((label) => {
             return (
               <DisplayLabel
                 key={label.labelName}
                 label={label}
-                onLabelRemoveClick={onLabelRemoveClick}
+                onLabelRemoveClick={updateNoteContext?.onLabelRemoveClick}
               />
             );
           })}
@@ -158,7 +140,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
         <div
           className="collapse"
           id="collapseColorPalette"
-          ref={colorPaletteRef}
+          ref={updateNoteContext?.colorPaletteRef}
         >
           <div
             className="card border-light z-1 position-absolute"
@@ -172,31 +154,31 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           >
             <div className="card-body align-items-center">
               <ColorPalette
-                color={noteData?.color}
-                onChangeColor={changeColorClick}
+                color={updateNoteContext?.noteData?.color}
+                onChangeColor={updateNoteContext?.changeColorClick}
               />
             </div>
           </div>
         </div>
 
-        <div className="row note-card-icon" ref={iconsRef}>
+        <div className="row note-card-icon" ref={updateNoteContext?.iconsRef}>
           <div className="col-2">
             <Tooltip title="Add Reminder">
-              <IconButton onClick={onReminderClick}>
+              <IconButton onClick={updateNoteContext?.onReminderClick}>
                 <NotificationAddOutlinedIcon className="fs-6 " />
               </IconButton>
             </Tooltip>
           </div>
           <div className="col-2">
             <Tooltip title="Add Images">
-              <IconButton onClick={onImageClick}>
+              <IconButton onClick={updateNoteContext?.onImageClick}>
                 <PermMediaOutlinedIcon className="fs-6" />
               </IconButton>
             </Tooltip>
           </div>
           <div className="col-2">
             <Tooltip title="Add Collaborators">
-              <IconButton onClick={onCollaboratorClick}>
+              <IconButton onClick={updateNoteContext?.onCollaboratorClick}>
                 <PersonAddOutlinedIcon className="fs-6" />
               </IconButton>
             </Tooltip>
@@ -204,13 +186,13 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           <div className="col-2">
             <Tooltip
               title={
-                activeMenu === SidebarMenus.Archive
+                updateNoteContext?.activeMenu === SidebarMenus.Archive
                   ? "Unarchive note"
                   : "Archive note"
               }
             >
-              <IconButton onClick={onArchiveClick}>
-                {activeMenu === SidebarMenus.Archive ? (
+              <IconButton onClick={updateNoteContext?.onArchiveClick}>
+                {updateNoteContext?.activeMenu === SidebarMenus.Archive ? (
                   <UnarchiveOutlinedIcon className="fs-6" />
                 ) : (
                   <ArchiveOutlinedIcon className="fs-6" />
@@ -220,12 +202,12 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           </div>
           <div className="col-2 position-relative">
             <Tooltip
-              open={isOpenColorTooltip}
-              onClose={handleColorTooltipClose}
-              onOpen={handleColorTooltipOpen}
+              open={!!updateNoteContext.isOpenColorTooltip}
+              onClose={updateNoteContext?.handleColorTooltipClose}
+              onOpen={updateNoteContext?.handleColorTooltipOpen}
               title="Change color"
             >
-              <IconButton onClick={toggleColorPalette}>
+              <IconButton onClick={updateNoteContext?.toggleColorPalette}>
                 <PaletteOutlinedIcon className="fs-6" />
               </IconButton>
             </Tooltip>
@@ -233,13 +215,13 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
           <div className="col-2">
             <div className="dropdown">
               <Tooltip
-                open={isOpenMoreTooltip}
-                onClose={handleMoreTooltipClose}
-                onOpen={handleMoreTooltipOpen}
+                open={!!updateNoteContext.isOpenMoreTooltip}
+                onClose={updateNoteContext?.handleMoreTooltipClose}
+                onOpen={updateNoteContext?.handleMoreTooltipOpen}
                 title="More"
               >
                 <IconButton
-                  onClick={onMoreClick}
+                  onClick={updateNoteContext?.onMoreClick}
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
@@ -247,7 +229,7 @@ function NoteCard({ noteCardValues }: NoteCardPropsType) {
                 </IconButton>
               </Tooltip>
               <MenuList className="dropdown-menu">
-                <MenuItem onClick={onDeleteClick}>
+                <MenuItem onClick={updateNoteContext?.onDeleteClick}>
                   <ListItemIcon>
                     <DeleteOutlinedIcon className="fs-6" />
                   </ListItemIcon>

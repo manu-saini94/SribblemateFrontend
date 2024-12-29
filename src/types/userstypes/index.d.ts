@@ -42,5 +42,5 @@ export type UsersStoreInitialStateType = UsersInitialStateType & {
 
 export type DisplayCollaboratorTypes = {
   collaborator: UpdateCollaboratorType;
-  onCollabClick: (event: React.MouseEvent<HTMLElement>) => void;
+  onCollabClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
