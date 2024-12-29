@@ -37,6 +37,12 @@ export interface NoteContextType {
 }
 
 export interface UpdateNoteContextType {
+  activeCard: NoteCardType;
+  isUpdateCardActive: Boolean;
+  changeActiveCard: (cardType: NoteCardType) => void;
+  noteRef: React.RefObject<HTMLDivElement>;
+  pinIconRef: React.RefObject<HTMLDivElement>;
+  iconsRef: React.RefObject<HTMLDivElement>;
   noteData: UpdateNoteType;
   loggedInUserData: AuthResponse;
   onModalPinClick: () => void;
@@ -61,6 +67,7 @@ export interface UpdateNoteContextType {
   onArchiveClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMoreClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onImageClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  handleNoteCardClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
   toggleColorPalette: () => void;
   handleColorTooltipClose: () => void;
   handleColorTooltipOpen: () => void;
