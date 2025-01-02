@@ -1,6 +1,6 @@
 import { useUpdateNote } from "contexts/hooks/useUpdateNote";
 import { UpdateCollaboratorType } from "notetypes";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { validateEmail } from "utility/validationutils/authValidationUtils";
@@ -8,7 +8,6 @@ import { checkCollaboratorExist } from "../redux/asyncThunks";
 import {
   setCollaboratorError,
   setCurrentCollaborator,
-  setNewCollaboratorArray,
 } from "../redux/users/usersSlice";
 
 const useModalCollaboratorCard = () => {
@@ -18,10 +17,6 @@ const useModalCollaboratorCard = () => {
     UpdateCollaboratorType[]
   >(updateNoteContext.noteData.collaboratorList);
 
-  const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
-  );
-
   const collaboratorExistError = useSelector(
     (state: RootState) => state.users.collaboratorExistError
   );
@@ -30,14 +25,6 @@ const useModalCollaboratorCard = () => {
 
   const currentCollaborator = useSelector(
     (state: RootState) => state.users.currentCollaborator
-  );
-
-  const newCollaboratorArray = useSelector(
-    (state: RootState) => state.users.newCollaboratorArray
-  );
-
-  const [owner, setOwner] = useState<UpdateCollaboratorType>(
-    {} as UpdateCollaboratorType
   );
 
   const validateForm = (): string => {
@@ -87,9 +74,7 @@ const useModalCollaboratorCard = () => {
   };
 
   const checkAlreadyExist = () => {
-    return (
-      checkExistence(collaboratorArray) || checkExistence(newCollaboratorArray)
-    );
+    return checkExistence(collaboratorArray);
   };
 
   const handleCollaboratorChange = (event: { target: { value: any } }) => {
@@ -105,32 +90,14 @@ const useModalCollaboratorCard = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(setNewCollaboratorArray([]));
-    const ownerObject: UpdateCollaboratorType = {
-      id: loggedInUserData?.userDto?.id,
-      name: loggedInUserData?.userDto?.fullName,
-      email: loggedInUserData?.userDto?.email,
-    };
-    setOwner(ownerObject);
-  }, [
-    dispatch,
-    loggedInUserData?.userDto?.email,
-    loggedInUserData?.userDto?.fullName,
-    loggedInUserData?.userDto?.id,
-  ]);
-
   return {
     collaboratorArray,
-    loggedInUserData,
     handleCollaboratorSubmit,
-    owner,
     collaboratorExistError,
     dispatch,
     currentCollaborator,
     handleDoneClick,
     handleCancelClick,
-    newCollaboratorArray,
     handleCloseClick,
     handleCollaboratorChange,
   };

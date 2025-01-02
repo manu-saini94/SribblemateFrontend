@@ -5,19 +5,17 @@ import { Divider, IconButton, Tooltip } from "@mui/material";
 import useModalCollaboratorCard from "hooks/useModalCollaboratorCard";
 import { UpdateCollaboratorType } from "notetypes";
 import React from "react";
-import Collaborator from "../takenote/Collaborator";
+import CollaboratorUpdate from "./CollaboratorUpdate";
 
 const CollaboratorUpdateCard = () => {
   const {
     collaboratorArray,
     handleCollaboratorChange,
     handleCollaboratorSubmit,
-    owner,
     collaboratorExistError,
     currentCollaborator,
     handleDoneClick,
     handleCancelClick,
-    newCollaboratorArray,
     handleCloseClick,
   } = useModalCollaboratorCard();
 
@@ -34,12 +32,11 @@ const CollaboratorUpdateCard = () => {
           Collaborators
         </div>
         <div className="card-body pb-2">
-          <Collaborator collaborator={owner} />
           {collaboratorArray.length > 0 &&
             collaboratorArray.map((collaborator: UpdateCollaboratorType) => {
               return (
                 <div className="mt-2" key={collaborator.email}>
-                  <Collaborator collaborator={collaborator} />
+                  <CollaboratorUpdate collaborator={collaborator} />
                 </div>
               );
             })}
