@@ -3,9 +3,9 @@ import { Divider } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/store";
-import { CreateCollaboratorPropsType } from "../../../types/notetypes";
+import { CollaboratorPropsType } from "../../../types/notetypes";
 
-const Collaborator = ({ collaborator }: CreateCollaboratorPropsType) => {
+const Collaborator = ({ collaborator }: CollaboratorPropsType) => {
   const loggedInUserData = useSelector(
     (state: RootState) => state.auth.loggedInUserData
   );

@@ -1,4 +1,4 @@
-import { useUpdateNote } from "hooks/useUpdateNote";
+import { useUpdateNote } from "contexts/hooks/useUpdateNote";
 import React from "react";
 import { NoteCardType } from "utility/miscsUtils";
 import CollaboratorUpdateCard from "../updatenote/CollaboratorUpdateCard";

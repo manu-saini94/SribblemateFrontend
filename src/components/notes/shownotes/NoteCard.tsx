@@ -20,7 +20,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
-import { useUpdateNote } from "hooks/useUpdateNote";
+import { useUpdateNote } from "contexts/hooks/useUpdateNote";
 import React from "react";
 import { SidebarMenus } from "utility/miscsUtils";
 import "../../../scss/notecard.scss";

@@ -1,23 +1,27 @@
-import { CollaboratorCardPropsType, UpdateCollaboratorType } from "notetypes";
+import { useUpdateNote } from "contexts/hooks/useUpdateNote";
+import { UpdateCollaboratorType } from "notetypes";
 import { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
-import { NoteCardType } from "utility/miscsUtils";
 import { validateEmail } from "utility/validationutils/authValidationUtils";
 import { checkCollaboratorExist } from "../redux/asyncThunks";
 import {
-  addCollaborators,
   setCollaboratorError,
   setCurrentCollaborator,
   setNewCollaboratorArray,
 } from "../redux/users/usersSlice";
 
-const useCollaboratorCreateCard = ({
-  changeActiveCard,
-}: CollaboratorCardPropsType) => {
+const useModalCollaboratorCard = () => {
+  const updateNoteContext = useUpdateNote();
+
+  const [collaboratorArray, setCollaboratorArray] = useState<
+    UpdateCollaboratorType[]
+  >(updateNoteContext.noteData.collaboratorList);
+
   const loggedInUserData = useSelector(
     (state: RootState) => state.auth.loggedInUserData
   );
+
   const collaboratorExistError = useSelector(
     (state: RootState) => state.users.collaboratorExistError
   );
@@ -28,32 +32,13 @@ const useCollaboratorCreateCard = ({
     (state: RootState) => state.users.currentCollaborator
   );
 
-  const [owner, setOwner] = useState<UpdateCollaboratorType>(
-    {} as UpdateCollaboratorType
-  );
-
-  const collaboratorArray = useSelector(
-    (state: RootState) => state.users.collaboratorArray
-  );
-
   const newCollaboratorArray = useSelector(
     (state: RootState) => state.users.newCollaboratorArray
   );
 
-  useEffect(() => {
-    dispatch(setNewCollaboratorArray([]));
-    const ownerObject: UpdateCollaboratorType = {
-      id: loggedInUserData?.userDto?.id,
-      name: loggedInUserData?.userDto?.fullName,
-      email: loggedInUserData?.userDto?.email,
-    };
-    setOwner(ownerObject);
-  }, [
-    dispatch,
-    loggedInUserData?.userDto?.email,
-    loggedInUserData?.userDto?.fullName,
-    loggedInUserData?.userDto?.id,
-  ]);
+  const [owner, setOwner] = useState<UpdateCollaboratorType>(
+    {} as UpdateCollaboratorType
+  );
 
   const validateForm = (): string => {
     const error = validateEmail(currentCollaborator.email);
@@ -62,24 +47,24 @@ const useCollaboratorCreateCard = ({
 
   const handleCollaboratorSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatchCreateCollaborator();
+    dispatchUpdateCollaborator();
   };
 
-  const dispatchCreateCollaborator = () => {
-    if (newCollaboratorArray.length > 0) {
-      dispatch(addCollaborators(newCollaboratorArray));
-      changeActiveCard(NoteCardType.NOTE);
-    }
+  const dispatchUpdateCollaborator = () => {
+    //   if (newCollaboratorArray.length > 0) {
+    //     dispatch(addCollaborators(newCollaboratorArray));
+    //     changeActiveCard(NoteCardType.NOTE);
+    //   }
   };
 
   const handleCancelClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    dispatch(setNewCollaboratorArray([]));
-    dispatch(setCurrentCollaborator({} as UpdateCollaboratorType));
-    dispatch(setCollaboratorError(""));
-    changeActiveCard(NoteCardType.NOTE);
+    //   dispatch(setNewCollaboratorArray([]));
+    //   dispatch(setCurrentCollaborator({} as CreateCollaboratorType));
+    //   dispatch(setCollaboratorError(""));
+    //   changeActiveCard(NoteCardType.NOTE);
   };
 
   const handleCloseClick = () => {
@@ -120,19 +105,35 @@ const useCollaboratorCreateCard = ({
     }
   };
 
+  useEffect(() => {
+    dispatch(setNewCollaboratorArray([]));
+    const ownerObject: UpdateCollaboratorType = {
+      id: loggedInUserData?.userDto?.id,
+      name: loggedInUserData?.userDto?.fullName,
+      email: loggedInUserData?.userDto?.email,
+    };
+    setOwner(ownerObject);
+  }, [
+    dispatch,
+    loggedInUserData?.userDto?.email,
+    loggedInUserData?.userDto?.fullName,
+    loggedInUserData?.userDto?.id,
+  ]);
+
   return {
+    collaboratorArray,
+    loggedInUserData,
+    handleCollaboratorSubmit,
     owner,
     collaboratorExistError,
-    handleCollaboratorSubmit,
-    loggedInUserData,
-    collaboratorArray,
-    handleCollaboratorChange,
+    dispatch,
     currentCollaborator,
     handleDoneClick,
     handleCancelClick,
     newCollaboratorArray,
     handleCloseClick,
+    handleCollaboratorChange,
   };
 };
 
-export default useCollaboratorCreateCard;
+export default useModalCollaboratorCard;

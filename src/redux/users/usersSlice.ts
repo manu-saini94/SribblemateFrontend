@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CreateCollaboratorType } from "notetypes";
+import { UpdateCollaboratorType } from "notetypes";
 import { UserDto, UsersStoreInitialStateType } from "userstypes";
 import { checkCollaboratorExist, fetchAllUsers } from "../asyncThunks";
 
@@ -9,10 +9,10 @@ const initialLoadingStates = {
 };
 
 const initialDataStates = {
-  existingCollaborator: {} as CreateCollaboratorType,
-  collaboratorArray: [] as CreateCollaboratorType[],
-  newCollaboratorArray: [] as CreateCollaboratorType[],
-  currentCollaborator: {} as CreateCollaboratorType,
+  existingCollaborator: {} as UpdateCollaboratorType,
+  collaboratorArray: [] as UpdateCollaboratorType[],
+  newCollaboratorArray: [] as UpdateCollaboratorType[],
+  currentCollaborator: {} as UpdateCollaboratorType,
   allUsers: [],
 };
 
@@ -31,19 +31,19 @@ const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    addCollaborators(state, action: PayloadAction<CreateCollaboratorType[]>) {
+    addCollaborators(state, action: PayloadAction<UpdateCollaboratorType[]>) {
       state.collaboratorArray = [...action.payload, ...state.collaboratorArray];
-      state.existingCollaborator = { email: "", name: "" };
+      state.existingCollaborator = { id: 0, email: "", name: "" };
     },
     setNewCollaboratorArray(
       state,
-      action: PayloadAction<CreateCollaboratorType[]>
+      action: PayloadAction<UpdateCollaboratorType[]>
     ) {
       state.newCollaboratorArray = action.payload;
     },
     setCurrentCollaborator(
       state,
-      action: PayloadAction<CreateCollaboratorType>
+      action: PayloadAction<UpdateCollaboratorType>
     ) {
       state.currentCollaborator = action.payload;
     },
@@ -51,7 +51,7 @@ const usersSlice = createSlice({
       state.collaboratorExistError = action.payload;
     },
     resetExistingCollaborator(state) {
-      state.existingCollaborator = { email: "", name: "" };
+      state.existingCollaborator = { id: 0, email: "", name: "" };
     },
     resetCollaboratorArray(state) {
       state.collaboratorArray = [];
@@ -62,27 +62,28 @@ const usersSlice = createSlice({
       .addCase(checkCollaboratorExist.pending, (state) => {
         state.collaboratorExistLoading = true;
         state.collaboratorExistError = "";
-        state.existingCollaborator = { email: "", name: "" };
+        state.existingCollaborator = { id: 0, email: "", name: "" };
       })
       .addCase(checkCollaboratorExist.fulfilled, (state, action) => {
         state.collaboratorExistLoading = false;
         state.existingCollaborator = action.payload;
-        const newArray: CreateCollaboratorType[] = [
+        const newArray: UpdateCollaboratorType[] = [
           ...state.newCollaboratorArray,
           state.existingCollaborator,
         ];
         state.newCollaboratorArray = newArray;
         state.currentCollaborator = {
+          id: 0,
           email: "",
           name: "",
-        } as CreateCollaboratorType;
+        } as UpdateCollaboratorType;
         state.collaboratorExistError = "";
       })
       .addCase(checkCollaboratorExist.rejected, (state, action) => {
         state.collaboratorExistLoading = false;
         state.collaboratorExistError =
           action.error.message ?? "Some problem occured";
-        state.existingCollaborator = { email: "", name: "" };
+        state.existingCollaborator = { id: 0, email: "", name: "" };
       })
 
       .addCase(fetchAllUsers.pending, (state) => {
