@@ -9,21 +9,53 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { IconButton, Tooltip } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
-import React, { useState } from "react";
+import React from "react";
 
-import { useUpdateNote } from "hooks/useUpdateNote";
-import { UpdateNoteType } from "notetypes";
+import useModalNoteCard from "hooks/useModalNoteCard";
 import ColorPalette from "../colorpalette/ColorPalette";
 import DisplayCollaborator from "../shownotes/DisplayCollaborator";
 import DisplayLabel from "../shownotes/DisplayLabel";
 import ListItemContent from "../takenote/ListItemContent";
 
 const NoteUpdateCard = () => {
-  const updateNoteContext = useUpdateNote();
-  const [noteData, setNoteData] = useState<UpdateNoteType>(
-    updateNoteContext?.noteData
-  );
-
+  const {
+    activeCard,
+    updateNoteContext,
+    changeActiveCard,
+    noteRef,
+    onLabelRemoveClick,
+    noteData,
+    loggedInUserData,
+    onModalPinClick,
+    iconsRef,
+    pinIconRef,
+    onCheckboxIconClick,
+    isListNote,
+    onLabelAddIconClick,
+    handleChange,
+    handleNoteSubmit,
+    isUpdateCardActive,
+    handleNoteCardClose,
+    handleNoteCardClick,
+    activeMenu,
+    onDeleteClick,
+    colorPaletteRef,
+    onPinClick,
+    onCollaboratorClick,
+    onReminderClick,
+    onArchiveClick,
+    onMoreClick,
+    onImageClick,
+    toggleColorPalette,
+    handleColorTooltipClose,
+    handleColorTooltipOpen,
+    handleMoreTooltipClose,
+    handleMoreTooltipOpen,
+    isOpenColorTooltip,
+    isOpenMoreTooltip,
+    checkForChange,
+    getEditedDate,
+  } = useModalNoteCard();
   return (
     <form onSubmit={updateNoteContext?.handleNoteSubmit}>
       <div

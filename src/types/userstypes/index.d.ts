@@ -1,4 +1,4 @@
-import { CreateCollaboratorType } from "@types/notetypes";
+import { UpdateCollaboratorType } from "@types/notetypes";
 
 export type UserDataType = {
   expiresIn: number;
@@ -33,11 +33,20 @@ export type UsersInitialStateType = {
 };
 
 export type UsersStoreInitialStateType = UsersInitialStateType & {
-  existingCollaborator: CreateCollaboratorType;
-  collaboratorArray: CreateCollaboratorType[];
-  newCollaboratorArray: CreateCollaboratorType[];
-  currentCollaborator: CreateCollaboratorType;
+  existingCollaborator: UpdateCollaboratorType;
+  collaboratorArray: UpdateCollaboratorType[];
+  newCollaboratorArray: UpdateCollaboratorType[];
+  currentCollaborator: UpdateCollaboratorType;
   allUsers: UserDto[];
+};
+
+export type CollaboratorStoreInitialStateType = {
+  existingCollaborator: UpdateCollaboratorType;
+  collaboratorArray: UpdateCollaboratorType[];
+  newCollaboratorArray: UpdateCollaboratorType[];
+  currentCollaborator: UpdateCollaboratorType;
+  collaboratorExistLoading: Boolean;
+  collaboratorExistError: string;
 };
 
 export type DisplayCollaboratorTypes = {

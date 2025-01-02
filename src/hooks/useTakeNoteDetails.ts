@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
 import { hasNoteChanged } from "utility/reduxutils/noteUtils";
+import { useCreateNote } from "../contexts/hooks/useCreateNote";
 import { createNote } from "../redux/asyncThunks";
 import { resetLabelArray } from "../redux/labels/labelSlice";
 import { insertNewNote } from "../redux/notes/noteSlice";
 import { resetCollaboratorArray } from "../redux/users/usersSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
 import useColor from "./useColor";
-import { useCreateNote } from "./useCreateNote";
 
 const useTakeNoteDetails = ({
   toggleTakeNoteActive,
