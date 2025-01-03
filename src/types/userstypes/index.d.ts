@@ -26,8 +26,8 @@ interface UserDto {
 }
 
 export type UsersInitialStateType = {
-  collaboratorExistLoading: Boolean;
-  collaboratorExistError: string;
+  collaboratorUpdateLoading: Boolean;
+  collaboratorUpdateError: string;
   usersFetchLoading: Boolean;
   usersFetchError: string;
 };
@@ -38,15 +38,6 @@ export type UsersStoreInitialStateType = UsersInitialStateType & {
   newCollaboratorArray: UpdateCollaboratorType[];
   currentCollaborator: UpdateCollaboratorType;
   allUsers: UserDto[];
-};
-
-export type CollaboratorStoreInitialStateType = {
-  existingCollaborator: UpdateCollaboratorType;
-  collaboratorArray: UpdateCollaboratorType[];
-  newCollaboratorArray: UpdateCollaboratorType[];
-  currentCollaborator: UpdateCollaboratorType;
-  collaboratorExistLoading: Boolean;
-  collaboratorExistError: string;
 };
 
 export type DisplayCollaboratorTypes = {

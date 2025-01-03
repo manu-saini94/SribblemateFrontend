@@ -9,9 +9,8 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import { IconButton, Tooltip } from "@mui/material";
 import AddLabelIcon from "components/icons/AddLabelIcon";
-import React from "react";
-
 import useModalNoteCard from "hooks/useModalNoteCard";
+import React from "react";
 import ColorPalette from "../colorpalette/ColorPalette";
 import DisplayCollaborator from "../shownotes/DisplayCollaborator";
 import DisplayLabel from "../shownotes/DisplayLabel";

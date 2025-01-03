@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UpdateCollaboratorType } from "notetypes";
 import { UserDto, UsersStoreInitialStateType } from "userstypes";
-import { checkCollaboratorExist, fetchAllUsers } from "../asyncThunks";
+import {
+  addCollaborator,
+  checkCollaboratorExist,
+  fetchAllUsers,
+} from "../asyncThunks";
 
 const initialLoadingStates = {
-  collaboratorExistLoading: false,
+  collaboratorUpdateLoading: false,
   usersFetchLoading: false,
 };
 
@@ -17,7 +21,7 @@ const initialDataStates = {
 };
 
 const initialErrorStates = {
-  collaboratorExistError: "",
+  collaboratorUpdateError: "",
   usersFetchError: "",
 };
 
@@ -48,7 +52,7 @@ const usersSlice = createSlice({
       state.currentCollaborator = action.payload;
     },
     setCollaboratorError(state, action: PayloadAction<string>) {
-      state.collaboratorExistError = action.payload;
+      state.collaboratorUpdateError = action.payload;
     },
     resetExistingCollaborator(state) {
       state.existingCollaborator = { id: 0, email: "", name: "" };
@@ -60,12 +64,12 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(checkCollaboratorExist.pending, (state) => {
-        state.collaboratorExistLoading = true;
-        state.collaboratorExistError = "";
+        state.collaboratorUpdateLoading = true;
+        state.collaboratorUpdateError = "";
         state.existingCollaborator = { id: 0, email: "", name: "" };
       })
       .addCase(checkCollaboratorExist.fulfilled, (state, action) => {
-        state.collaboratorExistLoading = false;
+        state.collaboratorUpdateLoading = false;
         state.existingCollaborator = action.payload;
         const newArray: UpdateCollaboratorType[] = [
           ...state.newCollaboratorArray,
@@ -77,11 +81,37 @@ const usersSlice = createSlice({
           email: "",
           name: "",
         } as UpdateCollaboratorType;
-        state.collaboratorExistError = "";
+        state.collaboratorUpdateError = "";
       })
       .addCase(checkCollaboratorExist.rejected, (state, action) => {
-        state.collaboratorExistLoading = false;
-        state.collaboratorExistError =
+        state.collaboratorUpdateLoading = false;
+        state.collaboratorUpdateError =
+          action.error.message ?? "Some problem occured";
+        state.existingCollaborator = { id: 0, email: "", name: "" };
+      })
+      .addCase(addCollaborator.pending, (state) => {
+        state.collaboratorUpdateLoading = true;
+        state.collaboratorUpdateError = "";
+        state.existingCollaborator = { id: 0, email: "", name: "" };
+      })
+      .addCase(addCollaborator.fulfilled, (state, action) => {
+        state.collaboratorUpdateLoading = false;
+        state.existingCollaborator = action.payload;
+        const newArray: UpdateCollaboratorType[] = [
+          ...state.newCollaboratorArray,
+          state.existingCollaborator,
+        ];
+        state.newCollaboratorArray = newArray;
+        state.currentCollaborator = {
+          id: 0,
+          email: "",
+          name: "",
+        } as UpdateCollaboratorType;
+        state.collaboratorUpdateError = "";
+      })
+      .addCase(addCollaborator.rejected, (state, action) => {
+        state.collaboratorUpdateLoading = false;
+        state.collaboratorUpdateError =
           action.error.message ?? "Some problem occured";
         state.existingCollaborator = { id: 0, email: "", name: "" };
       })

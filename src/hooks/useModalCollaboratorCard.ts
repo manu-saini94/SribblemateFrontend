@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { validateEmail } from "utility/validationutils/authValidationUtils";
-import { checkCollaboratorExist } from "../redux/asyncThunks";
+import { addCollaborator, checkCollaboratorExist } from "../redux/asyncThunks";
 import {
   setCollaboratorError,
   setCurrentCollaborator,
@@ -18,7 +18,7 @@ const useModalCollaboratorCard = () => {
   >(updateNoteContext.noteData.collaboratorList);
 
   const collaboratorExistError = useSelector(
-    (state: RootState) => state.users.collaboratorExistError
+    (state: RootState) => state.users.collaboratorUpdateError
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -34,24 +34,19 @@ const useModalCollaboratorCard = () => {
 
   const handleCollaboratorSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatchUpdateCollaborator();
+    dispatchAddCollaborator();
   };
 
-  const dispatchUpdateCollaborator = () => {
-    //   if (newCollaboratorArray.length > 0) {
-    //     dispatch(addCollaborators(newCollaboratorArray));
-    //     changeActiveCard(NoteCardType.NOTE);
-    //   }
+  const dispatchAddCollaborator = () => {
+    const id = updateNoteContext?.noteData?.id;
+    dispatch(addCollaborator({ collaborator: currentCollaborator, id: id }));
   };
 
   const handleCancelClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    //   dispatch(setNewCollaboratorArray([]));
-    //   dispatch(setCurrentCollaborator({} as CreateCollaboratorType));
-    //   dispatch(setCollaboratorError(""));
-    //   changeActiveCard(NoteCardType.NOTE);
+    //  dispatch(deleteCollaborator({noteId:id,collaboratorId:}))
   };
 
   const handleCloseClick = () => {
