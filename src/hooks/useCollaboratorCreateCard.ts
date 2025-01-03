@@ -19,7 +19,7 @@ const useCollaboratorCreateCard = ({
     (state: RootState) => state.auth.loggedInUserData
   );
   const collaboratorExistError = useSelector(
-    (state: RootState) => state.users.collaboratorExistError
+    (state: RootState) => state.users.collaboratorUpdateError
   );
 
   const dispatch = useDispatch<AppDispatch>();

@@ -8,7 +8,10 @@ import { useCreateNote } from "../contexts/hooks/useCreateNote";
 import { createNote } from "../redux/asyncThunks";
 import { resetLabelArray } from "../redux/labels/labelSlice";
 import { insertNewNote } from "../redux/notes/noteSlice";
-import { resetCollaboratorArray } from "../redux/users/usersSlice";
+import {
+  resetCollaboratorArray,
+  setCollaboratorError,
+} from "../redux/users/usersSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
 import useColor from "./useColor";
 
@@ -107,13 +110,6 @@ const useTakeNoteDetails = ({
     changeActiveCard(NoteCardType.COLLABORATOR);
   };
 
-  // useEffect(() => {
-  //   setNoteData((prevValues) => ({
-  //     ...prevValues,
-  //     color: colorContext.color,
-  //   }));
-  // }, [colorContext.color]);
-
   useEffect(() => {
     const handleClickOutsideNote = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -129,6 +125,7 @@ const useTakeNoteDetails = ({
           collaboratorList: collaboratorArray,
         };
         dispatchCreatedNote(updatedNote);
+        dispatch(setCollaboratorError(""));
         toggleTakeNoteActive();
       } else if (!isClickInsidePalette) {
         if (palette?.classList.contains("show")) {
