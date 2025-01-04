@@ -10,6 +10,7 @@ import {
 import {
   checkAuthorizedUser,
   loginUser,
+  logoutUser,
   refreshAccessToken,
   registerUser,
 } from "../asyncThunks";
@@ -94,6 +95,20 @@ const authSlice = createSlice({
       state.refreshTokenError = "";
     });
     builder.addCase(checkAuthorizedUser.rejected, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = {} as AuthResponse;
+      state.refreshTokenError = action.error.message ?? "Failed to Register";
+    });
+
+    builder.addCase(logoutUser.pending, (state) => {
+      state.refreshTokenLoading = true;
+    });
+    builder.addCase(logoutUser.fulfilled, (state, action) => {
+      state.refreshTokenLoading = false;
+      state.loggedInUserData = action.payload;
+      state.refreshTokenError = "";
+    });
+    builder.addCase(logoutUser.rejected, (state, action) => {
       state.refreshTokenLoading = false;
       state.loggedInUserData = {} as AuthResponse;
       state.refreshTokenError = action.error.message ?? "Failed to Register";

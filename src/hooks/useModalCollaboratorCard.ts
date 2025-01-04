@@ -64,6 +64,7 @@ const useModalCollaboratorCard = () => {
 
   const handleCloseClick = () => {
     setCurrentCollaborator({ id: 0, email: "", name: "" });
+    dispatch(setCollaboratorUpdateError(""));
   };
 
   const checkExistence = (collabArray: UpdateCollaboratorType[]) => {
