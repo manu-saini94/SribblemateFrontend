@@ -12,6 +12,7 @@ export const CHECK_USER_AUTH_URL = AUTH_URL + "/validate";
 export const REGISTER_USER_URL = AUTH_URL + "/signup";
 export const LOGIN_USER_URL = AUTH_URL + "/login";
 export const REFRESH_TOKEN_URL = AUTH_URL + "/refresh-token";
+export const LOGOUT_USER_URL = AUTH_URL + "/logout";
 
 export const NOTE_FETCH_URL = NOTE_URL + "/all";
 export const CREATE_NOTE_URL = NOTE_URL + "/create";

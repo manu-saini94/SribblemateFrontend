@@ -13,7 +13,11 @@ import {
   UpdateColorType,
   UpdateNoteType,
 } from "notetypes";
-import { loginAuthUser, registerAuthUser } from "../api/requests/AuthRequests";
+import {
+  loginAuthUser,
+  logoutAuthUser,
+  registerAuthUser,
+} from "../api/requests/AuthRequests";
 import {
   addCollaboratorForNote,
   checkUserAuthorization,
@@ -75,7 +79,7 @@ export const checkAuthorizedUser = createAsyncThunk(
 
 export const refreshAccessToken = createAsyncThunk(
   "auth/refreshAccessToken",
-  async () => {
+  () => {
     return refreshTokenForUser()
       .then((response) => response.data.object)
       .catch((error) => {
@@ -83,6 +87,14 @@ export const refreshAccessToken = createAsyncThunk(
       });
   }
 );
+
+export const logoutUser = createAsyncThunk("auth/refreshAccessToken", () => {
+  return logoutAuthUser()
+    .then((response) => response.data.object)
+    .catch((error) => {
+      throw error.response.data.object;
+    });
+});
 
 export const fetchAllLabelNotes = createAsyncThunk(
   "notes/fetchAllLabelNotes",

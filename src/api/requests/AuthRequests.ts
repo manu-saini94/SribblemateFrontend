@@ -1,6 +1,7 @@
 import {
   BASE_URL_V1,
   LOGIN_USER_URL,
+  LOGOUT_USER_URL,
   REGISTER_USER_URL,
 } from "api/serviceUtils";
 import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
@@ -16,6 +17,12 @@ export const registerAuthUser = (
 
 export const loginAuthUser = async (loginDetails: LoginCredentialsType) => {
   return axios.post(BASE_URL_V1 + LOGIN_USER_URL, loginDetails, {
+    withCredentials: true,
+  });
+};
+
+export const logoutAuthUser = async () => {
+  return axios.post(BASE_URL_V1 + LOGOUT_USER_URL, {
     withCredentials: true,
   });
 };
