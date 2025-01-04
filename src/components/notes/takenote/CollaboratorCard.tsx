@@ -1,8 +1,8 @@
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import { Divider, IconButton, Tooltip } from "@mui/material";
-
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import useCollaboratorCreateCard from "hooks/useCollaboratorCreateCard";
 import { CollaboratorCardPropsType, CreateCollaboratorType } from "notetypes";
 import React from "react";
@@ -15,6 +15,7 @@ const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
     handleCollaboratorSubmit,
     collaboratorArray,
     handleDoneClick,
+    handleBackClick,
     currentCollaborator,
     collaboratorExistError,
     handleCollaboratorChange,
@@ -33,6 +34,11 @@ const CollaboratorCard = ({ changeActiveCard }: CollaboratorCardPropsType) => {
         }}
       >
         <div className="card-header " style={{ fontWeight: "2px" }}>
+          <Tooltip title={"Back To Note"}>
+            <IconButton onClick={handleBackClick}>
+              <ArrowBackRoundedIcon />
+            </IconButton>
+          </Tooltip>
           Collaborators
         </div>
         <div className="card-body pb-2">

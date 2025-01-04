@@ -6,7 +6,9 @@ import {
 } from "notetypes";
 import { initialNoteValue } from "utility/reduxutils/noteUtils";
 import {
+  addCollaborator,
   createNote,
+  deleteCollaborator,
   fetchAllLabelNotes,
   fetchNotes,
   fetchNotesByLabel,
@@ -96,7 +98,6 @@ const noteSlice = createSlice({
   initialState,
   reducers: {
     insertNewNote(state) {
-      // state.notes.unshift(state.createdNoteObject);
       const note = state.createdNoteObject;
       state.notesById[note.id] = note;
       state.allIds.unshift(note.id);
@@ -123,6 +124,9 @@ const noteSlice = createSlice({
         ...note,
       };
       state.updatedNote = initialNoteValue;
+    },
+    setCollaboratorUpdateError(state, action: PayloadAction<string>) {
+      state.noteUpdateError = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -325,12 +329,48 @@ const noteSlice = createSlice({
         state.noteUpdateLoading = false;
         state.noteUpdateError = action.error.message ?? "Failed to update Note";
         state.updatedNote = {} as UpdateNoteType;
+      })
+
+      .addCase(addCollaborator.pending, (state) => {
+        state.noteUpdateLoading = true;
+        state.noteUpdateError = "";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+      .addCase(addCollaborator.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.noteUpdateError = "";
+      })
+      .addCase(addCollaborator.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Some problem occured";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+
+      .addCase(deleteCollaborator.pending, (state) => {
+        state.noteUpdateLoading = true;
+        state.noteUpdateError = "";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+      .addCase(deleteCollaborator.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.noteUpdateError = "";
+      })
+      .addCase(deleteCollaborator.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Some problem occured";
+        state.updatedNote = {} as UpdateNoteType;
       });
   },
 });
 
-export const { insertNewNote, updateUserNote, extractFromNotesByLabelId } =
-  noteSlice.actions;
+export const {
+  insertNewNote,
+  updateUserNote,
+  extractFromNotesByLabelId,
+  setCollaboratorUpdateError,
+} = noteSlice.actions;
 export default noteSlice.reducer;
 
 // transformById(state) {

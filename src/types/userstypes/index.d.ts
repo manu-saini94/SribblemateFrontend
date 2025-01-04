@@ -26,8 +26,8 @@ interface UserDto {
 }
 
 export type UsersInitialStateType = {
-  collaboratorUpdateLoading: Boolean;
-  collaboratorUpdateError: string;
+  collaboratorCreateLoading: Boolean;
+  collaboratorCreateError: string;
   usersFetchLoading: Boolean;
   usersFetchError: string;
 };

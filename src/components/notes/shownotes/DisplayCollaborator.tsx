@@ -23,10 +23,11 @@ const DisplayCollaborator = (props: DisplayCollaboratorTypes) => {
           }
           key={collaborator.email}
         >
-          <IconButton onClick={onCollabClick}>
+          <IconButton onClick={onCollabClick} disableRipple>
             <AccountCircleRoundedIcon
               className="col-2"
               style={{ color: "gray" }}
+              fontSize="medium"
             />
           </IconButton>
         </Tooltip>

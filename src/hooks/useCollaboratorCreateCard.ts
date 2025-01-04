@@ -1,5 +1,5 @@
 import { CollaboratorCardPropsType, UpdateCollaboratorType } from "notetypes";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
@@ -18,8 +18,11 @@ const useCollaboratorCreateCard = ({
   const loggedInUserData = useSelector(
     (state: RootState) => state.auth.loggedInUserData
   );
+
+  const collaboratorRef = useRef<HTMLDivElement>(null);
+
   const collaboratorExistError = useSelector(
-    (state: RootState) => state.users.collaboratorUpdateError
+    (state: RootState) => state.users.collaboratorCreateError
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -60,6 +63,10 @@ const useCollaboratorCreateCard = ({
     return error;
   };
 
+  const handleBackClick = () => {
+    changeActiveCard(NoteCardType.NOTE);
+  };
+
   const handleCollaboratorSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatchCreateCollaborator();
@@ -84,6 +91,7 @@ const useCollaboratorCreateCard = ({
 
   const handleCloseClick = () => {
     dispatch(setCurrentCollaborator({ id: 0, email: "", name: "" }));
+    dispatch(setCollaboratorError(""));
   };
 
   const handleDoneClick = async () => {
@@ -122,6 +130,8 @@ const useCollaboratorCreateCard = ({
 
   return {
     owner,
+    collaboratorRef,
+    handleBackClick,
     collaboratorExistError,
     handleCollaboratorSubmit,
     loggedInUserData,
