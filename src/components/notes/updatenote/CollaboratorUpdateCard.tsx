@@ -1,3 +1,4 @@
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
@@ -12,10 +13,9 @@ const CollaboratorUpdateCard = () => {
     collaboratorArray,
     handleCollaboratorChange,
     handleCollaboratorSubmit,
-    collaboratorExistError,
+    collaboratorUpdateError,
     currentCollaborator,
-    handleDoneClick,
-    handleCancelClick,
+    handleBackClick,
     handleCloseClick,
   } = useModalCollaboratorCard();
 
@@ -28,8 +28,17 @@ const CollaboratorUpdateCard = () => {
           width: "35rem",
         }}
       >
-        <div className="card-header " style={{ fontWeight: "2px" }}>
-          Collaborators
+        <div className="card-header d-flex" style={{ fontWeight: "2px" }}>
+          <div style={{ marginLeft: "-8px" }}>
+            <Tooltip title={"Back To Note"}>
+              <IconButton onClick={handleBackClick}>
+                <ArrowBackRoundedIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <span style={{ marginTop: "8px", marginLeft: "2px" }}>
+            Collaborators
+          </span>
         </div>
         <div className="card-body pb-2">
           {collaboratorArray.length > 0 &&
@@ -63,7 +72,7 @@ const CollaboratorUpdateCard = () => {
             {currentCollaborator?.email?.length > 0 && (
               <div className="d-flex mt-1">
                 <Tooltip title={"Done"}>
-                  <IconButton onClick={handleDoneClick}>
+                  <IconButton type="submit">
                     <CheckOutlinedIcon
                       className="col-2 fs-5"
                       style={{ color: "green" }}
@@ -90,23 +99,17 @@ const CollaboratorUpdateCard = () => {
             sx={{ opacity: 1, borderColor: "lightgray" }}
           />
           <div
-            style={{ marginLeft: "43px", marginTop: "-1px", fontSize: "13px" }}
+            style={{
+              marginLeft: "43px",
+              marginTop: "-1px",
+              marginBottom: "30px",
+              fontSize: "13px",
+            }}
             className="text-danger"
           >
             {" "}
-            {collaboratorExistError}
+            {collaboratorUpdateError}
           </div>
-        </div>
-        <div className="d-flex justify-content-end mx-2 my-2">
-          <button
-            onClick={(event) => handleCancelClick(event)}
-            className="btn btn-sm fw-medium card-button mx-2"
-          >
-            Cancel
-          </button>
-          <button type="submit" className="btn btn-sm fw-medium card-button">
-            Save
-          </button>
         </div>
       </div>
     </form>

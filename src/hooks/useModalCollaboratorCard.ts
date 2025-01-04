@@ -1,14 +1,15 @@
 import { useUpdateNote } from "contexts/hooks/useUpdateNote";
 import { UpdateCollaboratorType } from "notetypes";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
+import { NoteCardType } from "utility/miscsUtils";
 import { validateEmail } from "utility/validationutils/authValidationUtils";
-import { addCollaborator, checkCollaboratorExist } from "../redux/asyncThunks";
+import { addCollaborator } from "../redux/asyncThunks";
 import {
-  setCollaboratorError,
-  setCurrentCollaborator,
-} from "../redux/users/usersSlice";
+  setCollaboratorUpdateError,
+  updateUserNote,
+} from "../redux/notes/noteSlice";
 
 const useModalCollaboratorCard = () => {
   const updateNoteContext = useUpdateNote();
@@ -17,29 +18,41 @@ const useModalCollaboratorCard = () => {
     UpdateCollaboratorType[]
   >(updateNoteContext.noteData.collaboratorList);
 
-  const collaboratorExistError = useSelector(
-    (state: RootState) => state.users.collaboratorUpdateError
+  const collaboratorUpdateError = useSelector(
+    (state: RootState) => state.allNotes.noteUpdateError
   );
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const currentCollaborator = useSelector(
-    (state: RootState) => state.users.currentCollaborator
-  );
+  const [currentCollaborator, setCurrentCollaborator] =
+    useState<UpdateCollaboratorType>({} as UpdateCollaboratorType);
 
   const validateForm = (): string => {
     const error = validateEmail(currentCollaborator.email);
     return error;
   };
 
+  const handleBackClick = () => {
+    updateNoteContext.changeActiveCard(NoteCardType.NOTE);
+  };
+
   const handleCollaboratorSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatchAddCollaborator();
+    const error = validateForm();
+    if (error) {
+      dispatch(setCollaboratorUpdateError(error));
+    } else if (checkAlreadyExist()) {
+      dispatch(setCollaboratorUpdateError("This email already exists"));
+    } else dispatchAddCollaborator();
   };
 
   const dispatchAddCollaborator = () => {
     const id = updateNoteContext?.noteData?.id;
-    dispatch(addCollaborator({ collaborator: currentCollaborator, id: id }));
+    dispatch(
+      addCollaborator({ collaborator: currentCollaborator, id: id })
+    ).then(() => {
+      dispatch(updateUserNote());
+    });
   };
 
   const handleCancelClick = (
@@ -50,16 +63,7 @@ const useModalCollaboratorCard = () => {
   };
 
   const handleCloseClick = () => {
-    dispatch(setCurrentCollaborator({ id: 0, email: "", name: "" }));
-  };
-
-  const handleDoneClick = async () => {
-    const error = validateForm();
-    if (error) {
-      dispatch(setCollaboratorError(error));
-    } else if (checkAlreadyExist()) {
-      dispatch(setCollaboratorError("This email already exists"));
-    } else dispatch(checkCollaboratorExist(currentCollaborator));
+    setCurrentCollaborator({ id: 0, email: "", name: "" });
   };
 
   const checkExistence = (collabArray: UpdateCollaboratorType[]) => {
@@ -79,19 +83,35 @@ const useModalCollaboratorCard = () => {
       email: value,
       name: "",
     };
-    dispatch(setCurrentCollaborator(collaborator));
+    setCurrentCollaborator(collaborator);
     if (value.trim() !== "") {
-      dispatch(setCollaboratorError(""));
+      dispatch(setCollaboratorUpdateError(""));
     }
   };
 
+  useEffect(() => {
+    return () => {
+      const collaborator: UpdateCollaboratorType = {
+        id: 0,
+        email: "",
+        name: "",
+      };
+      setCurrentCollaborator(collaborator);
+      dispatch(setCollaboratorUpdateError(""));
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    setCollaboratorArray(updateNoteContext.noteData.collaboratorList);
+  }, [updateNoteContext.noteData.collaboratorList]);
+
   return {
     collaboratorArray,
+    handleBackClick,
     handleCollaboratorSubmit,
-    collaboratorExistError,
+    collaboratorUpdateError,
     dispatch,
     currentCollaborator,
-    handleDoneClick,
     handleCancelClick,
     handleCloseClick,
     handleCollaboratorChange,
