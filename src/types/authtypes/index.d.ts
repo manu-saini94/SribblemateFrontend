@@ -51,6 +51,13 @@ export type RefreshTokenInitialStateType = {
   refreshTokenError: string | null;
 };
 
+export type LogoutInitialStateType = {
+  logoutLoading: Boolean;
+  logoutError: string | null;
+  logoutSuccess: Boolean;
+};
+
 export type AuthStoreInitialStateType = LoginInitialStateType &
   RegisterInitialStateType &
-  RefreshTokenInitialStateType;
+  RefreshTokenInitialStateType &
+  LogoutInitialStateType;

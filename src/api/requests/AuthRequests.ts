@@ -22,7 +22,7 @@ export const loginAuthUser = async (loginDetails: LoginCredentialsType) => {
 };
 
 export const logoutAuthUser = async () => {
-  return axios.post(BASE_URL_V1 + LOGOUT_USER_URL, {
+  return axios.delete(BASE_URL_V1 + LOGOUT_USER_URL, {
     withCredentials: true,
   });
 };

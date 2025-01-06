@@ -58,6 +58,25 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const refreshAccessToken = createAsyncThunk(
+  "auth/refreshAccessToken",
+  () => {
+    return refreshTokenForUser()
+      .then((response) => response.data.object)
+      .catch((error) => {
+        throw error.response.data.object;
+      });
+  }
+);
+
+export const logoutUser = createAsyncThunk("auth/logoutUser", () => {
+  return logoutAuthUser()
+    .then((response) => response.data.object)
+    .catch((error) => {
+      throw error.response.data.object;
+    });
+});
+
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", () => {
   return getAllNotesByUser()
     .then((response) => response.data.object)
@@ -76,25 +95,6 @@ export const checkAuthorizedUser = createAsyncThunk(
       });
   }
 );
-
-export const refreshAccessToken = createAsyncThunk(
-  "auth/refreshAccessToken",
-  () => {
-    return refreshTokenForUser()
-      .then((response) => response.data.object)
-      .catch((error) => {
-        throw error.response.data.object;
-      });
-  }
-);
-
-export const logoutUser = createAsyncThunk("auth/refreshAccessToken", () => {
-  return logoutAuthUser()
-    .then((response) => response.data.object)
-    .catch((error) => {
-      throw error.response.data.object;
-    });
-});
 
 export const fetchAllLabelNotes = createAsyncThunk(
   "notes/fetchAllLabelNotes",

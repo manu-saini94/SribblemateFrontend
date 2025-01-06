@@ -4,6 +4,7 @@ import {
   AuthResponse,
   AuthStoreInitialStateType,
   LoginInitialStateType,
+  LogoutInitialStateType,
   RefreshTokenInitialStateType,
   RegisterInitialStateType,
 } from "authtypes";
@@ -32,10 +33,17 @@ const refreshTokenInitialState: RefreshTokenInitialStateType = {
   refreshTokenLoading: false,
 };
 
+const logoutInitialState: LogoutInitialStateType = {
+  logoutLoading: false,
+  logoutError: null,
+  logoutSuccess: false,
+};
+
 const initialState: AuthStoreInitialStateType = {
   ...loginInitialState,
   ...registerInitialState,
   ...refreshTokenInitialState,
+  ...logoutInitialState,
 };
 
 const authSlice = createSlice({
@@ -43,76 +51,77 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loginUser.pending, (state) => {
-      state.loginLoading = true;
-    });
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.loginLoading = false;
-      state.loggedInUserData = action.payload;
-      localStorage.setItem("token", action.payload.token);
-      state.loginError = "";
-    });
-    builder.addCase(loginUser.rejected, (state, action) => {
-      state.loginLoading = false;
-      state.loggedInUserData = {} as AuthResponse;
-      state.loginError = action.error.message ?? "Failed to Authorize";
-    });
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loginLoading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loginLoading = false;
+        state.loggedInUserData = action.payload;
+        localStorage.setItem("token", action.payload.token);
+        state.loginError = "";
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loginLoading = false;
+        state.loggedInUserData = {} as AuthResponse;
+        state.loginError = action.error.message ?? "Failed to Authorize";
+      })
 
-    builder.addCase(registerUser.pending, (state) => {
-      state.registerLoading = true;
-    });
-    builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.registerLoading = false;
-      state.registerSuccess = action.payload;
-      state.registerError = "";
-    });
-    builder.addCase(registerUser.rejected, (state, action) => {
-      state.registerLoading = false;
-      state.registerSuccess = false;
-      state.registerError = action.error.message ?? "Failed to Register";
-    });
+      .addCase(registerUser.pending, (state) => {
+        state.registerLoading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.registerLoading = false;
+        state.registerSuccess = action.payload;
+        state.registerError = "";
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.registerLoading = false;
+        state.registerSuccess = false;
+        state.registerError = action.error.message ?? "Failed to Register";
+      })
 
-    builder.addCase(refreshAccessToken.pending, (state) => {
-      state.refreshTokenLoading = true;
-    });
-    builder.addCase(refreshAccessToken.fulfilled, (state, action) => {
-      state.refreshTokenLoading = false;
-      state.loggedInUserData = action.payload;
-      state.refreshTokenError = "";
-    });
-    builder.addCase(refreshAccessToken.rejected, (state, action) => {
-      state.refreshTokenLoading = false;
-      state.loggedInUserData = {} as AuthResponse;
-      state.refreshTokenError = action.error.message ?? "Failed to Register";
-    });
+      .addCase(refreshAccessToken.pending, (state) => {
+        state.refreshTokenLoading = true;
+      })
+      .addCase(refreshAccessToken.fulfilled, (state, action) => {
+        state.refreshTokenLoading = false;
+        state.loggedInUserData = action.payload;
+        state.refreshTokenError = "";
+      })
+      .addCase(refreshAccessToken.rejected, (state, action) => {
+        state.refreshTokenLoading = false;
+        state.loggedInUserData = {} as AuthResponse;
+        state.refreshTokenError = action.error.message ?? "Failed to Refresh";
+      })
 
-    builder.addCase(checkAuthorizedUser.pending, (state) => {
-      state.refreshTokenLoading = true;
-    });
-    builder.addCase(checkAuthorizedUser.fulfilled, (state, action) => {
-      state.refreshTokenLoading = false;
-      state.loggedInUserData = action.payload;
-      state.refreshTokenError = "";
-    });
-    builder.addCase(checkAuthorizedUser.rejected, (state, action) => {
-      state.refreshTokenLoading = false;
-      state.loggedInUserData = {} as AuthResponse;
-      state.refreshTokenError = action.error.message ?? "Failed to Register";
-    });
+      .addCase(logoutUser.pending, (state) => {
+        state.logoutLoading = true;
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.logoutLoading = false;
+        state.logoutSuccess = action.payload;
+        state.logoutError = "";
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.logoutLoading = false;
+        state.logoutSuccess = false;
+        state.logoutError = action.error.message ?? "Failed to Logout";
+      })
 
-    builder.addCase(logoutUser.pending, (state) => {
-      state.refreshTokenLoading = true;
-    });
-    builder.addCase(logoutUser.fulfilled, (state, action) => {
-      state.refreshTokenLoading = false;
-      state.loggedInUserData = action.payload;
-      state.refreshTokenError = "";
-    });
-    builder.addCase(logoutUser.rejected, (state, action) => {
-      state.refreshTokenLoading = false;
-      state.loggedInUserData = {} as AuthResponse;
-      state.refreshTokenError = action.error.message ?? "Failed to Register";
-    });
+      .addCase(checkAuthorizedUser.pending, (state) => {
+        state.refreshTokenLoading = true;
+      })
+      .addCase(checkAuthorizedUser.fulfilled, (state, action) => {
+        state.refreshTokenLoading = false;
+        state.loggedInUserData = action.payload;
+        state.refreshTokenError = "";
+      })
+      .addCase(checkAuthorizedUser.rejected, (state, action) => {
+        state.refreshTokenLoading = false;
+        state.loggedInUserData = {} as AuthResponse;
+        state.refreshTokenError = action.error.message ?? "Failed to Authorize";
+      });
   },
 });
 
