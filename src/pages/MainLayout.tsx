@@ -34,7 +34,7 @@ const MainLayout = () => {
         </div>
         <div
           style={{
-            width: isSideBarCollapsed ? "100%" : "calc(100% - 310px)", // Adjust width based on sidebar state
+            width: isSideBarCollapsed ? "100%" : "calc(100% - 310px)",
             marginLeft: isSideBarCollapsed ? "40px" : "20px",
             transition: "width 0.3s ease, margin-left 0.3s ease",
             minHeight: "100vh",

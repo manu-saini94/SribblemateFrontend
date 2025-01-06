@@ -3,17 +3,30 @@ import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import { Button, IconButton } from "@mui/material";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "redux/store";
 import { logoutUser } from "../../redux/asyncThunks";
 
 const ViewSettingsAvatar = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const navigateToLogin = () => {
+    navigate("/login");
+  };
 
   const handleLogout = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    dispatch(logoutUser());
+    dispatch(logoutUser())
+      .unwrap()
+      .then(() => {
+        navigateToLogin();
+      })
+      .catch((error) => {
+        console.error("Logout failed: ", error);
+      });
   };
 
   return (
