@@ -7,8 +7,10 @@ import {
 import { initialNoteValue } from "utility/reduxutils/noteUtils";
 import {
   addCollaborator,
+  addLabelToNote,
   createNote,
   deleteCollaborator,
+  deleteLabelFromNote,
   fetchAllLabelNotes,
   fetchNotes,
   fetchNotesByLabel,
@@ -358,6 +360,38 @@ const noteSlice = createSlice({
         state.noteUpdateError = "";
       })
       .addCase(deleteCollaborator.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Some problem occured";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+
+      .addCase(deleteLabelFromNote.pending, (state, action) => {
+        state.noteUpdateLoading = true;
+        state.noteUpdateError = "";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+      .addCase(deleteLabelFromNote.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.noteUpdateError = "";
+      })
+      .addCase(deleteLabelFromNote.rejected, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.noteUpdateError = action.error.message ?? "Some problem occured";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+
+      .addCase(addLabelToNote.pending, (state, action) => {
+        state.noteUpdateLoading = true;
+        state.noteUpdateError = "";
+        state.updatedNote = {} as UpdateNoteType;
+      })
+      .addCase(addLabelToNote.fulfilled, (state, action) => {
+        state.noteUpdateLoading = false;
+        state.updatedNote = action.payload;
+        state.noteUpdateError = "";
+      })
+      .addCase(addLabelToNote.rejected, (state, action) => {
         state.noteUpdateLoading = false;
         state.noteUpdateError = action.error.message ?? "Some problem occured";
         state.updatedNote = {} as UpdateNoteType;

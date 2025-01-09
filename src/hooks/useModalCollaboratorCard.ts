@@ -49,7 +49,7 @@ const useModalCollaboratorCard = () => {
   const dispatchAddCollaborator = () => {
     const id = updateNoteContext?.noteData?.id;
     dispatch(
-      addCollaborator({ collaborator: currentCollaborator, id: id })
+      addCollaborator({ collaboratorEmail: currentCollaborator.email, id: id })
     ).then(() => {
       dispatch(updateUserNote());
     });

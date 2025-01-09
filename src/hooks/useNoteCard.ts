@@ -100,12 +100,12 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const handleNoteCardClick = useCallback(() => {
     setIsUpdateCardActive(true);
     changeActiveCard(NoteCardType.NOTE);
-  }, []);
+  }, [changeActiveCard]);
 
   const handleNoteCardClose = useCallback(() => {
     setIsUpdateCardActive(false);
     changeActiveCard(NoteCardType.NOTE);
-  }, []);
+  }, [changeActiveCard]);
 
   const handleMoreTooltipClose = () => {
     setIsOpenMoreTooltip(false);
@@ -181,6 +181,11 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     colorPaletteRef.current?.classList.toggle("show");
     handleColorTooltipClose();
   };
+
+  const handleAddLabel = useCallback(() => {
+    setIsUpdateCardActive(true);
+    changeActiveCard(NoteCardType.LABEL);
+  }, [changeActiveCard]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -263,6 +268,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     isOpenMoreTooltip,
     checkForChange,
     getEditedDate,
+    handleAddLabel,
   };
 };
 

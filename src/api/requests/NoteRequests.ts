@@ -7,6 +7,8 @@ import {
   NOTE_COLLABORATOR_DELETE_URL,
   NOTE_FETCH_BY_REMINDER_URL,
   NOTE_FETCH_URL,
+  NOTE_LABEL_ADD_URL,
+  NOTE_LABEL_DELETE_URL,
   NOTE_UPDATE_ARCHIVE_URL,
   NOTE_UPDATE_COLOR_URL,
   NOTE_UPDATE_PIN_URL,
@@ -15,12 +17,7 @@ import {
   REFRESH_TOKEN_URL,
 } from "api/serviceUtils";
 import axios from "axios";
-import {
-  CreateCollaboratorType,
-  CreateNoteType,
-  UpdateColorType,
-  UpdateNoteType,
-} from "notetypes";
+import { CreateNoteType, UpdateColorType, UpdateNoteType } from "notetypes";
 
 export const getAllNotesByUser = () => {
   return axios.get(BASE_URL_V1 + NOTE_FETCH_URL, { withCredentials: true });
@@ -64,25 +61,35 @@ export const checkUserAuthorization = () => {
 };
 
 export const addCollaboratorForNote = (
-  collaboratorObject: CreateCollaboratorType,
+  collaboratorEmail: string,
   id: number
 ) => {
-  return axios.post(
-    BASE_URL_V1 + NOTE_COLLABORATOR_ADD_URL,
-    collaboratorObject,
-    {
-      params: { id },
-      withCredentials: true,
-    }
-  );
+  return axios.post(BASE_URL_V1 + NOTE_COLLABORATOR_ADD_URL, null, {
+    params: { id, collaboratorEmail },
+    withCredentials: true,
+  });
 };
 
 export const deleteCollaboratorForNote = (
   noteId: number,
-  collaboratorId: number
+  collaboratorEmail: string
 ) => {
   return axios.delete(BASE_URL_V1 + NOTE_COLLABORATOR_DELETE_URL, {
-    params: { noteId, collaboratorId },
+    params: { noteId, collaboratorEmail },
+    withCredentials: true,
+  });
+};
+
+export const addLabelInsideNote = (noteId: number, labelId: number) => {
+  return axios.post(BASE_URL_V1 + NOTE_LABEL_ADD_URL, null, {
+    params: { noteId, labelId },
+    withCredentials: true,
+  });
+};
+
+export const deleteLabelInsideNote = (noteId: number, labelId: number) => {
+  return axios.delete(BASE_URL_V1 + NOTE_LABEL_DELETE_URL, {
+    params: { noteId, labelId },
     withCredentials: true,
   });
 };
