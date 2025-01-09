@@ -25,7 +25,7 @@ export type LabelInitialStateType = {
 // Redux store types for Labels
 export type LabelStoreInitialStateType = LabelInitialStateType & {
   labels: UpdateLabelType[];
-  labelArray: CreateLabelType[];
+  labelArray: UpdateLabelType[];
   newLabelArray: CreateLabelType[];
   createdLabelObject: UpdateLabelType;
   updateLabelObject: UpdateLabelType;

@@ -44,6 +44,7 @@ const UpdateNoteProvider = ({
     isOpenMoreTooltip,
     checkForChange,
     getEditedDate,
+    handleAddLabel,
   } = useNoteCard({ noteCardValues });
 
   const noteContextValue = useMemo(
@@ -84,6 +85,7 @@ const UpdateNoteProvider = ({
       isOpenMoreTooltip,
       checkForChange,
       getEditedDate,
+      handleAddLabel,
     }),
     [
       activeCard,
@@ -122,6 +124,7 @@ const UpdateNoteProvider = ({
       isOpenMoreTooltip,
       checkForChange,
       getEditedDate,
+      handleAddLabel,
     ]
   );
 

@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  CreateLabelType,
-  LabelStoreInitialStateType,
-  UpdateLabelType,
-} from "labeltypes";
+import { LabelStoreInitialStateType, UpdateLabelType } from "labeltypes";
 import { initialLabelValue } from "utility/reduxutils/labelUtils";
 import {
   createLabel,
@@ -21,8 +17,8 @@ const initialLoadingStates = {
 const initialDataStates = {
   createdLabelObject: initialLabelValue,
   updateLabelObject: initialLabelValue,
-  labelArray: [] as CreateLabelType[],
-  newLabelArray: [] as CreateLabelType[],
+  labelArray: [] as UpdateLabelType[],
+  newLabelArray: [] as UpdateLabelType[],
   labels: [],
   isDeleted: false,
 };
@@ -62,6 +58,9 @@ const labelSlice = createSlice({
     },
     resetLabelArray(state) {
       state.labelArray = [];
+    },
+    setUpdateLabelArray(state, action) {
+      state.labelArray = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -131,5 +130,6 @@ export const {
   insertNewLabelInNote,
   deleteLabelInNote,
   resetLabelArray,
+  setUpdateLabelArray,
 } = labelSlice.actions;
 export default labelSlice.reducer;

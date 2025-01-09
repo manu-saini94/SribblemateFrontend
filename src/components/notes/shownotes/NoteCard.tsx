@@ -229,13 +229,13 @@ function NoteCard() {
                 </IconButton>
               </Tooltip>
               <MenuList className="dropdown-menu">
-                <MenuItem onClick={updateNoteContext?.onDeleteClick}>
+                <MenuItem onClick={updateNoteContext.onDeleteClick}>
                   <ListItemIcon>
                     <DeleteOutlinedIcon className="fs-6" />
                   </ListItemIcon>
                   <ListItemText>Delete</ListItemText>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={updateNoteContext.handleAddLabel}>
                   <ListItemIcon>
                     <AddLabelIcon
                       style={{

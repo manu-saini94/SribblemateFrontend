@@ -48,6 +48,7 @@ const defaultNoteContext: UpdateNoteContextType = {
   checkForChange: () => false,
   getEditedDate: () => {},
   handleNoteCardClose: () => {},
+  handleAddLabel: () => {},
 };
 
 const UpdateNoteContext =

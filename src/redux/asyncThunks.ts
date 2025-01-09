@@ -20,9 +20,11 @@ import {
 } from "../api/requests/AuthRequests";
 import {
   addCollaboratorForNote,
+  addLabelInsideNote,
   checkUserAuthorization,
   createNoteForUser,
   deleteCollaboratorForNote,
+  deleteLabelInsideNote,
   getAllLabelNotesByUser,
   getAllNotesByLabel,
   getAllNotesByUser,
@@ -139,14 +141,8 @@ export const checkCollaboratorExist = createAsyncThunk(
 
 export const addCollaborator = createAsyncThunk(
   "users/addCollaborator",
-  ({
-    collaborator,
-    id,
-  }: {
-    collaborator: CreateCollaboratorType;
-    id: number;
-  }) => {
-    return addCollaboratorForNote(collaborator, id)
+  ({ collaboratorEmail, id }: { collaboratorEmail: string; id: number }) => {
+    return addCollaboratorForNote(collaboratorEmail, id)
       .then((response) => response.data.object)
       .catch((error) => {
         throw error.response.data.object;
@@ -156,8 +152,36 @@ export const addCollaborator = createAsyncThunk(
 
 export const deleteCollaborator = createAsyncThunk(
   "users/deleteCollaborator",
-  ({ noteId, collaboratorId }: { noteId: number; collaboratorId: number }) => {
-    return deleteCollaboratorForNote(noteId, collaboratorId)
+  ({
+    noteId,
+    collaboratorEmail,
+  }: {
+    noteId: number;
+    collaboratorEmail: string;
+  }) => {
+    return deleteCollaboratorForNote(noteId, collaboratorEmail)
+      .then((response) => response.data.object)
+      .catch((error) => {
+        throw error.response.data.object;
+      });
+  }
+);
+
+export const addLabelToNote = createAsyncThunk(
+  "notes/addLabel",
+  ({ noteId, labelId }: { noteId: number; labelId: number }) => {
+    return addLabelInsideNote(noteId, labelId)
+      .then((response) => response.data.object)
+      .catch((error) => {
+        throw error.response.data.object;
+      });
+  }
+);
+
+export const deleteLabelFromNote = createAsyncThunk(
+  "notes/deleteLabel",
+  ({ noteId, labelId }: { noteId: number; labelId: number }) => {
+    return deleteLabelInsideNote(noteId, labelId)
       .then((response) => response.data.object)
       .catch((error) => {
         throw error.response.data.object;

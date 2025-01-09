@@ -77,6 +77,7 @@ export interface UpdateNoteContextType {
   isOpenMoreTooltip: Boolean;
   checkForChange: () => Boolean;
   getEditedDate: () => any;
+  handleAddLabel: () => void;
 }
 
 export interface NoteContextProps extends ReactNodeHOCProps {}

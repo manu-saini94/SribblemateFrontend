@@ -24,6 +24,8 @@ export const NOTE_UPDATE_TRASH_URL = NOTE_UPDATE_URL + "/trash";
 export const NOTE_UPDATE_COLOR_URL = NOTE_UPDATE_URL + "/color";
 export const NOTE_COLLABORATOR_ADD_URL = NOTE_URL + "/add/collaborator";
 export const NOTE_COLLABORATOR_DELETE_URL = NOTE_URL + "/delete/collaborator";
+export const NOTE_LABEL_ADD_URL = NOTE_URL + "/add/label";
+export const NOTE_LABEL_DELETE_URL = NOTE_URL + "/delete/label";
 
 export const LABEL_FETCH_URL = LABEL_URL + "/get";
 export const CREATE_LABEL_URL = LABEL_URL + "/create";

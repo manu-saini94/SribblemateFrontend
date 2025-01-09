@@ -43,17 +43,12 @@ const LabelsCard = ({ changeActiveCard }: LabelCardPropsType) => {
                   {labelArray.find(
                     (labelItem) => label.labelName === labelItem.labelName
                   ) ? (
-                    <IconButton>
-                      <CheckBoxOutlinedIcon
-                        style={{ color: "green" }}
-                        onClick={() => handleExcludeLabelClick(label)}
-                      />
+                    <IconButton onClick={() => handleExcludeLabelClick(label)}>
+                      <CheckBoxOutlinedIcon style={{ color: "green" }} />
                     </IconButton>
                   ) : (
-                    <IconButton>
-                      <CheckBoxOutlineBlankOutlinedIcon
-                        onClick={() => handleIncludeLabelClick(label)}
-                      />
+                    <IconButton onClick={() => handleIncludeLabelClick(label)}>
+                      <CheckBoxOutlineBlankOutlinedIcon />
                     </IconButton>
                   )}
                   <div style={{ marginTop: "9px", marginLeft: "1px" }}>
