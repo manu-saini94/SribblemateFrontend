@@ -15,16 +15,16 @@ const selectNotesByIdsPinned = (
   notesById: { [id: number]: UpdateNoteType }
 ) =>
   ids
-    .map((id) => notesById[id]?.pinned && notesById[id])
-    .filter((note) => note !== undefined && note !== null);
+    .map((id) => notesById[id])
+    .filter((note) => note && note.pinned) as UpdateNoteType[];
 
 const selectNotesByIdsArchived = (
   ids: number[],
   notesById: { [id: number]: UpdateNoteType }
 ) =>
   ids
-    .map((id) => notesById[id]?.archived && notesById[id])
-    .filter((note) => note !== undefined && note !== null);
+    .map((id) => notesById[id])
+    .filter((note) => note && note.archived) as UpdateNoteType[];
 
 const selectNotesByIdsOthers = (
   ids: number[],
@@ -81,11 +81,12 @@ export const selectReminderNotes = createSelector(
 export const selectLabelledNotes = createSelector(
   (state: RootState) => state.allNotes.hasLabelIds,
   (state: RootState) => state.allNotes.notesById,
-  (hasLabelIds, notesById) => selectNotesByIds(hasLabelIds, notesById)
+  (hasLabelIds, notesById) =>
+    selectNotesByIdsCategorized(hasLabelIds, notesById)
 );
 
 export const selectNotes = createSelector(
-  (state: RootState) => state.allNotes.hasLabelIds,
+  (state: RootState) => state.allNotes.allIds,
   (state: RootState) => state.allNotes.notesById,
-  (hasLabelIds, notesById) => selectNotesByIds(hasLabelIds, notesById)
+  (allIds, notesById) => selectNotesByIds(allIds, notesById)
 );
