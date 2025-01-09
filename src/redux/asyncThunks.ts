@@ -141,8 +141,14 @@ export const checkCollaboratorExist = createAsyncThunk(
 
 export const addCollaborator = createAsyncThunk(
   "users/addCollaborator",
-  ({ collaboratorEmail, id }: { collaboratorEmail: string; id: number }) => {
-    return addCollaboratorForNote(collaboratorEmail, id)
+  ({
+    collaboratorEmail,
+    noteId,
+  }: {
+    collaboratorEmail: string;
+    noteId: number;
+  }) => {
+    return addCollaboratorForNote(collaboratorEmail, noteId)
       .then((response) => response.data.object)
       .catch((error) => {
         throw error.response.data.object;

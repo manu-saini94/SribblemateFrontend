@@ -1,6 +1,6 @@
 import { useUpdateNote } from "contexts/hooks/useUpdateNote";
 import { UpdateCollaboratorType } from "notetypes";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
@@ -47,9 +47,12 @@ const useModalCollaboratorCard = () => {
   };
 
   const dispatchAddCollaborator = () => {
-    const id = updateNoteContext?.noteData?.id;
+    const noteId = updateNoteContext?.noteData?.id;
     dispatch(
-      addCollaborator({ collaboratorEmail: currentCollaborator.email, id: id })
+      addCollaborator({
+        collaboratorEmail: currentCollaborator.email,
+        noteId: noteId,
+      })
     ).then(() => {
       dispatch(updateUserNote());
     });
@@ -68,8 +71,11 @@ const useModalCollaboratorCard = () => {
   };
 
   const checkExistence = (collabArray: UpdateCollaboratorType[]) => {
-    return collabArray.some(
-      (collaborator) => collaborator.email === currentCollaborator.email
+    return (
+      collabArray.some(
+        (collaborator) => collaborator.email === currentCollaborator.email
+      ) ||
+      currentCollaborator.email === updateNoteContext.noteData.createdBy.email
     );
   };
 
@@ -90,6 +96,19 @@ const useModalCollaboratorCard = () => {
     }
   };
 
+  const moveNoteOwnerToTop = useMemo(() => {
+    const owner = updateNoteContext.noteData.createdBy;
+    const collabList = updateNoteContext.noteData.collaboratorList;
+    const filteredList = collabList.filter(
+      (collab) => collab.email !== owner.email
+    );
+    filteredList.unshift(owner);
+    return filteredList;
+  }, [
+    updateNoteContext.noteData.collaboratorList,
+    updateNoteContext.noteData.createdBy,
+  ]);
+
   useEffect(() => {
     return () => {
       const collaborator: UpdateCollaboratorType = {
@@ -103,8 +122,8 @@ const useModalCollaboratorCard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setCollaboratorArray(updateNoteContext.noteData.collaboratorList);
-  }, [updateNoteContext.noteData.collaboratorList]);
+    setCollaboratorArray(moveNoteOwnerToTop);
+  }, [moveNoteOwnerToTop, updateNoteContext.noteData.collaboratorList]);
 
   return {
     collaboratorArray,

@@ -94,7 +94,7 @@ const useCollaboratorCreateCard = ({
     dispatch(setCollaboratorError(""));
   };
 
-  const handleDoneClick = async () => {
+  const handleDoneClick = () => {
     const error = validateForm();
     if (error) {
       dispatch(setCollaboratorError(error));
@@ -111,7 +111,9 @@ const useCollaboratorCreateCard = ({
 
   const checkAlreadyExist = () => {
     return (
-      checkExistence(collaboratorArray) || checkExistence(newCollaboratorArray)
+      checkExistence(collaboratorArray) ||
+      checkExistence(newCollaboratorArray) ||
+      currentCollaborator.email === loggedInUserData?.userDto?.email
     );
   };
 
