@@ -62,10 +62,10 @@ export const checkUserAuthorization = () => {
 
 export const addCollaboratorForNote = (
   collaboratorEmail: string,
-  id: number
+  noteId: number
 ) => {
   return axios.post(BASE_URL_V1 + NOTE_COLLABORATOR_ADD_URL, null, {
-    params: { id, collaboratorEmail },
+    params: { noteId, collaboratorEmail },
     withCredentials: true,
   });
 };
