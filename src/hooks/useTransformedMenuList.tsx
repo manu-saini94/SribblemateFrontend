@@ -23,16 +23,13 @@ const useTransformedMenuList = (): MenuItemType[] => {
         ),
       };
     });
-
     const updatedMenuList = [...menuList, ...labelMap];
-
     setTransformedMenuList(updatedMenuList);
   }, [userLabels]);
 
   useEffect(() => {
     transformLabels();
   }, [transformLabels]);
-
   return transformedMenuList;
 };
 
