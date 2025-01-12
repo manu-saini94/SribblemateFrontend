@@ -14,6 +14,7 @@ import {
   NOTE_UPDATE_PIN_URL,
   NOTE_UPDATE_TRASH_URL,
   NOTE_UPDATE_URL,
+  NOTE_URL,
   REFRESH_TOKEN_URL,
 } from "api/serviceUtils";
 import axios from "axios";
@@ -24,7 +25,7 @@ export const getAllNotesByUser = () => {
 };
 
 export const getAllLabelNotesByUser = () => {
-  return axios.get(BASE_URL_V1 + NOTE_FETCH_URL + LABEL_URL + "all", {
+  return axios.get(BASE_URL_V1 + NOTE_URL + LABEL_URL + "/all", {
     withCredentials: true,
   });
 };
@@ -36,7 +37,7 @@ export const refreshTokenForUser = () => {
 };
 
 export const getAllNotesByLabel = (labelId: number) => {
-  return axios.get(BASE_URL_V1 + NOTE_FETCH_URL + LABEL_URL, {
+  return axios.get(BASE_URL_V1 + NOTE_URL + LABEL_URL, {
     params: labelId ? { labelId } : {},
     withCredentials: true,
   });

@@ -6,8 +6,8 @@ import { Route, Routes } from "react-router-dom";
 import { RootState } from "redux/store";
 import Archive from "./Archive";
 import EditLabels from "./EditLabels";
-import Label from "./Label";
-import AllLabelledNotes from "./LabelNotes";
+import LabelledNotes from "./LabelledNotes";
+import LabelNotes from "./Labels";
 import Notes from "./Notes";
 import Reminder from "./Reminder";
 import Trash from "./Trash";
@@ -45,9 +45,9 @@ const MainLayout = () => {
             <Route path="/reminder" element={<Reminder />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/trash" element={<Trash />} />
-            <Route path="/labellednotes" element={<AllLabelledNotes />} />
+            <Route path="/labellednotes" element={<LabelledNotes />} />
             <Route path="/editlabels" element={<EditLabels />} />
-            <Route path={`/label/:labelId`} element={<Label />} />
+            <Route path={`/label/:labelId`} element={<LabelNotes />} />
           </Routes>
         </div>
       </div>
