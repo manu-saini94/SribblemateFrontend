@@ -7,7 +7,7 @@ import { RootState } from "redux/store";
 import Archive from "./Archive";
 import EditLabels from "./EditLabels";
 import LabelledNotes from "./LabelledNotes";
-import LabelNotes from "./Labels";
+import LabelNotes from "./LabelNotes";
 import Notes from "./Notes";
 import Reminder from "./Reminder";
 import Trash from "./Trash";

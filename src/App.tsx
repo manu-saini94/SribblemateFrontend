@@ -7,9 +7,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import {
   checkAuthorizedUser,
-  fetchAllLabelNotes,
   fetchLabels,
   fetchNotes,
+  fetchNotesByLabels,
 } from "./redux/asyncThunks";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
     if (Object.keys(loggedInUserData).length !== 0) {
       dispatch(fetchNotes());
       dispatch(fetchLabels());
-      dispatch(fetchAllLabelNotes());
+      dispatch(fetchNotesByLabels());
     } else {
       dispatch(checkAuthorizedUser())
         .unwrap()

@@ -11,9 +11,8 @@ import {
   createNote,
   deleteCollaborator,
   deleteLabelFromNote,
-  fetchAllLabelNotes,
   fetchNotes,
-  fetchNotesByLabel,
+  fetchNotesByLabels,
   updateArchiveForNote,
   updateColorForNote,
   updateNote,
@@ -24,7 +23,6 @@ import {
 const initialLoadingStates = {
   loading: false,
   createdNoteLoading: false,
-  allLabelNotesLoading: false,
   notesByLabelIdLoading: false,
   noteUpdateLoading: false,
 };
@@ -39,16 +37,14 @@ const initialDataStates = {
   trashIds: [],
   hasLabelIds: [],
   hasReminderIds: [],
-  allLabelNotes: [],
   notesByLabelId: {},
-  currentLabelNotes: [],
+  currentLabelIds: [],
   updatedNote: initialNoteValue,
 };
 
 const initialErrorStates = {
   error: "",
   createdNoteError: "",
-  allLabelNotesError: "",
   notesByLabelIdError: "",
   noteUpdateError: "",
 };
@@ -115,7 +111,7 @@ const noteSlice = createSlice({
     extractFromNotesByLabelId(state, action: PayloadAction<number>) {
       state.labelId = action.payload;
       if (state.notesByLabelId[state.labelId]) {
-        state.currentLabelNotes = state.notesByLabelId[state.labelId] || [];
+        state.currentLabelIds = state.notesByLabelId[state.labelId] || [];
       }
     },
 
@@ -181,34 +177,33 @@ const noteSlice = createSlice({
           action.error.message ?? "Failed to create note";
       })
 
-      .addCase(fetchAllLabelNotes.pending, (state) => {
-        state.allLabelNotesLoading = true;
-      })
-      .addCase(fetchAllLabelNotes.fulfilled, (state, action) => {
-        state.allLabelNotesLoading = false;
-        state.allLabelNotes = action.payload;
-        state.allLabelNotesError = "";
-      })
-      .addCase(fetchAllLabelNotes.rejected, (state, action) => {
-        state.allLabelNotesLoading = false;
-        state.allLabelNotes = [] as UpdateNoteType[];
-        state.allLabelNotesError =
-          action.error.message ?? "Failed to fetch notes with labels";
-      })
-
-      .addCase(fetchNotesByLabel.pending, (state) => {
+      .addCase(fetchNotesByLabels.pending, (state) => {
         state.notesByLabelIdLoading = true;
       })
-      .addCase(fetchNotesByLabel.fulfilled, (state, action) => {
+      .addCase(fetchNotesByLabels.fulfilled, (state, action) => {
         state.notesByLabelIdLoading = false;
-        state.notesByLabelId[state.labelId] = action.payload;
+        state.notesByLabelId = action.payload;
         state.notesByLabelIdError = "";
       })
-      .addCase(fetchNotesByLabel.rejected, (state, action) => {
+      .addCase(fetchNotesByLabels.rejected, (state, action) => {
         state.notesByLabelIdLoading = false;
         state.notesByLabelIdError =
-          action.error.message ?? "Failed to fetch notes with labels";
+          action.error.message ?? "Failed to fetch notes with labelIds";
       })
+
+      // .addCase(fetchNotesByLabel.pending, (state) => {
+      //   state.notesByLabelIdLoading = true;
+      // })
+      // .addCase(fetchNotesByLabel.fulfilled, (state, action) => {
+      //   state.notesByLabelIdLoading = false;
+      //   state.notesByLabelId[state.labelId] = action.payload;
+      //   state.notesByLabelIdError = "";
+      // })
+      // .addCase(fetchNotesByLabel.rejected, (state, action) => {
+      //   state.notesByLabelIdLoading = false;
+      //   state.notesByLabelIdError =
+      //     action.error.message ?? "Failed to fetch notes with labels";
+      // })
 
       .addCase(updateNote.pending, (state) => {
         state.noteUpdateLoading = true;

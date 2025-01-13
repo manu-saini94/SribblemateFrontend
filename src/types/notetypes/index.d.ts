@@ -123,8 +123,6 @@ export type NoteInitialStateType = {
   error: string;
   createdNoteLoading: Boolean;
   createdNoteError: string;
-  allLabelNotesLoading: Boolean;
-  allLabelNotesError: string;
   notesByLabelIdLoading: Boolean;
   notesByLabelIdError: string;
   noteUpdateLoading: Boolean;
@@ -143,7 +141,7 @@ interface NormalizedNotes {
 }
 
 export type ByIdTransformType = {
-  [id: number]: UpdateNoteType[];
+  [id: number]: number[];
 };
 
 export type NotesPropsType = {
@@ -161,8 +159,7 @@ export type NoteStoreInitialStateType = NoteInitialStateType & {
   trashIds: number[];
   hasLabelIds: number[];
   hasReminderIds: number[];
-  allLabelNotes: UpdateNoteType[];
   notesByLabelId: ByIdTransformType;
-  currentLabelNotes: UpdateNoteType[];
+  currentLabelIds: number[];
   updatedNote: UpdateNoteType;
 };

@@ -36,7 +36,13 @@ export const refreshTokenForUser = () => {
   });
 };
 
-export const getAllNotesByLabel = (labelId: number) => {
+export const getAllNotesByLabelIds = () => {
+  return axios.get(BASE_URL_V1 + NOTE_URL + LABEL_URL + "/all", {
+    withCredentials: true,
+  });
+};
+
+export const getNotesByLabel = (labelId: number) => {
   return axios.get(BASE_URL_V1 + NOTE_URL + LABEL_URL, {
     params: labelId ? { labelId } : {},
     withCredentials: true,
