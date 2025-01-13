@@ -85,6 +85,13 @@ export const selectLabelledNotes = createSelector(
     selectNotesByIdsCategorized(hasLabelIds, notesById)
 );
 
+export const selectNotesByLabelId = createSelector(
+  (state: RootState) => state.allNotes.currentLabelIds,
+  (state: RootState) => state.allNotes.notesById,
+  (currentLabelIds, notesById) =>
+    selectNotesByIdsCategorized(currentLabelIds, notesById)
+);
+
 export const selectNotes = createSelector(
   (state: RootState) => state.allNotes.allIds,
   (state: RootState) => state.allNotes.notesById,

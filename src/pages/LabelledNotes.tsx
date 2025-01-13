@@ -5,7 +5,7 @@ import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import withNote from "../components/notes/withNote";
 import { selectLabelledNotes } from "../redux/selectors";
 
-const LabelNotes = () => {
+const LabelledNotes = () => {
   const { pinnedNotes, archivedNotes, othersNotes } =
     useSelector(selectLabelledNotes);
 
@@ -48,4 +48,4 @@ const LabelNotes = () => {
   );
 };
 
-export default withNote(LabelNotes);
+export default withNote(LabelledNotes);

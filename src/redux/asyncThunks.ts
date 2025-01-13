@@ -25,10 +25,10 @@ import {
   createNoteForUser,
   deleteCollaboratorForNote,
   deleteLabelInsideNote,
-  getAllLabelNotesByUser,
-  getAllNotesByLabel,
+  getAllNotesByLabelIds,
   getAllNotesByUser,
   getAllReminderNotesByUser,
+  getNotesByLabel,
   refreshTokenForUser,
   updateArchiveForUserNote,
   updateColorForUserNote,
@@ -98,10 +98,10 @@ export const checkAuthorizedUser = createAsyncThunk(
   }
 );
 
-export const fetchAllLabelNotes = createAsyncThunk(
+export const fetchNotesByLabels = createAsyncThunk(
   "notes/fetchAllLabelNotes",
   () => {
-    return getAllLabelNotesByUser()
+    return getAllNotesByLabelIds()
       .then((response) => response.data.object)
       .catch((error) => {
         throw error.response.data.object;
@@ -112,7 +112,7 @@ export const fetchAllLabelNotes = createAsyncThunk(
 export const fetchNotesByLabel = createAsyncThunk(
   "notes/fetchNotesByLabel",
   (labelId: number) => {
-    return getAllNotesByLabel(labelId)
+    return getNotesByLabel(labelId)
       .then((response) => response.data.object)
       .catch((error) => {
         throw error.response.data.object;
