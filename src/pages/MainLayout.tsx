@@ -3,13 +3,13 @@ import SideBar from "components/sidebar/SideBar";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { AppDispatch, RootState } from "redux/store";
 import {
   checkAuthorizedUser,
   fetchLabels,
   fetchNotes,
   fetchNotesByLabels,
 } from "../redux/asyncThunks";
+import { AppDispatch, RootState } from "../redux/store";
 import Archive from "./Archive";
 import EditLabels from "./EditLabels";
 import LabelledNotes from "./LabelledNotes";

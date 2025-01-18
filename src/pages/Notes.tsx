@@ -1,4 +1,5 @@
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
+import { useGetAllNotesQuery } from "api/notesApi";
 import React from "react";
 import { useSelector } from "react-redux";
 import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
@@ -6,6 +7,11 @@ import withNote from "../components/notes/withNote";
 import { selectOthersNotes, selectPinnedNotes } from "../redux/selectors";
 
 const Notes = () => {
+  const { data, error, isLoading, refetch } = useGetAllNotesQuery();
+  // useEffect(() => {
+  //   console.log("Data=> ", data, "Err =>", error, "Loading => ", isLoading);
+  // }, [data, error, isLoading]);
+
   const pinnedNotes = useSelector(selectPinnedNotes);
   const othersNotes = useSelector(selectOthersNotes);
 
