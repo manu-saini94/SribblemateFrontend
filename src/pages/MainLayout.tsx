@@ -1,9 +1,15 @@
 import NavBar from "components/navbar/NavBar";
 import SideBar from "components/sidebar/SideBar";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { RootState } from "redux/store";
+import { AppDispatch, RootState } from "redux/store";
+import {
+  checkAuthorizedUser,
+  fetchLabels,
+  fetchNotes,
+  fetchNotesByLabels,
+} from "../redux/asyncThunks";
 import Archive from "./Archive";
 import EditLabels from "./EditLabels";
 import LabelledNotes from "./LabelledNotes";
@@ -16,6 +22,29 @@ const MainLayout = () => {
   const isSideBarCollapsed = useSelector(
     (state: RootState) => state.menus.isSideBarCollapsed
   );
+
+  const dispatch = useDispatch<AppDispatch>();
+  const loggedInUserData = useSelector(
+    (state: RootState) => state.auth.loggedInUserData
+  );
+
+  useEffect(() => {
+    if (Object.keys(loggedInUserData).length !== 0) {
+      dispatch(fetchNotes());
+      dispatch(fetchLabels());
+      dispatch(fetchNotesByLabels());
+    } else {
+      dispatch(checkAuthorizedUser())
+        .unwrap()
+        .then(() => {
+          if (Object.keys(loggedInUserData).length !== 0) {
+          }
+        })
+        .catch((error) => {
+          console.error("Authorization failed:", error);
+        });
+    }
+  }, [dispatch, loggedInUserData]);
 
   return (
     <div
