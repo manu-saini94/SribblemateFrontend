@@ -27,7 +27,7 @@ export const NOTE_COLLABORATOR_DELETE_URL = NOTE_URL + "/delete/collaborator";
 export const NOTE_LABEL_ADD_URL = NOTE_URL + "/add/label";
 export const NOTE_LABEL_DELETE_URL = NOTE_URL + "/delete/label";
 
-export const LABEL_FETCH_URL = LABEL_URL + "/get";
+export const LABEL_FETCH_URL = LABEL_URL + "/all";
 export const CREATE_LABEL_URL = LABEL_URL + "/create";
 export const UPDATE_LABEL_URL = LABEL_URL + "/update";
 export const DELETE_LABEL_URL = LABEL_URL + "/delete";
