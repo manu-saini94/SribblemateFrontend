@@ -14,14 +14,15 @@ import {
   UpdateNoteType,
 } from "notetypes";
 import {
+  checkUserAuthorization,
   loginAuthUser,
   logoutAuthUser,
+  refreshTokenForUser,
   registerAuthUser,
 } from "../api/requests/AuthRequests";
 import {
   addCollaboratorForNote,
   addLabelInsideNote,
-  checkUserAuthorization,
   createNoteForUser,
   deleteCollaboratorForNote,
   deleteLabelInsideNote,
@@ -29,7 +30,6 @@ import {
   getAllNotesByUser,
   getAllReminderNotesByUser,
   getNotesByLabel,
-  refreshTokenForUser,
   updateArchiveForUserNote,
   updateColorForUserNote,
   updateNoteForUser,
