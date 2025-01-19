@@ -1,17 +1,11 @@
+import { useCreateNoteMutation } from "api/notesApi";
 import { CreateNoteType, TakeNoteDetailsPropsType } from "notetypes";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
-import { hasNoteChanged } from "utility/reduxutils/noteUtils";
 import { useCreateNote } from "../contexts/hooks/useCreateNote";
-import { createNote } from "../redux/asyncThunks";
-import { resetLabelArray } from "../redux/labels/labelSlice";
-import { insertNewNote } from "../redux/notes/noteSlice";
-import {
-  resetCollaboratorArray,
-  setCollaboratorError,
-} from "../redux/users/usersSlice";
+import { setCollaboratorError } from "../redux/users/usersSlice";
 import useAutoResizeTextArea from "./useAutoResizeTextArea";
 import useColor from "./useColor";
 
@@ -29,6 +23,9 @@ const useTakeNoteDetails = ({
     handleColorTooltipClose,
     handleColorTooltipOpen,
   } = useColor();
+
+  const [createNote, { data, isLoading, isError, error, isSuccess }] =
+    useCreateNoteMutation();
   const collaboratorArray = useSelector(
     (state: RootState) => state.users.collaboratorArray
   );
@@ -70,15 +67,9 @@ const useTakeNoteDetails = ({
 
   const dispatchCreatedNote = useCallback(
     (updatedNote: CreateNoteType) => {
-      if (hasNoteChanged(updatedNote)) {
-        dispatch(createNote(updatedNote))
-          .then(() => dispatch(insertNewNote()))
-          .then(() => dispatch(resetLabelArray()));
-      }
-      dispatch(resetCollaboratorArray());
-      dispatch(resetLabelArray());
+      createNote(updatedNote);
     },
-    [dispatch]
+    [createNote]
   );
 
   const toggleColorPalette = () => {
