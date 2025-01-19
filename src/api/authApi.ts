@@ -28,6 +28,9 @@ export const authApi = createApi({
         method: HTTP_METHODS.POST,
         body: loginCredentials,
       }),
+      transformResponse: (response: { object: AuthResponse }) => {
+        return response.object;
+      },
     }),
     registerUser: builder.mutation<Boolean, RegistrationDetailsType>({
       query: (registrationDetails) => ({
