@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CreateNoteType, UpdateNoteType } from "notetypes";
+import { ByIdTransformType, CreateNoteType, UpdateNoteType } from "notetypes";
 import {
   BASE_URL_V1,
   CREATE_NOTE_URL,
   HTTP_METHODS,
+  LABEL_URL,
   NOTE_FETCH_URL,
   NOTE_URL,
 } from "./serviceUtils";
@@ -15,6 +16,7 @@ export const notesApi = createApi({
     credentials: "include",
   }),
   tagTypes: ["Notes"],
+
   endpoints: (builder) => ({
     getAllNotes: builder.query<UpdateNoteType[], void>({
       query: () => NOTE_FETCH_URL,
@@ -27,6 +29,14 @@ export const notesApi = createApi({
           : [];
       },
     }),
+
+    fetchNotesByLabels: builder.query<ByIdTransformType, void>({
+      query: () => LABEL_URL + NOTE_FETCH_URL,
+      transformResponse: (response: { object: ByIdTransformType }) => {
+        return response.object;
+      },
+    }),
+
     createNote: builder.mutation<UpdateNoteType, CreateNoteType>({
       query: (noteData) => ({
         url: CREATE_NOTE_URL,
@@ -40,14 +50,10 @@ export const notesApi = createApi({
         try {
           const { data: createdNote } = await queryFulfilled;
           dispatch(
-            notesApi.util.updateQueryData(
-              "getAllNotes",
-              undefined,
-              function (notes) {
-                notes.unshift(createdNote);
-                return notes;
-              }
-            )
+            notesApi.util.updateQueryData("getAllNotes", undefined, (notes) => {
+              notes.unshift(createdNote);
+              return notes;
+            })
           );
         } catch {}
       },
@@ -55,4 +61,8 @@ export const notesApi = createApi({
   }),
 });
 
-export const { useGetAllNotesQuery, useCreateNoteMutation } = notesApi;
+export const {
+  useGetAllNotesQuery,
+  useFetchNotesByLabelsQuery,
+  useCreateNoteMutation,
+} = notesApi;

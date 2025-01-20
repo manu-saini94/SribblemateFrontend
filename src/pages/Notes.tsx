@@ -1,25 +1,27 @@
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import { useGetAllNotesQuery } from "api/notesApi";
 import React, { useEffect, useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "redux/store";
+import { getPinnedAndOthersCategorizedNotes } from "utility/reduxutils/noteUtils";
 import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import withNote from "../components/notes/withNote";
+import { setLoaderState } from "../redux/global/globalSlice";
 
 const Notes = () => {
   const { data, error, isLoading, refetch } = useGetAllNotesQuery(undefined);
-  useEffect(() => {
-    console.log("Data=> ", data, "Err =>", error, "Loading => ", isLoading);
-  }, [data, error, isLoading]);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const { pinnedNotes, othersNotes } = useMemo(() => {
-    if (!data) return { pinnedNotes: [], othersNotes: [] };
-
-    return {
-      pinnedNotes: data.filter((note) => note.pinned),
-      othersNotes: data.filter(
-        (note) => !note.pinned && !note.archived && !note.trashed
-      ),
-    };
+    return !data
+      ? { pinnedNotes: [], othersNotes: [] }
+      : getPinnedAndOthersCategorizedNotes(data);
   }, [data]);
+
+  useEffect(() => {
+    dispatch(setLoaderState(isLoading));
+  }, [dispatch, isLoading]);
 
   return (
     <div className="container-fluid">

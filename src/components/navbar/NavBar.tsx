@@ -12,6 +12,7 @@ const NavBar = () => {
           <MenuButton />
           <SearchBar />
         </div>
+
         <ViewSettingsAvatar />
       </div>
     </nav>
