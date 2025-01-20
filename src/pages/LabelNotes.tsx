@@ -1,37 +1,30 @@
-import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import NoteSkeletonLoader from "components/notes/loaders/NoteSkeletonLoader";
+import useNotesByLabelId from "hooks/useNotesByLabelId";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { AppDispatch } from "redux/store";
 import NoLabelledNotesIcon from "../components/icons/NoLabelledNotesIcon";
 import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
-import { extractFromNotesByLabelId } from "../redux/notes/noteSlice";
-import { selectNotesByLabelId } from "../redux/selectors";
 
 const LabelNotes = () => {
   const { labelId } = useParams<{ labelId?: string }>();
-  const { pinnedNotes, archivedNotes, othersNotes } =
-    useSelector(selectNotesByLabelId);
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  const getLabeledNotes = useCallback(() => {
-    if (labelId) {
-      const numberedLabelId = Number(labelId);
-      dispatch(extractFromNotesByLabelId(numberedLabelId));
-    }
-  }, [labelId, dispatch]);
-
-  useEffect(() => {
-    getLabeledNotes();
-  }, [getLabeledNotes]);
+  const {
+    notes: { pinnedNotes, archivedNotes, othersNotes },
+    loading,
+    error,
+  } = useNotesByLabelId(Number(labelId));
 
   return (
     <div className="container-fluid">
-      {pinnedNotes?.length > 0 && (
-        <>
-          <h6 className="pin-heading">PINNED</h6>
-          <DisplayNotes notes={pinnedNotes} />
-        </>
+      {loading ? (
+        <NoteSkeletonLoader />
+      ) : (
+        pinnedNotes?.length > 0 && (
+          <>
+            <h6 className="pin-heading">PINNED</h6>
+            <DisplayNotes notes={pinnedNotes} />
+          </>
+        )
       )}
       <br />
       {othersNotes?.length > 0 && (
@@ -41,7 +34,7 @@ const LabelNotes = () => {
         </>
       )}
       <br />
-      {archivedNotes?.length > 0 && (
+      {archivedNotes && archivedNotes.length > 0 && (
         <>
           <h6 className="pin-heading">ARCHIVE</h6>
           <DisplayNotes notes={archivedNotes} />

@@ -6,6 +6,7 @@ import { initialNoteValue } from "utility/reduxutils/noteUtils";
 
 const defaultNoteContext: UpdateNoteContextType = {
   activeCard: NoteCardType.NOTE,
+  loading: true,
   changeActiveCard: () => {},
   isUpdateCardActive: false,
   noteRef: {

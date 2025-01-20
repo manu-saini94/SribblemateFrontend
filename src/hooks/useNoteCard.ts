@@ -23,6 +23,7 @@ import useColor from "./useColor";
 
 const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState(true);
   const [isListNote, setIsListNote] = useState<Boolean>(false);
   const [isUpdateCardActive, setIsUpdateCardActive] = useState<Boolean>(false);
   const [noteData, setNoteData] = useState<UpdateNoteType>(
@@ -41,6 +42,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   useEffect(() => {
     setNoteData(noteCardValues);
+    setLoading(false);
   }, [noteCardValues]);
 
   const {
@@ -232,6 +234,7 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   }, [colorPaletteRef, handleNoteCardClick]);
 
   return {
+    loading,
     activeCard,
     changeActiveCard,
     noteRef,

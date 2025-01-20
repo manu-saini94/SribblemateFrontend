@@ -1,7 +1,7 @@
 import UpdateNoteContext from "contexts/UpdateNoteContext";
 import { UpdateNoteContextProps } from "global";
 import useNoteCard from "hooks/useNoteCard";
-import React, { useMemo } from "react";
+import React, { useCallback } from "react";
 
 const UpdateNoteProvider = ({
   children,
@@ -9,6 +9,7 @@ const UpdateNoteProvider = ({
 }: UpdateNoteContextProps) => {
   const {
     activeCard,
+    loading,
     changeActiveCard,
     noteRef,
     onLabelRemoveClick,
@@ -47,9 +48,10 @@ const UpdateNoteProvider = ({
     handleAddLabel,
   } = useNoteCard({ noteCardValues });
 
-  const noteContextValue = useMemo(
+  const noteContextValue = useCallback(
     () => ({
       activeCard,
+      loading,
       changeActiveCard,
       noteRef,
       onLabelRemoveClick,
@@ -89,6 +91,7 @@ const UpdateNoteProvider = ({
     }),
     [
       activeCard,
+      loading,
       changeActiveCard,
       noteRef,
       onLabelRemoveClick,
@@ -129,7 +132,7 @@ const UpdateNoteProvider = ({
   );
 
   return (
-    <UpdateNoteContext.Provider value={noteContextValue}>
+    <UpdateNoteContext.Provider value={noteContextValue()}>
       {children}
     </UpdateNoteContext.Provider>
   );

@@ -1,4 +1,5 @@
 import {
+  AllCategoriesNotesType,
   CreateNoteType,
   UpdateCollaboratorType,
   UpdateNoteType,
@@ -49,18 +50,66 @@ export const hasNoteChanged = (newNoteValues: CreateNoteType): boolean => {
     newNoteValues.title !== initialUpdateNoteValue.title ||
     newNoteValues.content !== initialUpdateNoteValue.content
   ) {
-    return true; // Return true immediately if any non-array field has changed
+    return true;
   }
 
-  // Check array fields by length
   if (
     newNoteValues.images.length !== initialUpdateNoteValue.images.length ||
     newNoteValues.labelSet.length !== initialUpdateNoteValue.labelSet.length ||
     newNoteValues.collaboratorList.length !==
       initialUpdateNoteValue.collaboratorList.length
   ) {
-    return true; // Return true if lengths are different, indicating a change
+    return true;
   }
 
-  return false; // Return false if no changes are detected
+  return false;
+};
+
+export const getPinnedNotes = (
+  allNotes: UpdateNoteType[]
+): UpdateNoteType[] => {
+  return allNotes.filter((note) => note.pinned);
+};
+
+export const getArchivedNotes = (
+  allNotes: UpdateNoteType[]
+): UpdateNoteType[] => {
+  return allNotes.filter((note) => note.archived);
+};
+
+export const getTrashedNotes = (
+  allNotes: UpdateNoteType[]
+): UpdateNoteType[] => {
+  return allNotes.filter((note) => note.trashed);
+};
+
+export const getOthersNotes = (
+  allNotes: UpdateNoteType[]
+): UpdateNoteType[] => {
+  return allNotes.filter(
+    (note) => !note.pinned && !note.archived && !note.trashed
+  );
+};
+
+export const getCategorizedNotes = (
+  allNotes: UpdateNoteType[]
+): AllCategoriesNotesType => {
+  return allNotes
+    ? {
+        pinnedNotes: getPinnedNotes(allNotes),
+        othersNotes: getOthersNotes(allNotes),
+        archivedNotes: getArchivedNotes(allNotes),
+      }
+    : { pinnedNotes: [], othersNotes: [], archivedNotes: [] };
+};
+
+export const getPinnedAndOthersCategorizedNotes = (
+  allNotes: UpdateNoteType[]
+): AllCategoriesNotesType => {
+  return allNotes
+    ? {
+        pinnedNotes: getPinnedNotes(allNotes),
+        othersNotes: getOthersNotes(allNotes),
+      }
+    : { pinnedNotes: [], othersNotes: [] };
 };

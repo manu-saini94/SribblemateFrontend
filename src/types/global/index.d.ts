@@ -1,5 +1,11 @@
+import { SerializedError } from "@reduxjs/toolkit";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { AuthResponse } from "@types/authtypes";
-import { CreateNoteType, UpdateNoteType } from "@types/notetypes";
+import {
+  AllCategoriesNotesType,
+  CreateNoteType,
+  UpdateNoteType,
+} from "@types/notetypes";
 
 export type Id = {
   id: number;
@@ -37,6 +43,7 @@ export interface NoteContextType {
 }
 
 export interface UpdateNoteContextType {
+  loading: Boolean;
   activeCard: NoteCardType;
   isUpdateCardActive: Boolean;
   changeActiveCard: (cardType: NoteCardType) => void;
@@ -93,12 +100,12 @@ export type LabelEnum = {
 };
 
 export type GlobalInitialStateType = {
-  loading: Boolean;
   error: string;
 };
 
 export type GlobalStoreInitialStateType = GlobalInitialStateType & {
   activeMenu: string;
+  isUpdating: Boolean;
   isSideBarCollapsed: Boolean;
   isMenuBarCollapsed: Boolean;
 };
@@ -107,17 +114,8 @@ type AddLabelIconProps = {
   style?: React.CSSProperties;
 };
 
-// type LabelEnum = {
-//   [key: string]: string;  // Simulating an Enum structure for labels
-// };
-
-// // This type will act like an Enum for dynamic labels
-// let DynamicLabelMenus: LabelEnum = {};
-
-// // Example API labels (you'll fetch this from your API)
-// const fetchedLabels = ['Work', 'Personal', 'Urgent'];  // This is from API
-
-// // Populate the DynamicLabelMenus object to act like an Enum
-// fetchedLabels.forEach(label => {
-//   DynamicLabelMenus[label] = label;
-// });
+export type QueryStatesType = {
+  notes: AllCategoriesNotesType;
+  loading: Boolean;
+  error: FetchBaseQueryError | SerializedError | undefined;
+};

@@ -163,3 +163,9 @@ export type NoteStoreInitialStateType = NoteInitialStateType & {
   currentLabelIds: number[];
   updatedNote: UpdateNoteType;
 };
+
+export type AllCategoriesNotesType = {
+  pinnedNotes: UpdateNoteType[];
+  othersNotes: UpdateNoteType[];
+  archivedNotes?: UpdateNoteType[];
+};
