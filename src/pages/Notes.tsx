@@ -1,6 +1,7 @@
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import { notesApi } from "api/notesApi";
-import React, { useEffect, useMemo } from "react";
+import { AllCategoriesNotesType } from "notetypes";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
 import { getPinnedAndOthersCategorizedNotes } from "utility/reduxutils/noteUtils";
@@ -14,32 +15,37 @@ const Notes = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { pinnedNotes, othersNotes } = useMemo(() => {
+  const [notes, setNotes] = useState<AllCategoriesNotesType>(
+    {} as AllCategoriesNotesType
+  );
+
+  const evaluatedNotes = useMemo(() => {
     return !data
       ? { pinnedNotes: [], othersNotes: [] }
       : getPinnedAndOthersCategorizedNotes(data);
   }, [data]);
 
   useEffect(() => {
+    setNotes(evaluatedNotes);
     dispatch(setLoaderState(isLoading));
-  }, [data, dispatch, isLoading]);
+  }, [data, dispatch, evaluatedNotes, isLoading]);
 
   return (
     <div className="container-fluid">
-      {pinnedNotes?.length > 0 && (
+      {notes.pinnedNotes?.length > 0 && (
         <>
           <h6 className="pin-heading">PINNED</h6>
-          <DisplayNotes notes={pinnedNotes} />
+          <DisplayNotes notes={notes.pinnedNotes} />
         </>
       )}
       <br />
-      {othersNotes?.length > 0 && (
+      {notes.othersNotes?.length > 0 && (
         <>
           <h6 className="pin-heading">OTHERS</h6>
-          <DisplayNotes notes={othersNotes} />
+          <DisplayNotes notes={notes.othersNotes} />
         </>
       )}
-      {pinnedNotes?.length === 0 && othersNotes?.length === 0 && (
+      {notes.pinnedNotes?.length === 0 && notes.othersNotes?.length === 0 && (
         <div
           className="d-flex flex-column justify-content-center align-items-center"
           style={{ height: "50vh" }}

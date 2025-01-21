@@ -7,10 +7,10 @@ import { AppDispatch, RootState } from "redux/store";
 import useCardTypeActive from "./useCardTypeActive";
 import useColor from "./useColor";
 
+import { useUpdateNoteMutation } from "api/notesApi";
 import { NoteCardType } from "utility/miscsUtils";
 import {
   updateArchiveForNote,
-  updateNote,
   updatePinForNote,
   updateTrashForNote,
 } from "../redux/asyncThunks";
@@ -18,6 +18,7 @@ import { updateUserNote } from "../redux/notes/noteSlice";
 
 const useModalNoteCard = () => {
   const updateNoteContext = useUpdateNote();
+  const [updateNote, result] = useUpdateNoteMutation();
   const [noteData, setNoteData] = useState<UpdateNoteType>(
     updateNoteContext?.noteData
   );
@@ -51,9 +52,7 @@ const useModalNoteCard = () => {
     event.preventDefault();
     if (checkForChange()) {
       try {
-        dispatch(updateNote(noteData)).then(() => {
-          dispatch(updateUserNote());
-        });
+        updateNote(noteData);
       } finally {
         handleNoteCardClose();
       }
