@@ -1,14 +1,13 @@
+import { useLazyGetAllLabelsQuery } from "api/labelsApi";
+import {
+  useLazyFetchNotesByLabelsQuery,
+  useLazyGetAllNotesQuery,
+} from "api/notesApi";
 import NavBar from "components/navbar/NavBar";
 import SideBar from "components/sidebar/SideBar";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import {
-  checkAuthorizedUser,
-  fetchLabels,
-  fetchNotes,
-  fetchNotesByLabels,
-} from "../redux/asyncThunks";
 import { AppDispatch, RootState } from "../redux/store";
 import Archive from "./Archive";
 import EditLabels from "./EditLabels";
@@ -28,23 +27,60 @@ const MainLayout = () => {
     (state: RootState) => state.auth.loggedInUserData
   );
 
+  const queryOptions = {
+    refetchOnReconnect: true,
+    refetchOnFocus: false,
+  };
+  const [
+    triggerFetchNotes,
+    {
+      isLoading: isNotesLoading,
+      error: notesError,
+      isFetching: isNotesFetching,
+    },
+  ] = useLazyGetAllNotesQuery(queryOptions);
+
+  const [
+    triggerFetchLabels,
+    {
+      isLoading: isLabelsLoading,
+      error: labelsError,
+      isFetching: isLabelsFetching,
+    },
+  ] = useLazyGetAllLabelsQuery(queryOptions);
+
+  const [
+    triggerFetchNotesByLabels,
+    {
+      isLoading: isNotesByLabelsLoading,
+      error: isNotesByLabelsError,
+      isFetching: isNotesByLabelsFetching,
+    },
+  ] = useLazyFetchNotesByLabelsQuery(queryOptions);
+
   useEffect(() => {
-    if (Object.keys(loggedInUserData).length !== 0) {
-      dispatch(fetchNotes());
-      dispatch(fetchLabels());
-      dispatch(fetchNotesByLabels());
+    if (loggedInUserData?.userDto?.id !== -1) {
+      triggerFetchNotes();
+      triggerFetchLabels();
+      triggerFetchNotesByLabels();
     } else {
-      dispatch(checkAuthorizedUser())
-        .unwrap()
-        .then(() => {
-          if (Object.keys(loggedInUserData).length !== 0) {
-          }
-        })
-        .catch((error) => {
-          console.error("Authorization failed:", error);
-        });
+      // dispatch(checkAuthorizedUser())
+      //   .unwrap()
+      //   .then(() => {
+      //     if (Object.keys(loggedInUserData).length !== 0) {
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error("Authorization failed:", error);
+      //   });
     }
-  }, [dispatch, loggedInUserData]);
+  }, [
+    dispatch,
+    loggedInUserData,
+    triggerFetchLabels,
+    triggerFetchNotes,
+    triggerFetchNotesByLabels,
+  ]);
 
   return (
     <div

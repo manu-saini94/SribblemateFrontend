@@ -1,7 +1,7 @@
 import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import { Button, IconButton, Stack } from "@mui/material";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "redux/store";
@@ -14,22 +14,25 @@ const ViewSettingsAvatar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const navigateToLogin = () => {
+  const loggedInUserData = useSelector(
+    (state: RootState) => state.auth.loggedInUserData
+  );
+
+  const navigateToLogin = useCallback(() => {
     navigate("/login");
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    if (loggedInUserData?.userDto?.id === -1) navigateToLogin();
+  }, [loggedInUserData?.userDto?.id, navigateToLogin]);
 
   const handleLogout = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    dispatch(logoutUser())
-      .unwrap()
-      .then(() => {
-        navigateToLogin();
-      })
-      .catch((error) => {
-        console.error("Logout failed: ", error);
-      });
+    dispatch(logoutUser()).catch((error) => {
+      console.error("Logout failed: ", error);
+    });
   };
 
   return (

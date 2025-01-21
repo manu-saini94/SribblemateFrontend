@@ -116,6 +116,8 @@ type AddLabelIconProps = {
 
 export type QueryStatesType = {
   notes: AllCategoriesNotesType;
-  loading: Boolean;
+  isLoading: Boolean;
+  isError: Boolean;
+  isFetching: Boolean;
   error: FetchBaseQueryError | SerializedError | undefined;
 };

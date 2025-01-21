@@ -1,5 +1,5 @@
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
-import { useGetAllNotesQuery } from "api/notesApi";
+import { notesApi } from "api/notesApi";
 import React, { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
@@ -9,7 +9,8 @@ import withNote from "../components/notes/withNote";
 import { setLoaderState } from "../redux/global/globalSlice";
 
 const Notes = () => {
-  const { data, error, isLoading, refetch } = useGetAllNotesQuery(undefined);
+  const { data, isUninitialized, isLoading, isFetching, isSuccess, isError } =
+    notesApi.endpoints.getAllNotes.useQueryState(undefined);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -21,7 +22,7 @@ const Notes = () => {
 
   useEffect(() => {
     dispatch(setLoaderState(isLoading));
-  }, [dispatch, isLoading]);
+  }, [data, dispatch, isLoading]);
 
   return (
     <div className="container-fluid">

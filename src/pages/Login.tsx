@@ -1,9 +1,9 @@
 import { LoginCredentialsType } from "authtypes";
 import withAuth from "components/auth/withAuth";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "redux/store";
+import { AppDispatch, RootState } from "redux/store";
 import {
   validateEmail,
   validatePassword,
@@ -20,13 +20,25 @@ const Login = () => {
     {} as Partial<LoginCredentialsType>
   );
 
+  const loggedInUserData = useSelector(
+    (state: RootState) => state.auth.loggedInUserData
+  );
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const navigateToHomepage = useCallback(() => {
+    navigate("/note");
+  }, [navigate]);
+
   const navigateToSignup = () => {
     navigate("/signup");
   };
+
+  useEffect(() => {
+    if (loggedInUserData?.userDto?.id !== -1) navigateToHomepage();
+  }, [loggedInUserData, navigateToHomepage]);
 
   const validateForm = (): Partial<LoginCredentialsType> => {
     const { email, password } = formValues;
@@ -52,10 +64,6 @@ const Login = () => {
     }));
   };
 
-  const navigateToHomepage = () => {
-    navigate("/note");
-  };
-
   const handleLoginSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const newErrors = validateForm();
@@ -64,14 +72,9 @@ const Login = () => {
     } else {
       const { email, password } = formValues;
       const loginDetails: LoginCredentialsType = { email, password };
-      dispatch(loginUser(loginDetails))
-        .unwrap()
-        .then(() => {
-          navigateToHomepage();
-        })
-        .catch((error) => {
-          console.error("Login failed: ", error);
-        });
+      dispatch(loginUser(loginDetails)).catch((error) => {
+        console.error("Login failed: ", error);
+      });
     }
   };
 

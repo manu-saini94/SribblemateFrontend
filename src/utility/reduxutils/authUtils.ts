@@ -8,6 +8,7 @@ export const getAuthConfig = (token: string) => {
 };
 
 export const initialUserDto: UserDto = {
+  id: -1,
   fullName: "",
   email: "",
   status: "ACTIVE",

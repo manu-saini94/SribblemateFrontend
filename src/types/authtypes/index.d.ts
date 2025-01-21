@@ -37,7 +37,7 @@ interface AuthResponse {
 
 export type LoginInitialStateType = {
   loginLoading: Boolean;
-  loggedInUserData: UserResponseType;
+  loggedInUserData: AuthResponse;
   loginError: string | null;
 };
 export type RegisterInitialStateType = {

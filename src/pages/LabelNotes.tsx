@@ -10,13 +10,13 @@ const LabelNotes = () => {
 
   const {
     notes: { pinnedNotes, archivedNotes, othersNotes },
-    loading,
+    isLoading,
     error,
   } = useNotesByLabelId(Number(labelId));
 
   return (
     <div className="container-fluid">
-      {loading ? (
+      {isLoading ? (
         <NoteSkeletonLoader />
       ) : (
         pinnedNotes?.length > 0 && (
