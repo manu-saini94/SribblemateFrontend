@@ -1,13 +1,15 @@
+import useNotesByLabelId from "hooks/useNotesByLabelId";
 import React from "react";
-import { useSelector } from "react-redux";
 import NoLabelledNotesIcon from "../components/icons/NoLabelledNotesIcon";
 import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 import withNote from "../components/notes/withNote";
-import { selectLabelledNotes } from "../redux/selectors";
 
 const LabelledNotes = () => {
-  const { pinnedNotes, archivedNotes, othersNotes } =
-    useSelector(selectLabelledNotes);
+  const {
+    notes: { pinnedNotes, archivedNotes, othersNotes },
+    isLoading,
+    error,
+  } = useNotesByLabelId(0);
 
   return (
     <div className="container-fluid">
@@ -25,7 +27,7 @@ const LabelledNotes = () => {
         </>
       )}
       <br />
-      {archivedNotes?.length > 0 && (
+      {archivedNotes && archivedNotes?.length > 0 && (
         <>
           <h6 className="pin-heading">ARCHIVE</h6>
           <DisplayNotes notes={archivedNotes} />

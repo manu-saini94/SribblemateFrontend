@@ -13,8 +13,11 @@ export const labelsApi = createApi({
     getAllLabels: builder.query<UpdateLabelType[], void>({
       query: () => ({ url: LABEL_FETCH_URL }),
       providesTags: ["Labels"],
+      transformResponse: (response: { object: UpdateLabelType[] }) => {
+        return response.object;
+      },
     }),
   }),
 });
 
-export const { useGetAllLabelsQuery } = labelsApi;
+export const { useLazyGetAllLabelsQuery } = labelsApi;

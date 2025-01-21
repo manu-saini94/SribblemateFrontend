@@ -17,6 +17,7 @@ export type UserDataType = {
 };
 
 interface UserDto {
+  id: number;
   fullName: string;
   email: string;
   status: "ACTIVE" | "INACTIVE";

@@ -12,7 +12,7 @@ const DisplayCollaborator = (props: DisplayCollaboratorTypes) => {
   );
   return (
     <>
-      {loggedInUserData?.userDto.email !== collaborator.email && (
+      {loggedInUserData?.userDto?.email !== collaborator?.email && (
         <Tooltip
           title={
             <span>

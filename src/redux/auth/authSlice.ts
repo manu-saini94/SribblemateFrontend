@@ -8,6 +8,7 @@ import {
   RefreshTokenInitialStateType,
   RegisterInitialStateType,
 } from "authtypes";
+import { initialLoggedInUserValue } from "utility/reduxutils/authUtils";
 import {
   checkAuthorizedUser,
   loginUser,
@@ -101,6 +102,7 @@ const authSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.logoutLoading = false;
         state.logoutSuccess = action.payload;
+        state.loggedInUserData = initialLoggedInUserValue;
         state.logoutError = "";
       })
       .addCase(logoutUser.rejected, (state, action) => {

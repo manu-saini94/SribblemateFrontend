@@ -62,7 +62,7 @@ export const notesApi = createApi({
 });
 
 export const {
-  useGetAllNotesQuery,
-  useFetchNotesByLabelsQuery,
+  useLazyGetAllNotesQuery,
+  useLazyFetchNotesByLabelsQuery,
   useCreateNoteMutation,
 } = notesApi;
