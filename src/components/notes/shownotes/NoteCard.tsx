@@ -27,7 +27,7 @@ import "../../../scss/notecard.scss";
 import ColorPalette from "../colorpalette/ColorPalette";
 import NoteSkeletonLoader from "../loaders/NoteSkeletonLoader";
 import DisplayCollaborator from "./DisplayCollaborator";
-import DisplayLabel from "./DisplayLabel";
+import DisplayLabel from "./LabelChip";
 import ModalNoteCard from "./ModalNoteCard";
 
 function NoteCard() {

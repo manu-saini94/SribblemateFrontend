@@ -6,6 +6,7 @@ import {
   HTTP_METHODS,
   LABEL_URL,
   NOTE_FETCH_URL,
+  NOTE_UPDATE_URL,
   NOTE_URL,
 } from "./serviceUtils";
 
@@ -25,8 +26,11 @@ export const notesApi = createApi({
       },
       providesTags: (result) => {
         return result
-          ? [...result.map(({ id }) => ({ type: "Notes" as const, id }))]
-          : [];
+          ? [
+              ...result.map(({ id }) => ({ type: "Notes" as const, id })),
+              { type: "Notes" as const, id: "LIST" },
+            ]
+          : [{ type: "Notes" as const, id: "LIST" }];
       },
     }),
 
@@ -58,6 +62,28 @@ export const notesApi = createApi({
         } catch {}
       },
     }),
+
+    updateNote: builder.mutation<UpdateNoteType, UpdateNoteType>({
+      query: (noteData) => ({
+        url: NOTE_UPDATE_URL,
+        method: HTTP_METHODS.PUT,
+        body: noteData,
+      }),
+      transformResponse: (response: { object: UpdateNoteType }) => {
+        return response.object;
+      },
+      onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) => {
+            Object.assign(draft, patch);
+          })
+        );
+        queryFulfilled.catch(patchResult.undo);
+      },
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Notes" as const, id },
+      ],
+    }),
   }),
 });
 
@@ -65,4 +91,5 @@ export const {
   useLazyGetAllNotesQuery,
   useLazyFetchNotesByLabelsQuery,
   useCreateNoteMutation,
+  useUpdateNoteMutation,
 } = notesApi;

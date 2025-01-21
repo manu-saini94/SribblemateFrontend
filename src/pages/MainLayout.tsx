@@ -8,6 +8,7 @@ import SideBar from "components/sidebar/SideBar";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+import { setLoaderState } from "../redux/global/globalSlice";
 import { AppDispatch, RootState } from "../redux/store";
 import Archive from "./Archive";
 import EditLabels from "./EditLabels";
@@ -31,32 +32,26 @@ const MainLayout = () => {
     refetchOnReconnect: true,
     refetchOnFocus: false,
   };
-  const [
-    triggerFetchNotes,
-    {
-      isLoading: isNotesLoading,
-      error: notesError,
-      isFetching: isNotesFetching,
-    },
-  ] = useLazyGetAllNotesQuery(queryOptions);
+  const [triggerFetchNotes, { isLoading: isNotesLoading, error: notesError }] =
+    useLazyGetAllNotesQuery(queryOptions);
 
   const [
     triggerFetchLabels,
-    {
-      isLoading: isLabelsLoading,
-      error: labelsError,
-      isFetching: isLabelsFetching,
-    },
+    { isLoading: isLabelsLoading, error: labelsError },
   ] = useLazyGetAllLabelsQuery(queryOptions);
 
   const [
     triggerFetchNotesByLabels,
-    {
-      isLoading: isNotesByLabelsLoading,
-      error: isNotesByLabelsError,
-      isFetching: isNotesByLabelsFetching,
-    },
+    { isLoading: isNotesByLabelsLoading, error: isNotesByLabelsError },
   ] = useLazyFetchNotesByLabelsQuery(queryOptions);
+
+  useEffect(() => {
+    dispatch(
+      setLoaderState(
+        isNotesLoading || isNotesByLabelsLoading || isLabelsLoading
+      )
+    );
+  }, [dispatch, isLabelsLoading, isNotesByLabelsLoading, isNotesLoading]);
 
   useEffect(() => {
     if (loggedInUserData?.userDto?.id !== -1) {
