@@ -8,6 +8,7 @@ import {
   NOTE_FETCH_URL,
   NOTE_UPDATE_URL,
   NOTE_URL,
+  providesList,
 } from "./serviceUtils";
 
 export const notesApi = createApi({
@@ -24,14 +25,7 @@ export const notesApi = createApi({
       transformResponse: (response: { object: UpdateNoteType[] }) => {
         return response.object;
       },
-      providesTags: (result) => {
-        return result
-          ? [
-              ...result.map(({ id }) => ({ type: "Notes" as const, id })),
-              { type: "Notes" as const, id: "LIST" },
-            ]
-          : [{ type: "Notes" as const, id: "LIST" }];
-      },
+      providesTags: (result) => providesList(result, "Notes"),
     }),
 
     fetchNotesByLabels: builder.query<ByIdTransformType, void>({
@@ -80,9 +74,7 @@ export const notesApi = createApi({
         );
         queryFulfilled.catch(patchResult.undo);
       },
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Notes" as const, id },
-      ],
+      invalidatesTags: (result, error, { id }) => [{ type: "Notes", id }],
     }),
   }),
 });

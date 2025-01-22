@@ -19,6 +19,7 @@ import {
 
 const loginInitialState: LoginInitialStateType = {
   loginLoading: false,
+  loginSuccess: false,
   loggedInUserData: {} as AuthResponse,
   loginError: null,
 };
@@ -55,15 +56,19 @@ const authSlice = createSlice({
     builder
       .addCase(loginUser.pending, (state) => {
         state.loginLoading = true;
+        state.loggedInUserData = {} as AuthResponse;
+        state.loginSuccess = false;
+        state.loginError = "";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loginLoading = false;
+        state.loginSuccess = true;
         state.loggedInUserData = action.payload;
-        localStorage.setItem("token", action.payload.token);
         state.loginError = "";
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginLoading = false;
+        state.loginSuccess = false;
         state.loggedInUserData = {} as AuthResponse;
         state.loginError = action.error.message ?? "Failed to Authorize";
       })
@@ -101,13 +106,13 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.logoutLoading = false;
-        state.logoutSuccess = action.payload;
+        state.loginSuccess = false;
         state.loggedInUserData = initialLoggedInUserValue;
         state.logoutError = "";
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.logoutLoading = false;
-        state.logoutSuccess = false;
+        state.loginSuccess = true;
         state.logoutError = action.error.message ?? "Failed to Logout";
       })
 

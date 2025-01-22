@@ -5,9 +5,9 @@ import {
 } from "api/notesApi";
 import NavBar from "components/navbar/NavBar";
 import SideBar from "components/sidebar/SideBar";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { setLoaderState } from "../redux/global/globalSlice";
 import { AppDispatch, RootState } from "../redux/store";
 import Archive from "./Archive";
@@ -23,11 +23,9 @@ const MainLayout = () => {
     (state: RootState) => state.menus.isSideBarCollapsed
   );
 
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loginSuccess);
   const dispatch = useDispatch<AppDispatch>();
-  const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
-  );
-
+  const navigate = useNavigate();
   const queryOptions = {
     refetchOnReconnect: true,
     refetchOnFocus: false,
@@ -45,6 +43,14 @@ const MainLayout = () => {
     { isLoading: isNotesByLabelsLoading, error: isNotesByLabelsError },
   ] = useLazyFetchNotesByLabelsQuery(queryOptions);
 
+  const navigateToLogin = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
+
+  const navigateToHomepage = useCallback(() => {
+    navigate("/note");
+  }, [navigate]);
+
   useEffect(() => {
     dispatch(
       setLoaderState(
@@ -54,24 +60,19 @@ const MainLayout = () => {
   }, [dispatch, isLabelsLoading, isNotesByLabelsLoading, isNotesLoading]);
 
   useEffect(() => {
-    if (loggedInUserData?.userDto?.id !== -1) {
+    if (isLoggedIn) {
       triggerFetchNotes();
       triggerFetchLabels();
       triggerFetchNotesByLabels();
     } else {
-      // dispatch(checkAuthorizedUser())
-      //   .unwrap()
-      //   .then(() => {
-      //     if (Object.keys(loggedInUserData).length !== 0) {
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.error("Authorization failed:", error);
-      //   });
+      console.log("JJ");
+
+      navigateToLogin();
     }
   }, [
-    dispatch,
-    loggedInUserData,
+    isLoggedIn,
+    navigateToHomepage,
+    navigateToLogin,
     triggerFetchLabels,
     triggerFetchNotes,
     triggerFetchNotesByLabels,
