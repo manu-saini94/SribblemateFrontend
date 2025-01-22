@@ -14,17 +14,15 @@ const ViewSettingsAvatar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
-  );
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loginSuccess);
 
   const navigateToLogin = useCallback(() => {
     navigate("/login");
   }, [navigate]);
 
   useEffect(() => {
-    if (loggedInUserData?.userDto?.id === -1) navigateToLogin();
-  }, [loggedInUserData?.userDto?.id, navigateToLogin]);
+    if (!isLoggedIn) navigateToLogin();
+  }, [isLoggedIn, navigateToLogin]);
 
   const handleLogout = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>

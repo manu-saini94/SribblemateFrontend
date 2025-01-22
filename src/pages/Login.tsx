@@ -15,30 +15,19 @@ const Login = () => {
     email: "",
     password: "",
   } as LoginCredentialsType);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.loginSuccess);
 
   const [errors, setErrors] = useState<Partial<LoginCredentialsType>>(
     {} as Partial<LoginCredentialsType>
-  );
-
-  const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
   );
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const navigateToHomepage = useCallback(() => {
-    navigate("/note");
-  }, [navigate]);
-
   const navigateToSignup = () => {
     navigate("/signup");
   };
-
-  useEffect(() => {
-    if (loggedInUserData?.userDto?.id !== -1) navigateToHomepage();
-  }, [loggedInUserData, navigateToHomepage]);
 
   const validateForm = (): Partial<LoginCredentialsType> => {
     const { email, password } = formValues;
@@ -77,6 +66,14 @@ const Login = () => {
       });
     }
   };
+
+  const navigateToHomepage = useCallback(() => {
+    navigate("/note");
+  }, [navigate]);
+
+  useEffect(() => {
+    if (isLoggedIn) navigateToHomepage();
+  }, [isLoggedIn, navigateToHomepage]);
 
   return (
     <form onSubmit={handleLoginSubmit}>
