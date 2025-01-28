@@ -1,25 +1,28 @@
-import { LoginCredentialsType } from "authtypes";
+import { useLoginUserMutation } from "api/authApi";
+import { AuthStoreType, LoginCredentialsType } from "authtypes";
 import withAuth from "components/auth/withAuth";
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch, RootState } from "redux/store";
+import { AppDispatch } from "redux/store";
+import { UserDetailsType } from "userstypes";
 import {
   validateEmail,
   validatePassword,
 } from "utility/validationutils/authValidationUtils";
-import { loginUser } from "../redux/asyncThunks";
+import { setAuthUserData } from "../redux/auth/authSlice";
 
 const Login = () => {
   const [formValues, setFormValues] = useState<LoginCredentialsType>({
     email: "",
     password: "",
   } as LoginCredentialsType);
-  const isLoggedIn = useSelector((state: RootState) => state.auth.loginSuccess);
 
   const [errors, setErrors] = useState<Partial<LoginCredentialsType>>(
     {} as Partial<LoginCredentialsType>
   );
+
+  const [loginUser, { isLoading, error, isSuccess }] = useLoginUserMutation();
 
   const navigate = useNavigate();
 
@@ -28,6 +31,9 @@ const Login = () => {
   const navigateToSignup = () => {
     navigate("/signup");
   };
+  const navigateToHomepage = useCallback(() => {
+    navigate("/note");
+  }, [navigate]);
 
   const validateForm = (): Partial<LoginCredentialsType> => {
     const { email, password } = formValues;
@@ -61,19 +67,31 @@ const Login = () => {
     } else {
       const { email, password } = formValues;
       const loginDetails: LoginCredentialsType = { email, password };
-      dispatch(loginUser(loginDetails)).catch((error) => {
-        console.error("Login failed: ", error);
-      });
+      loginUser(loginDetails)
+        .unwrap()
+        .then((res) => {
+          const authState: AuthStoreType = {
+            authLoading: false,
+            authError: null,
+            authUserData: res,
+            loginSuccess: true,
+            logoutSuccess: false,
+          };
+          dispatch(setAuthUserData(authState));
+          navigateToHomepage();
+        })
+        .catch((err) => {
+          const authState: AuthStoreType = {
+            authLoading: false,
+            authError: err,
+            authUserData: {} as UserDetailsType,
+            loginSuccess: false,
+            logoutSuccess: false,
+          };
+          dispatch(setAuthUserData(authState));
+        });
     }
   };
-
-  const navigateToHomepage = useCallback(() => {
-    navigate("/note");
-  }, [navigate]);
-
-  useEffect(() => {
-    if (isLoggedIn) navigateToHomepage();
-  }, [isLoggedIn, navigateToHomepage]);
 
   return (
     <form onSubmit={handleLoginSubmit}>

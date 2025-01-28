@@ -16,7 +16,7 @@ const useCollaboratorCreateCard = ({
   changeActiveCard,
 }: CollaboratorCardPropsType) => {
   const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
+    (state: RootState) => state.auth.authUserData
   );
 
   const collaboratorRef = useRef<HTMLDivElement>(null);

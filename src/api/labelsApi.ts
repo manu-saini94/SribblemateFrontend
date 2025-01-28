@@ -7,6 +7,14 @@ export const labelsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL_V1 + LABEL_URL,
     credentials: "include",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    prepareHeaders: (headers) => {
+      return headers;
+    },
   }),
   tagTypes: ["Labels"],
   endpoints: (builder) => ({

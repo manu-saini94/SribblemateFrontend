@@ -4,8 +4,8 @@ import {
   LABEL_URL,
   NOTE_COLLABORATOR_ADD_URL,
   NOTE_COLLABORATOR_DELETE_URL,
+  NOTE_FETCH_ALL_URL,
   NOTE_FETCH_BY_REMINDER_URL,
-  NOTE_FETCH_URL,
   NOTE_LABEL_ADD_URL,
   NOTE_LABEL_DELETE_URL,
   NOTE_UPDATE_ARCHIVE_URL,
@@ -19,7 +19,7 @@ import axios from "axios";
 import { CreateNoteType, UpdateColorType, UpdateNoteType } from "notetypes";
 
 export const getAllNotesByUser = () => {
-  return axios.get(BASE_URL_V1 + NOTE_URL + NOTE_FETCH_URL, {
+  return axios.get(BASE_URL_V1 + NOTE_URL + NOTE_FETCH_ALL_URL, {
     withCredentials: true,
   });
 };

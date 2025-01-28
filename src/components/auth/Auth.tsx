@@ -5,11 +5,7 @@ import { RootState } from "redux/store";
 import Lightlogo from "../../assets/SM-logo-lgt.png";
 
 const Auth = ({ children }: AuthProps): ReactNode => {
-  const registerError = useSelector(
-    (state: RootState) => state.auth.registerError
-  );
-
-  const loginError = useSelector((state: RootState) => state.auth.loginError);
+  const authError = useSelector((state: RootState) => state.auth.authError);
 
   return (
     <div
@@ -26,12 +22,12 @@ const Auth = ({ children }: AuthProps): ReactNode => {
               alt="Scribble Mate"
             />
           </div>
-          {registerError && (
+          {authError && (
             <div
               className="alert alert-warning alert-dismissible fade show"
               role="alert"
             >
-              {registerError}
+              {authError}
               <button
                 type="button"
                 className="btn-close"
@@ -40,20 +36,7 @@ const Auth = ({ children }: AuthProps): ReactNode => {
               ></button>
             </div>
           )}
-          {loginError && (
-            <div
-              className="alert alert-warning alert-dismissible fade show"
-              role="alert"
-            >
-              {loginError}
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button>
-            </div>
-          )}
+
           {children}
         </div>
       </div>

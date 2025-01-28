@@ -1,9 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  AuthResponse,
-  LoginCredentialsType,
-  RegistrationDetailsType,
-} from "authtypes";
+import { LoginCredentialsType, RegistrationDetailsType } from "authtypes";
+import { UserDetailsType } from "userstypes";
 import {
   AUTH_URL,
   BASE_URL_V1,
@@ -22,13 +19,15 @@ export const authApi = createApi({
   }),
   tagTypes: ["Validate"],
   endpoints: (builder) => ({
-    loginUser: builder.mutation<AuthResponse, LoginCredentialsType>({
+    loginUser: builder.mutation<UserDetailsType, LoginCredentialsType>({
       query: (loginCredentials) => ({
         url: LOGIN_USER_URL,
         method: HTTP_METHODS.POST,
         body: loginCredentials,
+        credentials: "include",
+        mode: "cors",
       }),
-      transformResponse: (response: { object: AuthResponse }) => {
+      transformResponse: (response: { object: UserDetailsType }) => {
         return response.object;
       },
     }),
@@ -39,7 +38,7 @@ export const authApi = createApi({
         body: registrationDetails,
       }),
     }),
-    refreshAccessToken: builder.mutation<AuthResponse, void>({
+    refreshAccessToken: builder.mutation<UserDetailsType, void>({
       query: () => ({
         url: REFRESH_TOKEN_URL,
         method: HTTP_METHODS.POST,
@@ -52,7 +51,7 @@ export const authApi = createApi({
         credentials: "include",
       }),
     }),
-    checkAuthorizedUser: builder.query<AuthResponse, void>({
+    checkAuthorizedUser: builder.query<UserDetailsType, void>({
       query: () => ({
         url: CHECK_USER_AUTH_URL,
         method: HTTP_METHODS.GET,
@@ -68,5 +67,5 @@ export const {
   useRegisterUserMutation,
   useRefreshAccessTokenMutation,
   useLogoutUserMutation,
-  useCheckAuthorizedUserQuery,
+  useLazyCheckAuthorizedUserQuery,
 } = authApi;

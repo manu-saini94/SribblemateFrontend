@@ -5,6 +5,7 @@ import {
   CREATE_NOTE_URL,
   HTTP_METHODS,
   LABEL_URL,
+  NOTE_FETCH_ALL_URL,
   NOTE_FETCH_URL,
   NOTE_UPDATE_URL,
   NOTE_URL,
@@ -16,12 +17,13 @@ export const notesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL_V1 + NOTE_URL,
     credentials: "include",
+    mode: "cors",
   }),
   tagTypes: ["Notes"],
 
   endpoints: (builder) => ({
     getAllNotes: builder.query<UpdateNoteType[], void>({
-      query: () => NOTE_FETCH_URL,
+      query: () => NOTE_FETCH_ALL_URL,
       transformResponse: (response: { object: UpdateNoteType[] }) => {
         return response.object;
       },
@@ -29,7 +31,7 @@ export const notesApi = createApi({
     }),
 
     fetchNotesByLabels: builder.query<ByIdTransformType, void>({
-      query: () => LABEL_URL + NOTE_FETCH_URL,
+      query: () => LABEL_URL + NOTE_FETCH_ALL_URL,
       transformResponse: (response: { object: ByIdTransformType }) => {
         return response.object;
       },
@@ -57,6 +59,15 @@ export const notesApi = createApi({
       },
     }),
 
+    getNote: builder.query<UpdateNoteType, { noteId: number }>({
+      query: ({ noteId }) => ({ url: NOTE_FETCH_URL, params: { noteId } }),
+
+      transformResponse: (response: { object: UpdateNoteType }) => {
+        return response.object;
+      },
+      providesTags: (result) => [{ type: "Notes", id: result?.id }],
+    }),
+
     updateNote: builder.mutation<UpdateNoteType, UpdateNoteType>({
       query: (noteData) => ({
         url: NOTE_UPDATE_URL,
@@ -66,15 +77,25 @@ export const notesApi = createApi({
       transformResponse: (response: { object: UpdateNoteType }) => {
         return response.object;
       },
-      onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) => {
-            Object.assign(draft, patch);
-          })
+          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) =>
+            draft.map((note) => {
+              if (note.id === id) {
+                return { ...note, ...patch };
+              }
+              return note;
+            })
+          )
         );
-        queryFulfilled.catch(patchResult.undo);
+        try {
+          await queryFulfilled;
+          // dispatch(notesApi.endpoints.getNote.initiate({ noteId: id }));
+        } catch {
+          patchResult.undo();
+        }
       },
-      invalidatesTags: (result, error, { id }) => [{ type: "Notes", id }],
+      // invalidatesTags: (result, error, { id }) => [{ type: "Notes", id }],
     }),
   }),
 });

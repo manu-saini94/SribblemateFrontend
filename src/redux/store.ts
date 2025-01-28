@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { authApi } from "api/authApi";
 import { labelsApi } from "api/labelsApi";
 import { notesApi } from "api/notesApi";
 import authReducer from "./auth/authSlice";
@@ -17,13 +18,15 @@ const store = configureStore({
     auth: authReducer,
     [notesApi.reducerPath]: notesApi.reducer,
     [labelsApi.reducerPath]: labelsApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(notesApi.middleware)
-      .concat(labelsApi.middleware),
+      .concat(labelsApi.middleware)
+      .concat(authApi.middleware),
 
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware().concat(authMiddleware),

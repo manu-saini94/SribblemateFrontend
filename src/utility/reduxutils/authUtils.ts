@@ -1,5 +1,4 @@
-import { AuthResponse } from "authtypes";
-import { UserDto } from "userstypes";
+import { UserDetailsType } from "userstypes";
 
 export const getAuthConfig = (token: string) => {
   return {
@@ -7,7 +6,7 @@ export const getAuthConfig = (token: string) => {
   };
 };
 
-export const initialUserDto: UserDto = {
+export const initialUserDetails: UserDetailsType = {
   id: -1,
   fullName: "",
   email: "",
@@ -15,9 +14,4 @@ export const initialUserDto: UserDto = {
   createdAt: "",
   updatedAt: "",
   profilePicture: null,
-};
-
-export const initialLoggedInUserValue: AuthResponse = {
-  userDto: initialUserDto,
-  expiresIn: 0,
 };

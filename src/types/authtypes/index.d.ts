@@ -1,5 +1,4 @@
 import { ReactNodeHOCProps } from "@types/global";
-import { UserDto } from "@types/userstypes";
 
 export type LoginCredentialsType = {
   email: string;
@@ -30,35 +29,10 @@ export type WithAuthProps = {
   setToken: (token: string) => void;
 };
 
-interface AuthResponse {
-  userDto: UserDto;
-  expiresIn: number;
-}
-
-export type LoginInitialStateType = {
-  loginLoading: Boolean;
+export type AuthStoreType = {
+  authLoading: Boolean;
   loginSuccess: Boolean;
-  loggedInUserData: AuthResponse;
-  loginError: string | null;
-};
-export type RegisterInitialStateType = {
-  registerLoading: Boolean;
-  registerSuccess: Boolean;
-  registerError: string | null;
-};
-
-export type RefreshTokenInitialStateType = {
-  refreshTokenLoading: Boolean;
-  refreshTokenError: string | null;
-};
-
-export type LogoutInitialStateType = {
-  logoutLoading: Boolean;
-  logoutError: string | null;
   logoutSuccess: Boolean;
+  authUserData: UserDetailsType;
+  authError: string | null;
 };
-
-export type AuthStoreInitialStateType = LoginInitialStateType &
-  RegisterInitialStateType &
-  RefreshTokenInitialStateType &
-  LogoutInitialStateType;

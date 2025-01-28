@@ -1,20 +1,12 @@
 import { useUpdateNote } from "contexts/hooks/useUpdateNote";
-import { DateTime } from "luxon";
 import { UpdateNoteType } from "notetypes";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import useCardTypeActive from "./useCardTypeActive";
 import useColor from "./useColor";
 
 import { useUpdateNoteMutation } from "api/notesApi";
-import { NoteCardType } from "utility/miscsUtils";
-import {
-  updateArchiveForNote,
-  updatePinForNote,
-  updateTrashForNote,
-} from "../redux/asyncThunks";
-import { updateUserNote } from "../redux/notes/noteSlice";
 
 const useModalNoteCard = () => {
   const updateNoteContext = useUpdateNote();
@@ -34,7 +26,7 @@ const useModalNoteCard = () => {
   const iconsRef = useRef<HTMLDivElement>(null);
   const pinIconRef = useRef<HTMLDivElement>(null);
   const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
+    (state: RootState) => state.auth.authUserData
   );
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(
     updateNoteContext?.isOpenMoreTooltip
@@ -48,76 +40,6 @@ const useModalNoteCard = () => {
     handleColorTooltipOpen,
   } = useColor();
 
-  const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (checkForChange()) {
-      try {
-        updateNote(noteData);
-      } finally {
-        handleNoteCardClose();
-      }
-    } else {
-      handleNoteCardClose();
-    }
-  };
-
-  const checkForChange = useCallback((): Boolean => {
-    const { title, content, pinned } = updateNoteContext.noteData;
-    return (
-      title !== noteData.title ||
-      content !== noteData.content ||
-      pinned !== noteData.pinned
-    );
-  }, [updateNoteContext, noteData.content, noteData.pinned, noteData.title]);
-
-  const getEditedDate = useCallback(() => {
-    const updatedDate = DateTime.fromISO(noteData?.updatedAt);
-    const now = DateTime.local();
-
-    if (updatedDate.hasSame(now, "day")) {
-      return `Today ${updatedDate.toFormat("HH:mm")}`;
-    } else if (updatedDate.hasSame(now.minus({ days: 1 }), "day")) {
-      return `Yesterday ${updatedDate.toFormat("HH:mm")}`;
-    } else {
-      return updatedDate.toFormat("MMM dd, HH:mm");
-    }
-  }, [noteData?.updatedAt]);
-
-  const handleChange = useCallback(
-    (event: { target: { name: any; value: any } }) => {
-      const { name, value } = event.target;
-      setNoteData((prevValues) => ({
-        ...prevValues,
-        [name]: value,
-      }));
-    },
-    []
-  );
-
-  const handleNoteCardClick = useCallback(() => {
-    setIsUpdateCardActive(true);
-    changeActiveCard(NoteCardType.NOTE);
-  }, []);
-
-  const handleNoteCardClose = useCallback(() => {
-    setIsUpdateCardActive(false);
-    changeActiveCard(NoteCardType.NOTE);
-  }, []);
-
-  const handleMoreTooltipClose = () => {
-    setIsOpenMoreTooltip(false);
-  };
-
-  const handleMoreTooltipOpen = () => {
-    setIsOpenMoreTooltip(true);
-  };
-
-  const onPinClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(updatePinForNote(noteData.id)).then(() => {
-      dispatch(updateUserNote());
-    });
-  };
-
   const onModalPinClick = useCallback(() => {
     setNoteData((prevValues) => ({
       ...prevValues,
@@ -127,44 +49,9 @@ const useModalNoteCard = () => {
     }));
   }, []);
 
-  const onCollaboratorClick = () => {
-    setIsUpdateCardActive(true);
-    changeActiveCard(NoteCardType.COLLABORATOR);
-  };
-
-  const onReminderClick = () => {};
-
-  const onArchiveClick = () => {
-    dispatch(updateArchiveForNote(noteData.id)).then(() => {
-      dispatch(updateUserNote());
-    });
-  };
-
-  const onDeleteClick = () => {
-    dispatch(updateTrashForNote(noteData.id)).then(() => {
-      dispatch(updateUserNote());
-    });
-  };
-
-  const onMoreClick = () => {
-    handleMoreTooltipClose();
-  };
-
-  const onLabelRemoveClick = (id: number) => {};
-
-  const onImageClick = () => {};
-
-  const onLabelAddIconClick = () => {
-    setIsUpdateCardActive(true);
-    changeActiveCard(NoteCardType.LABEL);
-  };
-
-  const onCheckboxIconClick = () => {};
-
-  const toggleColorPalette = () => {
-    colorPaletteRef.current?.classList.toggle("show");
-    handleColorTooltipClose();
-  };
+  useEffect(() => {
+    setNoteData(updateNoteContext?.noteData);
+  }, [updateNoteContext.noteData]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -188,38 +75,19 @@ const useModalNoteCard = () => {
     updateNoteContext,
     changeActiveCard,
     noteRef,
-    onLabelRemoveClick,
     noteData,
     loggedInUserData,
     onModalPinClick,
     iconsRef,
     pinIconRef,
-    onCheckboxIconClick,
     isListNote,
-    onLabelAddIconClick,
-    handleChange,
-    handleNoteSubmit,
     isUpdateCardActive,
-    handleNoteCardClose,
-    handleNoteCardClick,
     activeMenu,
-    onDeleteClick,
     colorPaletteRef,
-    onPinClick,
-    onCollaboratorClick,
-    onReminderClick,
-    onArchiveClick,
-    onMoreClick,
-    onImageClick,
-    toggleColorPalette,
     handleColorTooltipClose,
     handleColorTooltipOpen,
-    handleMoreTooltipClose,
-    handleMoreTooltipOpen,
     isOpenColorTooltip,
     isOpenMoreTooltip,
-    checkForChange,
-    getEditedDate,
   };
 };
 
