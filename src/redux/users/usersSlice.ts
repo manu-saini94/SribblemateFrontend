@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UpdateCollaboratorType } from "notetypes";
-import { UserDto, UsersStoreInitialStateType } from "userstypes";
+import { UserDetailsType, UsersStoreInitialStateType } from "userstypes";
 import { checkCollaboratorExist, fetchAllUsers } from "../asyncThunks";
 
 const initialLoadingStates = {
@@ -88,7 +88,7 @@ const usersSlice = createSlice({
 
       .addCase(fetchAllUsers.pending, (state) => {
         state.usersFetchLoading = true;
-        state.allUsers = [] as UserDto[];
+        state.allUsers = [] as UserDetailsType[];
         state.usersFetchError = "";
       })
       .addCase(fetchAllUsers.fulfilled, (state, action) => {
@@ -100,7 +100,7 @@ const usersSlice = createSlice({
         state.usersFetchLoading = false;
         state.usersFetchError =
           action.error.message ?? "Unable to fetch all users";
-        state.allUsers = [] as UserDto[];
+        state.allUsers = [] as UserDetailsType[];
       });
   },
 });

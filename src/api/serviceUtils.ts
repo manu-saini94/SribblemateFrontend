@@ -14,10 +14,11 @@ export const LOGIN_USER_URL = "/login";
 export const REFRESH_TOKEN_URL = "/refresh-token";
 export const LOGOUT_USER_URL = "/logout";
 
-export const NOTE_FETCH_URL = "/all";
+export const NOTE_FETCH_ALL_URL = "/all";
+export const NOTE_FETCH_URL = "/get";
 export const CREATE_NOTE_URL = "/create";
 export const NOTE_UPDATE_URL = "/update";
-export const NOTE_FETCH_BY_REMINDER_URL = NOTE_FETCH_URL + "/reminder";
+export const NOTE_FETCH_BY_REMINDER_URL = NOTE_FETCH_ALL_URL + "/reminder";
 export const NOTE_UPDATE_PIN_URL = NOTE_UPDATE_URL + "/pin";
 export const NOTE_UPDATE_ARCHIVE_URL = NOTE_UPDATE_URL + "/archive";
 export const NOTE_UPDATE_TRASH_URL = NOTE_UPDATE_URL + "/trash";

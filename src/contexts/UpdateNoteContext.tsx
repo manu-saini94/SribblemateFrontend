@@ -1,7 +1,7 @@
 import { UpdateNoteContextType } from "global";
 import { createContext } from "react";
 import { NoteCardType, SidebarMenus } from "utility/miscsUtils";
-import { initialLoggedInUserValue } from "utility/reduxutils/authUtils";
+import { initialUserDetails } from "utility/reduxutils/authUtils";
 import { initialNoteValue } from "utility/reduxutils/noteUtils";
 
 const defaultNoteContext: UpdateNoteContextType = {
@@ -19,7 +19,7 @@ const defaultNoteContext: UpdateNoteContextType = {
     current: null,
   },
   noteData: initialNoteValue,
-  loggedInUserData: initialLoggedInUserValue,
+  loggedInUserData: initialUserDetails,
   onModalPinClick: () => {},
   isListNote: false,
   onLabelRemoveClick: () => {},

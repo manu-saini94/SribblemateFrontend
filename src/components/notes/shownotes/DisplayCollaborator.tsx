@@ -8,7 +8,7 @@ import { DisplayCollaboratorTypes } from "userstypes";
 const DisplayCollaborator = (props: DisplayCollaboratorTypes) => {
   const { collaborator, onCollabClick } = props;
   const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
+    (state: RootState) => state.auth.authUserData
   );
   return (
     <>

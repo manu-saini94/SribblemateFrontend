@@ -1,3 +1,4 @@
+import { useUpdateNoteMutation } from "api/notesApi";
 import { DateTime } from "luxon";
 import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
 import React, {
@@ -13,7 +14,6 @@ import { NoteCardType } from "utility/miscsUtils";
 import {
   updateArchiveForNote,
   updateColorForNote,
-  updateNote,
   updatePinForNote,
   updateTrashForNote,
 } from "../redux/asyncThunks";
@@ -29,12 +29,13 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const [noteData, setNoteData] = useState<UpdateNoteType>(
     {} as UpdateNoteType
   );
+  const [updateNote, { isLoading, error, isSuccess }] = useUpdateNoteMutation();
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const noteRef = useRef<HTMLDivElement>(null);
   const iconsRef = useRef<HTMLDivElement>(null);
   const pinIconRef = useRef<HTMLDivElement>(null);
   const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
+    (state: RootState) => state.auth.authUserData
   );
   const [isOpenMoreTooltip, setIsOpenMoreTooltip] = useState(false);
   const activeMenu = useSelector((state: RootState) => state.menus.activeMenu);
@@ -54,16 +55,9 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   const handleNoteSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (checkForChange()) {
-      try {
-        dispatch(updateNote(noteData)).then(() => {
-          dispatch(updateUserNote());
-        });
-      } finally {
-        handleNoteCardClose();
-      }
-    } else {
-      handleNoteCardClose();
+      updateNote(noteData);
     }
+    handleNoteCardClose();
   };
 
   const checkForChange = useCallback((): Boolean => {

@@ -7,7 +7,7 @@ import { CollaboratorPropsType } from "../../../types/notetypes";
 
 const Collaborator = ({ collaborator }: CollaboratorPropsType) => {
   const loggedInUserData = useSelector(
-    (state: RootState) => state.auth.loggedInUserData
+    (state: RootState) => state.auth.authUserData
   );
 
   return (

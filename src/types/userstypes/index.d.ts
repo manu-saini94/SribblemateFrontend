@@ -1,22 +1,6 @@
 import { UpdateCollaboratorType } from "@types/notetypes";
 
-export type UserDataType = {
-  expiresIn: number;
-
-  fullName: string;
-
-  email: string;
-
-  status: Utils.Status;
-
-  createdAt: Date;
-
-  updatedAt: Date;
-
-  profilePicture: string;
-};
-
-interface UserDto {
+export type UserDetailsType = {
   id: number;
   fullName: string;
   email: string;
@@ -24,7 +8,7 @@ interface UserDto {
   createdAt: string;
   updatedAt: string;
   profilePicture: string | null;
-}
+};
 
 export type UsersInitialStateType = {
   collaboratorCreateLoading: Boolean;
