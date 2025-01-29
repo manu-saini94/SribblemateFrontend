@@ -282,4 +282,4 @@ function NoteCard() {
   );
 }
 
-export default NoteCard;
+export default React.memo(NoteCard);

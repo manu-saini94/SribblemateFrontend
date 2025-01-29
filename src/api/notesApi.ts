@@ -1,15 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ByIdTransformType, CreateNoteType, UpdateNoteType } from "notetypes";
 import {
+  optimisticNoteUpdateHelper,
+  updateDraftNote,
+  updatePinNote,
+} from "./requests/NoteMutations";
+import {
   BASE_URL_V1,
   CREATE_NOTE_URL,
   HTTP_METHODS,
   LABEL_URL,
   NOTE_FETCH_ALL_URL,
   NOTE_FETCH_URL,
+  NOTE_UPDATE_PIN_URL,
   NOTE_UPDATE_URL,
   NOTE_URL,
-  providesList,
 } from "./serviceUtils";
 
 export const notesApi = createApi({
@@ -27,7 +32,13 @@ export const notesApi = createApi({
       transformResponse: (response: { object: UpdateNoteType[] }) => {
         return response.object;
       },
-      providesTags: (result) => providesList(result, "Notes"),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Notes" as const, id })),
+              { type: "Notes", id: "LIST" },
+            ]
+          : [{ type: "Notes", id: "LIST" }],
     }),
 
     fetchNotesByLabels: builder.query<ByIdTransformType, void>({
@@ -60,7 +71,11 @@ export const notesApi = createApi({
     }),
 
     getNote: builder.query<UpdateNoteType, { noteId: number }>({
-      query: ({ noteId }) => ({ url: NOTE_FETCH_URL, params: { noteId } }),
+      query: ({ noteId }) => ({
+        url: NOTE_FETCH_URL,
+        params: { noteId },
+        method: HTTP_METHODS.GET,
+      }),
 
       transformResponse: (response: { object: UpdateNoteType }) => {
         return response.object;
@@ -79,23 +94,31 @@ export const notesApi = createApi({
       },
       async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) =>
-            draft.map((note) => {
-              if (note.id === id) {
-                return { ...note, ...patch };
-              }
-              return note;
-            })
-          )
+          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) => {
+            return updateDraftNote(draft, id, patch);
+          })
         );
-        try {
-          await queryFulfilled;
-          // dispatch(notesApi.endpoints.getNote.initiate({ noteId: id }));
-        } catch {
-          patchResult.undo();
-        }
+        optimisticNoteUpdateHelper(queryFulfilled, patchResult);
       },
-      // invalidatesTags: (result, error, { id }) => [{ type: "Notes", id }],
+    }),
+
+    updatePin: builder.mutation<UpdateNoteType, { noteId: number }>({
+      query: ({ noteId }) => ({
+        url: NOTE_UPDATE_PIN_URL,
+        method: HTTP_METHODS.PUT,
+        params: { noteId },
+      }),
+      transformResponse: (response: { object: UpdateNoteType }) => {
+        return response.object;
+      },
+      async onQueryStarted({ noteId }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) => {
+            return updatePinNote(draft, noteId);
+          })
+        );
+        optimisticNoteUpdateHelper(queryFulfilled, patchResult);
+      },
     }),
   }),
 });
@@ -105,4 +128,5 @@ export const {
   useLazyFetchNotesByLabelsQuery,
   useCreateNoteMutation,
   useUpdateNoteMutation,
+  useUpdatePinMutation,
 } = notesApi;
