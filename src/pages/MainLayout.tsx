@@ -119,44 +119,42 @@ const MainLayout = () => {
   ]);
 
   return (
-    <>
-      {loginSuccess && (
+    <div
+      className="scroll-overflow custom-scrollbar"
+      style={{ minHeight: "100vh" }}
+    >
+      <NavBar />
+      <div className="d-flex" style={{ marginTop: "65px" }}>
         <div
-          className="scroll-overflow custom-scrollbar"
-          style={{ minHeight: "100vh" }}
+          style={{
+            width: isSideBarCollapsed ? "0px" : "270px",
+            transition: "width 0.3s ease",
+          }}
         >
-          <NavBar />
-          <div className="d-flex" style={{ marginTop: "65px" }}>
-            <div
-              style={{
-                width: isSideBarCollapsed ? "0px" : "270px",
-                transition: "width 0.3s ease",
-              }}
-            >
-              <SideBar />
-            </div>
-            <div
-              style={{
-                width: isSideBarCollapsed ? "100%" : "calc(100% - 310px)",
-                marginLeft: isSideBarCollapsed ? "40px" : "20px",
-                transition: "width 0.3s ease, margin-left 0.3s ease",
-                minHeight: "100vh",
-              }}
-            >
-              <Routes>
-                <Route path="/note" element={<Notes />} />
-                <Route path="/reminder" element={<Reminder />} />
-                <Route path="/archive" element={<Archive />} />
-                <Route path="/trash" element={<Trash />} />
-                <Route path="/labellednotes" element={<LabelledNotes />} />
-                <Route path="/editlabels" element={<EditLabels />} />
-                <Route path={`/label/:labelId`} element={<LabelNotes />} />
-              </Routes>
-            </div>
-          </div>
+          <SideBar />
         </div>
-      )}
-    </>
+        {loginSuccess && (
+          <div
+            style={{
+              width: isSideBarCollapsed ? "100%" : "calc(100% - 310px)",
+              marginLeft: isSideBarCollapsed ? "40px" : "20px",
+              transition: "width 0.3s ease, margin-left 0.3s ease",
+              minHeight: "100vh",
+            }}
+          >
+            <Routes>
+              <Route path="/note" element={<Notes />} />
+              <Route path="/reminder" element={<Reminder />} />
+              <Route path="/archive" element={<Archive />} />
+              <Route path="/trash" element={<Trash />} />
+              <Route path="/labellednotes" element={<LabelledNotes />} />
+              <Route path="/editlabels" element={<EditLabels />} />
+              <Route path={`/label/:labelId`} element={<LabelNotes />} />
+            </Routes>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

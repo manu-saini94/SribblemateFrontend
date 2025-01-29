@@ -1,4 +1,4 @@
-import { useUpdateNoteMutation } from "api/notesApi";
+import { useUpdateNoteMutation, useUpdatePinMutation } from "api/notesApi";
 import { DateTime } from "luxon";
 import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
 import React, {
@@ -14,7 +14,6 @@ import { NoteCardType } from "utility/miscsUtils";
 import {
   updateArchiveForNote,
   updateColorForNote,
-  updatePinForNote,
   updateTrashForNote,
 } from "../redux/asyncThunks";
 import { updateUserNote } from "../redux/notes/noteSlice";
@@ -30,6 +29,10 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     {} as UpdateNoteType
   );
   const [updateNote, { isLoading, error, isSuccess }] = useUpdateNoteMutation();
+  const [
+    updatePin,
+    { isLoading: pinLoading, error: pinError, isSuccess: pinSuccess },
+  ] = useUpdatePinMutation();
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const noteRef = useRef<HTMLDivElement>(null);
   const iconsRef = useRef<HTMLDivElement>(null);
@@ -56,6 +59,9 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     event.preventDefault();
     if (checkForChange()) {
       updateNote(noteData);
+      setNoteData((prevValues) => ({
+        ...noteData,
+      }));
     }
     handleNoteCardClose();
   };
@@ -112,9 +118,15 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
   };
 
   const onPinClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(updatePinForNote(noteCardValues.id)).then(() => {
-      dispatch(updateUserNote());
-    });
+    event.preventDefault();
+    setNoteData((prevValues) => ({
+      ...noteData,
+      pinned: !prevValues.pinned,
+      archived: false,
+      trashed: false,
+    }));
+
+    updatePin({ noteId: noteData.id });
   };
 
   const onModalPinClick = useCallback(() => {
