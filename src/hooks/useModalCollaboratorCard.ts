@@ -19,7 +19,7 @@ const useModalCollaboratorCard = () => {
   >(updateNoteContext.noteData.collaboratorList);
 
   const collaboratorUpdateError = useSelector(
-    (state: RootState) => state.allNotes.noteUpdateError
+    (state: RootState) => state.notes.noteUpdateError
   );
 
   const dispatch = useDispatch<AppDispatch>();
