@@ -1,3 +1,4 @@
+import { labelsApi } from "api/labelsApi";
 import { useUpdateNote } from "contexts/hooks/useUpdateNote";
 import { UpdateLabelType } from "labeltypes";
 import { useEffect } from "react";
@@ -13,11 +14,9 @@ const useModalLabelCard = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const labels = useSelector((state: RootState) => state.allLabels.labels);
+  const labelsState = labelsApi.endpoints.getAllLabels.useQueryState(undefined);
 
-  const labelArray = useSelector(
-    (state: RootState) => state.allLabels.labelArray
-  );
+  const labelArray = useSelector((state: RootState) => state.labels.labelArray);
 
   const handleBackClick = () => {
     updateNoteContext.changeActiveCard(NoteCardType.NOTE);
@@ -57,7 +56,7 @@ const useModalLabelCard = () => {
     handleBackClick,
     handleCloseClick,
     labelArray,
-    labels,
+    labelsState,
     handleExcludeLabelClick,
     handleIncludeLabelClick,
   };

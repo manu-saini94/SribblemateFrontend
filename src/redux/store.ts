@@ -11,8 +11,8 @@ import userReducer from "./users/usersSlice";
 
 const store = configureStore({
   reducer: {
-    allNotes: noteReducer,
-    allLabels: labelReducer,
+    notes: noteReducer,
+    labels: labelReducer,
     menus: menuReducer,
     users: userReducer,
     auth: authReducer,

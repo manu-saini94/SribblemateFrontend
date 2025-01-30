@@ -30,9 +30,7 @@ const useTakeNoteDetails = ({
     (state: RootState) => state.users.collaboratorArray
   );
 
-  const labelArray = useSelector(
-    (state: RootState) => state.allLabels.labelArray
-  );
+  const labelArray = useSelector((state: RootState) => state.labels.labelArray);
 
   const { textareaRef, handleContentChange } = useAutoResizeTextArea(
     createNoteContext.handleChange

@@ -9,16 +9,14 @@ import {
 } from "../redux/labels/labelSlice";
 
 const useAddLabelCard = ({ changeActiveCard }: LabelCardPropsType) => {
-  const labels = useSelector((state: RootState) => state.allLabels.labels);
+  const labels = useSelector((state: RootState) => state.labels.labels);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const labelArray = useSelector(
-    (state: RootState) => state.allLabels.labelArray
-  );
+  const labelArray = useSelector((state: RootState) => state.labels.labelArray);
 
   const newLabelArray = useSelector(
-    (state: RootState) => state.allLabels.newLabelArray
+    (state: RootState) => state.labels.newLabelArray
   );
 
   const handleExcludeLabelClick = (label: CreateLabelType) => {

@@ -8,12 +8,20 @@ import React from "react";
 const LabelUpdateCard = () => {
   const {
     labelArray,
-    labels,
+    labelsState,
     handleBackClick,
     handleCloseClick,
     handleExcludeLabelClick,
     handleIncludeLabelClick,
   } = useModalLabelCard();
+
+  const {
+    data: userLabels,
+    isLoading: isLabelsLoading,
+    error: labelsError,
+    isUninitialized,
+    isFetching,
+  } = labelsState;
 
   return (
     <form>
@@ -39,7 +47,7 @@ const LabelUpdateCard = () => {
             className="d-flex column flex-wrap mx-1"
             style={{ width: "100%" }}
           >
-            {labels.map((label) => {
+            {userLabels?.map((label) => {
               return (
                 <div
                   key={label.labelName}
