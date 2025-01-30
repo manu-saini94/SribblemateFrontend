@@ -1,41 +1,76 @@
-import useNotesByLabelId from "hooks/useNotesByLabelId";
-import React from "react";
-import NoLabelledNotesIcon from "../components/icons/NoLabelledNotesIcon";
-import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
+import { notesApi } from "api/notesApi";
+import NoLabelledNotesIcon from "components/icons/NoLabelledNotesIcon";
+import DisplayNotes from "components/notes/shownotes/DisplayNotes";
+import { AllCategoriesNotesType, UpdateNoteType } from "notetypes";
+import React, { useEffect, useState } from "react";
+import { getCategorizedNotes } from "utility/reduxutils/noteUtils";
 import withNote from "../components/notes/withNote";
 
 const LabelledNotes = () => {
+  const [noteIds, setNoteIds] = useState<number[]>();
+  const [labelledNotes, setLabelledNotes] = useState<UpdateNoteType[]>();
+  const [categorizedNotes, setCategorizedNotes] =
+    useState<AllCategoriesNotesType>();
   const {
-    notes: { pinnedNotes, archivedNotes, othersNotes },
-    isLoading,
-    error,
-  } = useNotesByLabelId(0);
+    data: notesCache,
+    isLoading: notesCacheLoading,
+    isSuccess: notesCacheSuccess,
+    isError: notesCacheError,
+  } = notesApi.endpoints.getAllNotes.useQueryState(undefined);
+  const {
+    data: notesByLabelsCache,
+    isLoading: notesByLabelsLoading,
+    isSuccess: notesByLabelsSuccess,
+    isError: notesByLabelsError,
+  } = notesApi.endpoints.fetchNotesByLabels.useQueryState(undefined);
+
+  useEffect(() => {
+    if (labelledNotes && labelledNotes.length > 0) {
+      setCategorizedNotes(getCategorizedNotes(labelledNotes));
+    }
+  }, [labelledNotes]);
+
+  useEffect(() => {
+    if (notesCache && noteIds && noteIds.length > 0) {
+      const notes = noteIds
+        .map((id) => notesCache?.notesById[id])
+        .filter((note) => note !== undefined);
+      setLabelledNotes(notes);
+    }
+  }, [noteIds, notesCache]);
+
+  useEffect(() => {
+    if (notesByLabelsCache) setNoteIds(notesByLabelsCache[0]);
+  }, [notesByLabelsCache]);
 
   return (
     <div className="container-fluid">
-      {pinnedNotes?.length > 0 && (
+      {categorizedNotes && categorizedNotes.pinnedNotes?.length > 0 && (
         <>
           <h6 className="pin-heading">PINNED</h6>
-          <DisplayNotes notes={pinnedNotes} />
+          <DisplayNotes notes={categorizedNotes.pinnedNotes} />
         </>
       )}
       <br />
-      {othersNotes?.length > 0 && (
+      {categorizedNotes && categorizedNotes.othersNotes?.length > 0 && (
         <>
           <h6 className="pin-heading">OTHERS</h6>
-          <DisplayNotes notes={othersNotes} />
+          <DisplayNotes notes={categorizedNotes.othersNotes} />
         </>
       )}
       <br />
-      {archivedNotes && archivedNotes?.length > 0 && (
-        <>
-          <h6 className="pin-heading">ARCHIVE</h6>
-          <DisplayNotes notes={archivedNotes} />
-        </>
-      )}
-      {pinnedNotes?.length === 0 &&
-        othersNotes?.length === 0 &&
-        archivedNotes?.length === 0 && (
+      {categorizedNotes &&
+        categorizedNotes.archivedNotes &&
+        categorizedNotes.archivedNotes?.length > 0 && (
+          <>
+            <h6 className="pin-heading">ARCHIVE</h6>
+            <DisplayNotes notes={categorizedNotes.archivedNotes} />
+          </>
+        )}
+      {categorizedNotes &&
+        categorizedNotes.pinnedNotes?.length === 0 &&
+        categorizedNotes.othersNotes?.length === 0 &&
+        categorizedNotes.archivedNotes?.length === 0 && (
           <div
             className="d-flex flex-column justify-content-center align-items-center"
             style={{ height: "50vh" }}
