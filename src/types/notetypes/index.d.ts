@@ -169,3 +169,8 @@ export type AllCategoriesNotesType = {
   othersNotes: UpdateNoteType[];
   archivedNotes?: UpdateNoteType[];
 };
+
+export type NotesStateType = {
+  notes: UpdateNoteType[];
+  notesById: { [id: number]: UpdateNoteType };
+};

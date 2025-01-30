@@ -1,15 +1,24 @@
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import { notesApi } from "api/notesApi";
 import React from "react";
-import { useSelector } from "react-redux";
+import { getArchivedNotes } from "utility/reduxutils/noteUtils";
 import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
-import { selectArchivedNotes } from "../redux/selectors";
 
 const Archive = () => {
-  const archiveNotes = useSelector(selectArchivedNotes);
+  const { archiveNotes } = notesApi.endpoints.getAllNotes.useQueryState(
+    undefined,
+    {
+      selectFromResult: ({ data }) => {
+        return {
+          archiveNotes: data && getArchivedNotes(data.notes),
+        };
+      },
+    }
+  );
 
   return (
     <div className="container">
-      {archiveNotes?.length > 0 ? (
+      {archiveNotes && archiveNotes?.length > 0 ? (
         <DisplayNotes notes={archiveNotes} />
       ) : (
         <div

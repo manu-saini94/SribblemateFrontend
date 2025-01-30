@@ -1,21 +1,20 @@
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { notesApi } from "api/notesApi";
-import React, { useEffect } from "react";
+import React from "react";
+import { getTrashedNotes } from "utility/reduxutils/noteUtils";
 import DisplayNotes from "../components/notes/shownotes/DisplayNotes";
 
 const Trash = () => {
   const { trashNotes } = notesApi.endpoints.getAllNotes.useQueryState(
     undefined,
     {
-      selectFromResult: ({ data }) => ({
-        trashNotes: data?.filter((note) => note.trashed),
-      }),
+      selectFromResult: ({ data }) => {
+        return {
+          trashNotes: data && getTrashedNotes(data.notes),
+        };
+      },
     }
   );
-
-  useEffect(() => {
-    console.log("TN", trashNotes);
-  }, [trashNotes]);
 
   return (
     <div className="container">

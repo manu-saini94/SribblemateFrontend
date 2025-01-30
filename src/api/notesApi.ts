@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   ByIdTransformType,
   CreateNoteType,
+  NotesStateType,
   UpdateColorType,
   UpdateNoteType,
 } from "notetypes";
@@ -38,15 +39,27 @@ export const notesApi = createApi({
   tagTypes: ["Notes"],
 
   endpoints: (builder) => ({
-    getAllNotes: builder.query<UpdateNoteType[], void>({
+    getAllNotes: builder.query<NotesStateType, void>({
       query: () => NOTE_FETCH_ALL_URL,
       transformResponse: (response: { object: UpdateNoteType[] }) => {
-        return response.object;
+        // Create notesById structure
+        const notesById = response.object.reduce(
+          (acc: { [id: number]: UpdateNoteType }, note) => {
+            acc[note.id] = note;
+            return acc;
+          },
+          {}
+        );
+        return {
+          notes: response.object,
+          notesById,
+        };
       },
+
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Notes" as const, id })),
+              ...result.notes.map(({ id }) => ({ type: "Notes" as const, id })),
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
@@ -72,10 +85,14 @@ export const notesApi = createApi({
         try {
           const { data: createdNote } = await queryFulfilled;
           dispatch(
-            notesApi.util.updateQueryData("getAllNotes", undefined, (notes) => {
-              notes.unshift(createdNote);
-              return notes;
-            })
+            notesApi.util.updateQueryData(
+              "getAllNotes",
+              undefined,
+              (result) => {
+                result.notes.unshift(createdNote);
+                return result;
+              }
+            )
           );
         } catch {}
       },
