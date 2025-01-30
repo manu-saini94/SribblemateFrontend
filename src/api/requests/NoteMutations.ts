@@ -30,7 +30,51 @@ export const updatePinNote = (
 ) =>
   draft.map((note) => {
     if (note.id === id) {
-      return { ...note, pinned: !note.pinned };
+      return { ...note, pinned: !note.pinned, archived: false, trashed: false };
+    }
+    return note;
+  });
+
+export const updateArchiveNote = (
+  draft: MaybeDrafted<UpdateNoteType[]>,
+  id: number
+) =>
+  draft.map((note) => {
+    if (note.id === id) {
+      return {
+        ...note,
+        archived: !note.archived,
+        pinned: false,
+        trashed: false,
+      };
+    }
+    return note;
+  });
+
+export const updateTrashNote = (
+  draft: MaybeDrafted<UpdateNoteType[]>,
+  id: number
+) =>
+  draft.map((note) => {
+    if (note.id === id) {
+      return {
+        ...note,
+        trashed: !note.trashed,
+        pinned: false,
+        archived: false,
+      };
+    }
+    return note;
+  });
+
+export const updateColorNote = (
+  draft: MaybeDrafted<UpdateNoteType[]>,
+  id: number,
+  color: string
+) =>
+  draft.map((note) => {
+    if (note.id === id) {
+      return { ...note, color };
     }
     return note;
   });

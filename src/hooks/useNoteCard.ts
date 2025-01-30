@@ -1,22 +1,16 @@
-import { useUpdateNoteMutation, useUpdatePinMutation } from "api/notesApi";
+import {
+  useUpdateArchiveMutation,
+  useUpdateColorMutation,
+  useUpdateNoteMutation,
+  useUpdatePinMutation,
+  useUpdateTrashMutation,
+} from "api/notesApi";
 import { DateTime } from "luxon";
 import { NoteCardPropsType, UpdateColorType, UpdateNoteType } from "notetypes";
-import React, {
-  FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { NoteCardType } from "utility/miscsUtils";
-import {
-  updateArchiveForNote,
-  updateColorForNote,
-  updateTrashForNote,
-} from "../redux/asyncThunks";
-import { updateUserNote } from "../redux/notes/noteSlice";
 import useCardTypeActive from "./useCardTypeActive";
 import useColor from "./useColor";
 
@@ -33,6 +27,24 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     updatePin,
     { isLoading: pinLoading, error: pinError, isSuccess: pinSuccess },
   ] = useUpdatePinMutation();
+  const [
+    updateArchive,
+    {
+      isLoading: archiveLoading,
+      error: archiveError,
+      isSuccess: archiveSuccess,
+    },
+  ] = useUpdateArchiveMutation();
+  const [
+    updateTrash,
+    { isLoading: trashLoading, error: trashError, isSuccess: trashSuccess },
+  ] = useUpdateTrashMutation();
+
+  const [
+    updateColor,
+    { isLoading: colorLoading, error: colorError, isSuccess: colorSuccess },
+  ] = useUpdateColorMutation();
+
   const colorPaletteRef = useRef<HTMLDivElement>(null);
   const noteRef = useRef<HTMLDivElement>(null);
   const iconsRef = useRef<HTMLDivElement>(null);
@@ -117,17 +129,15 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
     setIsOpenMoreTooltip(true);
   };
 
-  const onPinClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const onPinClick = useCallback(() => {
     setNoteData((prevValues) => ({
       ...noteData,
       pinned: !prevValues.pinned,
       archived: false,
       trashed: false,
     }));
-
     updatePin({ noteId: noteData.id });
-  };
+  }, [noteData, updatePin]);
 
   const onModalPinClick = useCallback(() => {
     setNoteData((prevValues) => ({
@@ -145,17 +155,25 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
 
   const onReminderClick = () => {};
 
-  const onArchiveClick = () => {
-    dispatch(updateArchiveForNote(noteCardValues.id)).then(() => {
-      dispatch(updateUserNote());
-    });
-  };
+  const onArchiveClick = useCallback(() => {
+    setNoteData((prevValues) => ({
+      ...noteData,
+      pinned: false,
+      trashed: false,
+      archived: !prevValues.archived,
+    }));
+    updateArchive({ noteId: noteData.id });
+  }, [noteData, updateArchive]);
 
-  const onDeleteClick = () => {
-    dispatch(updateTrashForNote(noteCardValues.id)).then(() => {
-      dispatch(updateUserNote());
-    });
-  };
+  const onDeleteClick = useCallback(() => {
+    setNoteData((prevValues) => ({
+      ...noteData,
+      pinned: false,
+      archived: false,
+      trashed: !prevValues.trashed,
+    }));
+    updateTrash({ noteId: noteData.id });
+  }, [noteData, updateTrash]);
 
   const onMoreClick = () => {
     handleMoreTooltipClose();
@@ -178,11 +196,13 @@ const useNoteCard = ({ noteCardValues }: NoteCardPropsType) => {
         noteId: noteData.id,
         color: color,
       };
-      dispatch(updateColorForNote(colorDetails)).then(() => {
-        dispatch(updateUserNote());
-      });
+      setNoteData((prevValues) => ({
+        ...noteData,
+        color,
+      }));
+      updateColor(colorDetails);
     },
-    [dispatch, noteData.id]
+    [noteData, updateColor]
   );
 
   const toggleColorPalette = () => {

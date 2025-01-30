@@ -1,9 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ByIdTransformType, CreateNoteType, UpdateNoteType } from "notetypes";
+import {
+  ByIdTransformType,
+  CreateNoteType,
+  UpdateColorType,
+  UpdateNoteType,
+} from "notetypes";
 import {
   optimisticNoteUpdateHelper,
+  updateArchiveNote,
+  updateColorNote,
   updateDraftNote,
   updatePinNote,
+  updateTrashNote,
 } from "./requests/NoteMutations";
 import {
   BASE_URL_V1,
@@ -12,7 +20,10 @@ import {
   LABEL_URL,
   NOTE_FETCH_ALL_URL,
   NOTE_FETCH_URL,
+  NOTE_UPDATE_ARCHIVE_URL,
+  NOTE_UPDATE_COLOR_URL,
   NOTE_UPDATE_PIN_URL,
+  NOTE_UPDATE_TRASH_URL,
   NOTE_UPDATE_URL,
   NOTE_URL,
 } from "./serviceUtils";
@@ -120,6 +131,63 @@ export const notesApi = createApi({
         optimisticNoteUpdateHelper(queryFulfilled, patchResult);
       },
     }),
+
+    updateArchive: builder.mutation<UpdateNoteType, { noteId: number }>({
+      query: ({ noteId }) => ({
+        url: NOTE_UPDATE_ARCHIVE_URL,
+        method: HTTP_METHODS.PUT,
+        params: { noteId },
+      }),
+      transformResponse: (response: { object: UpdateNoteType }) => {
+        return response.object;
+      },
+      async onQueryStarted({ noteId }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) => {
+            return updateArchiveNote(draft, noteId);
+          })
+        );
+        optimisticNoteUpdateHelper(queryFulfilled, patchResult);
+      },
+    }),
+
+    updateTrash: builder.mutation<UpdateNoteType, { noteId: number }>({
+      query: ({ noteId }) => ({
+        url: NOTE_UPDATE_TRASH_URL,
+        method: HTTP_METHODS.PUT,
+        params: { noteId },
+      }),
+      transformResponse: (response: { object: UpdateNoteType }) => {
+        return response.object;
+      },
+      async onQueryStarted({ noteId }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) => {
+            return updateTrashNote(draft, noteId);
+          })
+        );
+        optimisticNoteUpdateHelper(queryFulfilled, patchResult);
+      },
+    }),
+
+    updateColor: builder.mutation<UpdateNoteType, UpdateColorType>({
+      query: (noteData) => ({
+        url: NOTE_UPDATE_COLOR_URL,
+        method: HTTP_METHODS.PUT,
+        body: noteData,
+      }),
+      transformResponse: (response: { object: UpdateNoteType }) => {
+        return response.object;
+      },
+      async onQueryStarted({ noteId, color }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          notesApi.util.updateQueryData("getAllNotes", undefined, (draft) => {
+            return updateColorNote(draft, noteId, color);
+          })
+        );
+        optimisticNoteUpdateHelper(queryFulfilled, patchResult);
+      },
+    }),
   }),
 });
 
@@ -129,4 +197,7 @@ export const {
   useCreateNoteMutation,
   useUpdateNoteMutation,
   useUpdatePinMutation,
+  useUpdateArchiveMutation,
+  useUpdateTrashMutation,
+  useUpdateColorMutation,
 } = notesApi;
