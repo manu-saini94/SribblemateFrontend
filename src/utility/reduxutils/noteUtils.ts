@@ -94,7 +94,7 @@ export const getOthersNotes = (
 export const getCategorizedNotes = (
   allNotes: UpdateNoteType[]
 ): AllCategoriesNotesType => {
-  return allNotes
+  return allNotes.length > 0
     ? {
         pinnedNotes: getPinnedNotes(allNotes),
         othersNotes: getOthersNotes(allNotes),
@@ -106,7 +106,7 @@ export const getCategorizedNotes = (
 export const getPinnedAndOthersCategorizedNotes = (
   allNotes: UpdateNoteType[]
 ): AllCategoriesNotesType => {
-  return allNotes
+  return allNotes.length > 0
     ? {
         pinnedNotes: getPinnedNotes(allNotes),
         othersNotes: getOthersNotes(allNotes),
