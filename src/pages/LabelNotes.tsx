@@ -3,14 +3,17 @@ import NoLabelledNotesIcon from "components/icons/NoLabelledNotesIcon";
 import DisplayNotes from "components/notes/shownotes/DisplayNotes";
 import { AllCategoriesNotesType, UpdateNoteType } from "notetypes";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { AppDispatch } from "redux/store";
 import { getCategorizedNotes } from "utility/reduxutils/noteUtils";
+import { setLoaderState } from "../redux/global/globalSlice";
 
 const LabelNotes = () => {
   const { labelId } = useParams<{ labelId?: string }>();
   const [labelNotes, setLabelNotes] = useState<UpdateNoteType[]>();
   const [noteIds, setNoteIds] = useState<number[]>();
-
+  const dispatch = useDispatch<AppDispatch>();
   const [categorizedNotes, setCategorizedNotes] =
     useState<AllCategoriesNotesType>();
   const {
@@ -29,7 +32,10 @@ const LabelNotes = () => {
   useEffect(() => {
     if (labelNotes && labelNotes.length > 0) {
       setCategorizedNotes(getCategorizedNotes(labelNotes));
+    } else {
+      setCategorizedNotes(getCategorizedNotes([]));
     }
+    return () => setCategorizedNotes(getCategorizedNotes([]));
   }, [labelNotes]);
 
   useEffect(() => {
@@ -39,12 +45,18 @@ const LabelNotes = () => {
         .filter((note) => note !== undefined);
       setLabelNotes(notes);
     }
+    return () => setLabelNotes([]);
   }, [noteIds, notesCache]);
 
   useEffect(() => {
     if (notesByLabelsCache && labelId)
       setNoteIds(notesByLabelsCache[Number(labelId)]);
+    return () => setNoteIds([]);
   }, [labelId, notesByLabelsCache]);
+
+  useEffect(() => {
+    dispatch(setLoaderState(notesCacheLoading || notesByLabelsLoading));
+  }, [dispatch, notesByLabelsLoading, notesCacheLoading]);
 
   return (
     <div className="container-fluid">
